@@ -1,0 +1,52 @@
+{
+  "name": "century",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "auto": "bash automate",
+    "test": "jest",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.0",
+    "sort-by": "^1.2.0",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.24.7",
+    "@chromatic-com/storybook": "^1.5.0",
+    "@jest/globals": "^29.7.0",
+    "@storybook/addon-essentials": "^8.1.6",
+    "@storybook/addon-interactions": "^8.1.6",
+    "@storybook/addon-links": "^8.1.6",
+    "@storybook/addon-onboarding": "^8.1.6",
+    "@storybook/blocks": "^8.1.6",
+    "@storybook/react": "^8.1.6",
+    "@storybook/react-vite": "^8.1.6",
+    "@storybook/test": "^8.1.6",
+    "@types/jest": "^29.5.12",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-storybook": "^0.8.0",
+    "fetch-mock-jest": "^1.5.1",
+    "jest": "^29.7.0",
+    "prop-types": "^15.8.1",
+    "storybook": "^8.1.6",
+    "vite": "^5.2.0"
+  }
+}
