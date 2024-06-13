@@ -9,43 +9,54 @@ export default class Doubly {
         this.tail = null;
     }
 
-    addToHead(data: unknown, id: string): Node {
+    addToHead(data: unknown, id: string | number): Node | null{
         let currentHead = this.head;
         const newHead = new Node(data, id);
 
-        if (!currentHead) {
-            currentHead = newHead;
-            this.head = currentHead;
-            this.tail = currentHead;
-            currentHead.setNextNode(null);
-            currentHead.setPreviousNode(null);
+        if (typeof id === 'string' || typeof id === 'number') {
+            if (!currentHead) {
+                currentHead = newHead;
+                this.head = currentHead;
+                this.tail = currentHead;
+                currentHead.setNextNode(null);
+                currentHead.setPreviousNode(null);
+                return this.head;
+            }
+    
+            currentHead.setPreviousNode(newHead);
+            newHead.setNextNode(currentHead);
+            newHead.setPreviousNode(null);
+            this.head = newHead;
             return this.head;
+        } else {
+            console.error('The id must be either a string or a number');
+            return null
         }
-
-        currentHead.setPreviousNode(newHead);
-        newHead.setNextNode(currentHead);
-        newHead.setPreviousNode(null);
-        this.head = newHead;
-        return this.head;
     }
-    addToTail(data: unknown, id: string): Node {
+    addToTail(data: unknown, id: string | number): Node | null {
         let currentTail = this.tail;
         const newTail = new Node(data, id);
 
-        if(!this.head && !this.tail) {
-            currentTail = newTail;
-            this.head = currentTail;
-            this.tail = currentTail;
-            currentTail.setNextNode(null);
-            currentTail.setPreviousNode(null);
+        if (typeof id === 'string' || typeof id === 'number') {
+            if(!this.head && !this.tail) {
+                currentTail = newTail;
+                this.head = currentTail;
+                this.tail = currentTail;
+                currentTail.setNextNode(null);
+                currentTail.setPreviousNode(null);
+                return this.tail;
+            }
+    
+            currentTail?.setNextNode(newTail);
+            newTail.setPreviousNode(currentTail);
+            newTail.setNextNode(null);
+            this.tail = newTail;
             return this.tail;
+        } else {
+            console.error('The id must be either a string or a number');
+            return null;
         }
-
-        currentTail?.setNextNode(newTail);
-        newTail.setPreviousNode(currentTail);
-        newTail.setNextNode(null);
-        this.tail = newTail;
-        return this.tail;
+        
     }
     removeHead(): Node | null {
         const currentHead = this.head;

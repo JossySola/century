@@ -4,7 +4,7 @@ export default class Node {
     previous: null | Node;
     id: string | number;
 
-    constructor (data: unknown, id: string) {
+    constructor (data: unknown, id: string | number) {
         this.data = data;
         this.id = id;
         this.next = null;

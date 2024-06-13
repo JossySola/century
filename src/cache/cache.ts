@@ -24,44 +24,59 @@ export default class Cache extends Doubly {
         this.tail = null;
         this.size = 0;
     }
-    add(data: unknown, id: string): Node | null {
+    add(data: unknown, id: string | number): Node | null {
         if (data && id) {
-            if (this.isEmpty()) {
-                this.size++;
-                return this.addToHead(data, id);
-            }
-    
-            let currentNode = this.head;
-            while(currentNode !== null) {
-                if (currentNode.id === id) {
-                    return currentNode;
+            if (typeof id === 'string' || typeof id === 'number') {
+                if (this.isEmpty()) {
+                    this.size++;
+                    return this.addToHead(data, id);
                 }
-                currentNode = currentNode.getNextNode();
-            }
-            this.size++;
-            return this.addToTail(data, id);
+        
+                let currentNode = this.head;
+                while(currentNode !== null) {
+                    if (currentNode.id === id) {
+                        return currentNode;
+                    }
+                    currentNode = currentNode.getNextNode();
+                }
+                this.size++;
+                return this.addToTail(data, id);
+            } else {
+                console.error('The id must be either a string or a number');
+                return null;
+            }    
         } else {
-            console.error('Cannot add a falsey value');
+            console.error('Cannot add a falsey value or an empty argument');
             return null;
         }
     }
-    remove(id: string): null {
-        if (this.isEmpty()) {
-            return null;
-        }
-        let currentNode = this.head;
-        while(currentNode !== null) {
-            if (currentNode.id === id) {
-                const previous = currentNode.getPreviousNode();
-                const next = currentNode.getNextNode();
-                previous?.setNextNode(next);
-                next?.setPreviousNode(previous);
-                this.size--;
+    remove(id: string | number): null {
+        if (id) {
+            if(typeof id === 'string' || typeof id === 'number') {
+                if (this.isEmpty()) {
+                    return null;
+                }
+                let currentNode = this.head;
+                while(currentNode !== null) {
+                    if (currentNode.id === id) {
+                        const previous = currentNode.getPreviousNode();
+                        const next = currentNode.getNextNode();
+                        previous?.setNextNode(next);
+                        next?.setPreviousNode(previous);
+                        this.size--;
+                        return null;
+                    }
+                    currentNode = currentNode.getNextNode();
+                }
+                return null;
+            } else {
+                console.error('The id must be either a string or a number');
                 return null;
             }
-            currentNode = currentNode.getNextNode();
+        } else {
+            console.error('You must specify an id.');
+            return null;
         }
-        return null;
     }
     isEmpty(): boolean {
         if (!this.head && !this.tail) {
@@ -70,17 +85,26 @@ export default class Cache extends Doubly {
             return false;
         }
     }
-    get(id: string): unknown | null {
+    get(id: string | number): unknown | null {
         let currentNode = this.head;
 
-        while(currentNode !== null) {
-            if (currentNode.id === id) {
-                return currentNode.data;
+        if (id) {
+            if (typeof id === 'string' || typeof id === 'number') {
+                while(currentNode !== null) {
+                    if (currentNode.id === id) {
+                        return currentNode.data;
+                    }
+                    currentNode = currentNode.getNextNode();
+                }
+                return null;
+            } else {
+                console.error('The id must be either a string or a number');
+                return null;
             }
-            currentNode = currentNode.getNextNode();
+        } else {
+            console.error('You must specify an id.');
+            return null;
         }
-
-        return null;
     }
     length() {
         return this.size;
