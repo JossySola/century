@@ -9,9 +9,9 @@ export default class Doubly {
         this.tail = null;
     }
 
-    addToHead(data: unknown): Node | null {
+    addToHead(data: unknown, id: string): Node {
         let currentHead = this.head;
-        const newHead = new Node(data);
+        const newHead = new Node(data, id);
 
         if (!currentHead) {
             currentHead = newHead;
@@ -26,26 +26,26 @@ export default class Doubly {
         newHead.setNextNode(currentHead);
         newHead.setPreviousNode(null);
         this.head = newHead;
-        return newHead;
+        return this.head;
     }
-    addToTail(data: unknown): Node | null {
+    addToTail(data: unknown, id: string): Node {
         let currentTail = this.tail;
-        const newTail = new Node(data);
+        const newTail = new Node(data, id);
 
-        if(!this.head) {
+        if(!this.head && !this.tail) {
             currentTail = newTail;
             this.head = currentTail;
             this.tail = currentTail;
             currentTail.setNextNode(null);
             currentTail.setPreviousNode(null);
-            return newTail;
+            return this.tail;
         }
 
         currentTail?.setNextNode(newTail);
         newTail.setPreviousNode(currentTail);
         newTail.setNextNode(null);
         this.tail = newTail;
-        return newTail;
+        return this.tail;
     }
     removeHead(): Node | null {
         const currentHead = this.head;
@@ -90,7 +90,7 @@ export default class Doubly {
         let output = '<head> ';
 
         while (currentNode !== null) {
-            output += `#${currentNode.data}`;
+            output += `#${currentNode.data} `;
             currentNode = currentNode.getNextNode();
         }
         output += ' <tail>';
