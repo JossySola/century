@@ -20,7 +20,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
     "sort-by": "^1.2.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.7",
