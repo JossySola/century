@@ -1,8 +1,8 @@
-# React + Vite
+# Following the following steps:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Flowchart for first Organism
+2. Set Router
+3. Create a cache function with tests respectively
+4. Start development for organisms requiring data fetch
+    - Start with getting data only
+    - Continue with Component function
