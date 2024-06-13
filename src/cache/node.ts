@@ -2,7 +2,7 @@ export default class Node {
     data: unknown;
     next: null | Node;
     previous: null | Node;
-    id: string;
+    id: string | number;
 
     constructor (data: unknown, id: string) {
         this.data = data;
