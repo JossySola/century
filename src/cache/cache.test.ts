@@ -30,7 +30,7 @@ describe('Class Cache',() => {
             // Result
             expect(result).toBe(expected)
         });
-        test('Successfuly gets data by id', () => {
+        test('Successfuly gets data by $id', () => {
             // Setup
             const newNode = new Cache();
             const expected = 'Second';
@@ -59,7 +59,7 @@ describe('Class Cache',() => {
             // Result
             expect(result).toBe(expected);
         });
-        test('Successfuly removes Node by /id/', () => {
+        test('Successfuly removes Node by $id', () => {
             // Setup
             const newNode = new Cache();
             const expected = 2;
@@ -78,7 +78,7 @@ describe('Class Cache',() => {
     });
     describe('Edge cases', () => {
         describe('Adding', () => {
-            test('Does not add /id/ duplicates', () => {
+            test('Does not add $id duplicates', () => {
                 // Setup
                 const newNode = new Cache();
                 const expected = 3;
@@ -136,10 +136,10 @@ describe('Class Cache',() => {
         
                 // Result
                 expect(result).toBe(expected);
-            })
+            });
         });
         describe('Removing', () => {
-            test('Does not affect list if /id/ is not found', () => {
+            test('Does not affect list if $id is not found', () => {
                 // Setup
                 const newNode = new Cache();
                 const expected = 3;
@@ -153,7 +153,7 @@ describe('Class Cache',() => {
         
                 // Result
                 expect(result).toBe(expected);
-            })
-        })
+            });
+        });
     });
 });
