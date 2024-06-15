@@ -1,19 +1,31 @@
-export default async function fetchHandler(url: string, method?: string, payload?: object) {
-    // 1. Calls fn and store data on cache
-    // 2. If called again with same data, it will return the cached result instead of calling fn
+export default async function fetchHandler(url: string, method?: "GET" | "POST", payload?: object) {
     const cacheVersion = timestamp();
     const cacheName = `century-${cacheVersion}`;
     let cachedData = await getCachedData(cacheName, url);
 
     if (cachedData) {
-        console.log("Retrieved cached data.");
+        console.log("Cached data retrieved.");
         return cachedData;
     }
 
-    console.log("Fetching fresh data.");
+    console.log("Fetching fresh data...");
 
     const cacheStorage = await caches.open(cacheName);
-    await cacheStorage.add(url);
+
+    if (url && !method && !payload) {
+        await cacheStorage.add(url);
+    } else if (url && method === "GET" as "GET" && payload) {
+        const response = await fetch(url, payload);
+        await cacheStorage.put(url, response);
+    } else if (url && method === "POST" as "POST" && payload) {
+        const response = await fetch(url, payload);
+        await cacheStorage.put(url, response);
+    } else {
+        console.error("No condition is met with the arguments passed.");
+        return undefined;
+    }
+
+    
     cachedData = await getCachedData(cacheName, url);
     await deleteOldCaches(cacheName);
 
