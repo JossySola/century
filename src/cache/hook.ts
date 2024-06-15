@@ -3,7 +3,7 @@ import redditFilter from "../scripts/redditFilter/redditFilter";
 export default async function fetchHandler(url: string, payload?: object) {
     const cacheVersion = timestamp();
     const cacheName = `century-${cacheVersion}`;
-    console.log(cacheName);
+    
     let cachedData = await getCachedData(cacheName, url);
 
     if (cachedData) {
@@ -17,8 +17,7 @@ export default async function fetchHandler(url: string, payload?: object) {
 
     try {
         if (url && !payload) {
-            const body = await fetch(url);
-            const response = redditFilter(await body.json());
+            const response = await fetch(url);
             await cacheStorage.put(url, response);
         } else if (url && payload) {
             const response = await fetch(url, payload);
