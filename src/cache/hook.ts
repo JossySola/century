@@ -1,5 +1,3 @@
-import redditFilter from "../scripts/redditFilter/redditFilter";
-
 export default async function fetchHandler(url: string, payload?: object) {
     const cacheVersion = timestamp();
     const cacheName = `century-${cacheVersion}`;
