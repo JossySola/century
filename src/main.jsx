@@ -19,7 +19,7 @@ const router = createBrowserRouter(
       children: [
         {
           path: '/news',
-          element: <Feed t3={"worldnews.json?raw_json=1"}/>,
+          element: <Feed />,
           errorElement: <ErrorPage />,
           loader: newsLoader,
         },
