@@ -14,6 +14,12 @@ export default async function fetchHandler(url: string, payload?: object) {
     const cacheStorage = await caches.open(cacheName);
 
     try {
+        if (!url && !payload) {
+            throw new Error("No arguments received.");
+        }
+        if (!url) {
+            throw new Error("No URL has been passed.");
+        }
         if (url && !payload) {
             const response = await fetch(url);
             await cacheStorage.put(url, response);
