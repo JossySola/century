@@ -1,6 +1,9 @@
-export default async function fetchHandler(url: string, method?: "GET" | "POST", payload?: object) {
+import redditFilter from "../scripts/redditFilter/redditFilter";
+
+export default async function fetchHandler(url: string, payload?: object) {
     const cacheVersion = timestamp();
     const cacheName = `century-${cacheVersion}`;
+    console.log(cacheName);
     let cachedData = await getCachedData(cacheName, url);
 
     if (cachedData) {
@@ -12,24 +15,27 @@ export default async function fetchHandler(url: string, method?: "GET" | "POST",
 
     const cacheStorage = await caches.open(cacheName);
 
-    if (url && !method && !payload) {
-        await cacheStorage.add(url);
-    } else if (url && method === "GET" as "GET" && payload) {
-        const response = await fetch(url, payload);
-        await cacheStorage.put(url, response);
-    } else if (url && method === "POST" as "POST" && payload) {
-        const response = await fetch(url, payload);
-        await cacheStorage.put(url, response);
-    } else {
-        console.error("No condition is met with the arguments passed.");
-        return undefined;
-    }
-
+    try {
+        if (url && !payload) {
+            const body = await fetch(url);
+            const response = redditFilter(await body.json());
+            await cacheStorage.put(url, response);
+        } else if (url && payload) {
+            const response = await fetch(url, payload);
+            await cacheStorage.put(url, response);
+        }
+        cachedData = await getCachedData(cacheName, url);
+        await deleteOldCaches(cacheName);
     
-    cachedData = await getCachedData(cacheName, url);
-    await deleteOldCaches(cacheName);
-
-    return cachedData;
+        return cachedData;
+    } catch (e) {
+        console.error({
+            From: "Fetch Handler",
+            e,
+            Code: e.cause,
+        });
+        return e;
+    }
 }
 
 const timestamp = (): string => {
