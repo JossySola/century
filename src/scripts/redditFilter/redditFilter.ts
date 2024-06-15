@@ -119,7 +119,7 @@ export default function redditFilter (obj: Listing) {
                 // Award
             }
             default: {
-                return false;
+                throw new Error("The object 'kind' was not found in the switch cases.");
             }
         }
     } else if (Array.isArray(obj)) {
