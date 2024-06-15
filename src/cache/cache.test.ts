@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
-import Cache from './cache';
+import Cache from './cache (unused)';
 
 describe('Class Cache',() => {
     describe('Functionality', () => {
