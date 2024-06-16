@@ -18,10 +18,14 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />,
       children: [
         {
-          path: '/news',
-          element: <Feed />,
           errorElement: <ErrorPage />,
-          loader: newsLoader,
+          children: [
+            {
+              path: '/news',
+              element: <Feed />,
+              loader: newsLoader,
+            }
+          ]
         },
       ],
     },
