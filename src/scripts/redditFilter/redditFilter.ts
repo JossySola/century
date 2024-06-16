@@ -13,6 +13,27 @@ interface Listing {
         name: string,
         num_comments: number,
         permalink: string,
+        preview: {
+            enabled: boolean,
+            images: [
+                {
+                    id: string,
+                    resolutions: [
+                        {
+                            height: number,
+                            url: string,
+                            width: number,
+                        }
+                    ],
+                    source: {
+                        height: number,
+                        url: string,
+                        width: number,
+                    },
+                    variants: object
+                }
+            ]
+        },
         selftext: string,
         selftext_html: string,
         subreddit: string,
@@ -81,6 +102,7 @@ export default function redditFilter (obj: Listing) {
                     name,
                     num_comments,
                     permalink,
+                    preview,
                     selftext,
                     selftext_html,
                     subreddit,
@@ -99,6 +121,7 @@ export default function redditFilter (obj: Listing) {
                     name,
                     num_comments,
                     permalink,
+                    preview,
                     selftext,
                     selftext_html,
                     subreddit,
