@@ -1,12 +1,18 @@
 import React from "react"
 import "./User.css"
- 
-export default function User ({props}) {
- 
+
+interface Props {
+    author: string;
+    src: string | undefined;
+}
+export default function User ({author, src}: Props) {
+    
     return (
-        <section>
-            <img />
-            <h4></h4>
-        </section>
+        <a href={`https://www.reddit.com/u/${author}/`} target="_blank">
+            <section>
+                <img src={src} className="User-img"/>
+                <h4>u/{author}</h4>
+            </section>
+        </a>
     )
 }

@@ -1,15 +1,25 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import fetchHandler from "../../cache/hook"
+import Cover from "../Cover/Cover"
+import Summary from "../Summary/Summary"
+import User from "../User/User"
 import "./Preview.css"
  
 export default function Preview ({payload}) {
-    const profileImage = async () => {
-        return await getUserImage(payload.author);
-    }
-    console.log(profileImage())
+    const [profile, setProfile] = useState("");
+    useEffect(() => {
+        getUserImage(payload.author).then(response => setProfile(response));
+    }, [])
+    const images = payload.preview && payload.preview.images;
+
     return (
         <article>
-
+            <User  author={payload.author} src={profile} />
+            <Link to={payload.permalink}>
+                <Cover preview={images ? images : null} />
+                <Summary  title={payload.title}/>
+            </Link>
         </article>
     )
 }
@@ -42,15 +52,13 @@ const getRandomAvatar = () => {
             return "/src/assets/avatar/avatar_default_1.png";
     }
 }
-const getUserImage = async (name: string) => {
+const getUserImage = async (name: string): Promise<string> => {
     let avatar:string = "";
     try {
         if (name || name !== undefined) {
             const response = await fetchHandler(`https://www.reddit.com/user/${name}/about.json`);
-            avatar = response.data.snoovatar_img;
+            if (response.data) avatar = response.data.snoovatar_img; 
         }
-    } catch (e) {
-        console.error(e);
     } finally {
         if (avatar) {
             return avatar;

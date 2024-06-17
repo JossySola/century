@@ -1,12 +1,14 @@
 import React from "react"
 import "./Summary.css"
- 
-export default function Summary ({props}) {
+
+interface Props {
+    title: string;
+}
+export default function Summary ({title}: Props) {
  
     return (
         <section>
-            <h3></h3>
-            <p></p>
+            <h2>{title}</h2>
         </section>
     )
 }
