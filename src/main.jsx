@@ -21,6 +21,9 @@ const router = createBrowserRouter(
           errorElement: <ErrorPage />,
           children: [
             {
+              path: 'r/:subreddit/comments/:id/:title'
+            },
+            {
               path: '/news',
               element: <Feed />,
               loader: newsLoader,
