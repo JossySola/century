@@ -1,7 +1,7 @@
 # 21st Century Times
 ## Reddit Project
 
-This project is meant to work with the Reddit API. The functionality consists of loading posts by predefined categories, searching subreddits, liking posts / comments and commenting on a post.
+This project is meant to work with the Reddit API as part of the Codecademy Front-End project. The functionality consists of loading posts by predefined categories, searching subreddits, liking posts / comments and commenting on a post.
 
 This repository is secondary as I decided to leave the first repository I started, due to a messy implementation. Before starting the whole project, I came across the concept of **Atomic Design** and I decided to apply it in this project. However, as stated before, the wrong implementation of this technique made me start it again.
 
