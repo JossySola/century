@@ -7,6 +7,7 @@ import { news as newsLoader } from './scripts/loaders/loaders.ts'
 import App from './App.jsx'
 import ErrorPage from './error-page.jsx'
 import Feed from './organisms/Feed/Feed'
+import Post from "./organisms/Post/Post"
 
 import './index.css'
 
@@ -21,10 +22,16 @@ const router = createBrowserRouter(
           errorElement: <ErrorPage />,
           children: [
             {
-              path: 'r/:subreddit/comments/:id/:title'
+              index: true,
+              element: <Feed />,
+              loader: newsLoader,
             },
             {
-              path: '/news',
+              path: 'r/:subreddit/comments/:id/:title',
+              element: <Post />,
+            },
+            {
+              path: 'news',
               element: <Feed />,
               loader: newsLoader,
             }
