@@ -141,8 +141,11 @@ export default function redditFilter (obj: Listing) {
             case 't6': {
                 // Award
             }
+            case 'more': {
+                return;
+            }
             default: {
-                throw new Error("The object 'kind' was not found in the switch cases.");
+                throw new Error(`The object kind: ${obj.kind} was not found in the Switch cases.`)
             }
         }
     } else if (Array.isArray(obj)) {
