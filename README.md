@@ -11,7 +11,7 @@ In this second repository, I started to build the project from **top to bottom**
 
 1. Router planning
 2. Sketch of first **Organism** [^1] flowchart
-3. Code implementation as a Fetch Handler function, which handles fetch requests and manages the responses in Cache
+3. Code implementation of a Fetch Handler function, which handles fetch requests and manages the responses in Cache
 4. Code implementation to filter the responses from the Reddit API. Implementing the code as a recursive function to filter the Listings [^2] received
 5. Creation of an **Organism** as a *renderless* React component. Only handling the data fetched first.
     - Focus on the data required for that specific Organism strand. Creating the Organism as the parent and continuing with the children creation while passing the data down.
