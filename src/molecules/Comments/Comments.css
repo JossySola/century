@@ -1,0 +1,6 @@
+#comments-section {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 700px;
+    overflow: scroll;
+}
