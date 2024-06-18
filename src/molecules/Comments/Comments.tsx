@@ -26,7 +26,7 @@ export default function Comments ({t1}) {
     return (
         <section>
             {t1 && t1.map((comment: Prop) => {
-                if (comment) {
+                if (comment && comment.author !== "[deleted]") {
                     return <Comment 
                     key={comment.id}
                     id={comment.id} 
@@ -34,7 +34,7 @@ export default function Comments ({t1}) {
                     body_html={comment.body_html} 
                     downs={comment.downs} 
                     ups={comment.ups}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 1 ? comment.replies.data.children.length-1 : 0}/>
+                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}/>
                 }
             })}
         </section>
