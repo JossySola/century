@@ -1,6 +1,6 @@
 import React from "react"
 import { useProfilePicture } from "../../scripts/custom_hooks/hooks"
-import User from "../User/User";
+import User from "../../atoms/User/User";
 import "./Post_Content.css"
  
 export default function Post_Content ({t3}) {
@@ -18,9 +18,9 @@ export default function Post_Content ({t3}) {
             {t3.selftext && <p>{t3.selftext}</p>}
 
             <section>
-                <img /><span>{t3.ups}</span>
-                <img /><span>{t3.downs}</span>
-                <img /><span>{t3.num_comments}</span>
+                <img /><span>Ups:{t3.ups} </span>
+                <img /><span>Downs:{t3.downs} </span>
+                <img /><span>Comments:{t3.num_comments} </span>
             </section>
         </section>
     )
