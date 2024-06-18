@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useProfilePicture } from "../../scripts/custom_hooks/hooks"
 import fetchHandler from "../../cache/hook"
-import Cover from "../Cover/Cover"
-import Summary from "../Summary/Summary"
-import User from "../User/User"
+import Cover from "../../atoms/Cover/Cover"
+import Summary from "../../atoms/Summary/Summary"
+import User from "../../atoms/User/User"
 import "./Preview.css"
  
 export default function Preview ({payload}) {
