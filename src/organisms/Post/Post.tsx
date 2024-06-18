@@ -19,14 +19,14 @@ export default function Post () {
     useEffect(() => {
         fetchHandler(url).then(response => setData(redditFilter(response)));
     }, [])
- 
+    
     return (
         <article>
             {
                 data && 
                 <>
                     <Post_Content t3={data[0][0]}/>
-                    <Comments t1={data[1][0]} />
+                    <Comments t1={data[1]} />
                 </>
             }
         </article>
