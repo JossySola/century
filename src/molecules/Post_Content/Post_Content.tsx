@@ -5,9 +5,9 @@ import "./Post_Content.css"
  
 export default function Post_Content ({t3}) {
     const profile = useProfilePicture(t3.author);
-    const res = t3.preview.images[0].resolutions;
-    const size = res.length - 1;
-    const url = res[size].url;
+    const res = t3.preview && t3.preview.images && t3.preview.images[0].resolutions;
+    const size = res && res.length - 1;
+    const url = res && size && res[size].url;
     
     return (
         <section>
