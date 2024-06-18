@@ -47,7 +47,6 @@ export default function Comments ({t1}) {
         setComments(firstLoad);
     }, [])
     
-    
     return (
         <section id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
             {comments}
@@ -60,8 +59,6 @@ const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComme
     const currentPos = section && section.scrollHeight ? section.offsetHeight - section.scrollTop : 0;
     const scrollHeight = section ? section.scrollHeight : 0;
     let numberOfNodes = section ? section.children.length: 0;
-
-    
 
     if (currentPos === scrollHeight + 16) {
         let addArray: stateArray = [];
