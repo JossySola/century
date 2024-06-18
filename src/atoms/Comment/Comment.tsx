@@ -9,7 +9,7 @@ export default function Comment ({author, body_html, id, downs, ups, replies}) {
 
     return (
         <div>
-            <img src={profile} />
+            <img src={profile} className="User-img"/>
             <h4>u/{author}</h4>
             <div id={id}></div>
             <span>Ups: {ups} </span>
