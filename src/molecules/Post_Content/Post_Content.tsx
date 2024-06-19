@@ -14,6 +14,7 @@ export default function Post_Content ({t3}) {
             <User author={t3.author} src={profile} />
             
             <h2>{t3.title}</h2>
+            <a href={t3.url} target="_blank">Open article</a>
             {t3.preview && <img src={url} style={{width: url.width, height: "auto"}} />}
             {t3.selftext && <p>{t3.selftext}</p>}
 
