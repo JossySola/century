@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useLoaderData } from "react-router-dom"
+import { useCacheTimer } from "../../scripts/custom_hooks/hooks";
 import Preview from "../../molecules/Preview/Preview";
 import "./Feed.css"
  
@@ -26,22 +27,7 @@ interface Article {
 export default function Feed () {
     const data: any = useLoaderData();
     
-    useEffect(() => {
-        const timer = setInterval(() => {
-            caches.keys().then(keys => {
-                for (const key of keys) {
-                    const isOurCache = key.startsWith("century-");
-                    if (isOurCache) {
-                        caches.open(key).then(cache => {
-                            cache.delete(data.url).then(response => console.log(response))
-                        })
-                    }
-                }
-            })
-        }, 300000);
-
-        return () => clearInterval(timer);
-    }, [])
+    useCacheTimer(data.url);
     
     return (
         <main>
