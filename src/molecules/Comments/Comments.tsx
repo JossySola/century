@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Comment from "../../atoms/Comment/Comment"
 import "./Comments.css"
 
-interface Prop {
+export interface Prop {
     author: string,
     author_fullname: string,
     body_html: string,
@@ -27,7 +27,7 @@ export default function Comments ({t1}) {
     const [comments, setComments] = useState<stateArray>([]);
 
     useEffect(() => {
-        let firstLoad: Array<React.JSX.Element> = [];
+        let firstLoad: stateArray = [];
 
         for (let i: number = 0; i < 5; i++) {
                 const comment: Prop = t1[i];
@@ -39,7 +39,8 @@ export default function Comments ({t1}) {
                         body_html={comment.body_html} 
                         downs={comment.downs} 
                         ups={comment.ups}
-                        replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}/>)
+                        replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}
+                        more={comment.replies && comment.replies} />)
                 } else {
                     break;
                 }
@@ -75,7 +76,8 @@ const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComme
                     body_html={comment.body_html} 
                     downs={comment.downs} 
                     ups={comment.ups}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}/>)
+                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}
+                    more={comment.replies && comment.replies} />)
             } else {
                 break;
             }
