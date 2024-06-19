@@ -125,3 +125,24 @@ export function useHTMLText(body_html, id) {
     
     if (text) insertToDiv(text);
 }
+
+export function useCacheTimer(request) {
+    useEffect(() => {
+        const timer = setInterval(() => {
+            caches.keys().then(keys => {
+                for (const key of keys) {
+                    const isOurCache = key.startsWith("century-");
+                    if (isOurCache) {
+                        caches.open(key).then(cache => {
+                            console.log(cache)
+                            cache.delete(request)
+                            console.log("Custom Hook: Cache deleted")
+                        })
+                    }
+                }
+            })
+        }, 600000);
+
+        return () => clearInterval(timer);
+    }, [])
+}
