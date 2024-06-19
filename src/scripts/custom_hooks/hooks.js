@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import fetchHandler from "../../cache/hook";
 
 export function useProfilePicture(author) {
     const [profile, setProfile] = useState("");
