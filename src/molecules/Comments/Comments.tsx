@@ -31,7 +31,7 @@ export default function Comments ({t1}) {
 
         for (let i: number = 0; i < 5; i++) {
                 const comment: Prop = t1[i];
-                if (comment) {
+                if (comment && comment.author !== "[deleted]") {
                     firstLoad.push(<Comment 
                         key={comment.id}
                         id={comment.id} 
@@ -68,7 +68,7 @@ const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComme
             const index: number = i + numberOfNodes;
             const comment: Prop = array[index];
 
-            if (comment) {
+            if (comment && comment.author !== "[deleted]") {
                 addArray.push(<Comment 
                     key={comment.id}
                     id={comment.id} 
