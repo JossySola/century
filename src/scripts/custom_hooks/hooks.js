@@ -34,6 +34,7 @@ export function useProfilePicture(author) {
     const getUserImage = async (name) => {
         let avatar = "";
         try {
+            if (name === "[deleted]") return;
             if (name || name !== undefined) {
                 const response = await fetchHandler(`https://www.reddit.com/user/${name}/about.json`);
                 if (response.data) avatar = response.data.snoovatar_img; 
@@ -129,6 +130,7 @@ export function useHTMLText(body_html, id) {
 export function useCacheTimer(request) {
     useEffect(() => {
         const timer = setInterval(() => {
+            console.log("Custom Hook: Setting timer...")
             caches.keys().then(keys => {
                 for (const key of keys) {
                     const isOurCache = key.startsWith("century-");
@@ -141,8 +143,8 @@ export function useCacheTimer(request) {
                     }
                 }
             })
-        }, 600000);
+        }, 300000);
 
-        return () => clearInterval(timer);
+        return () => {console.log("Cleaning custom hook timer..."); clearInterval(timer)};
     }, [])
 }
