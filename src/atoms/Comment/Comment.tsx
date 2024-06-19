@@ -13,7 +13,7 @@ export default function Comment ({author, body_html, id, downs, ups, replies, mo
     const t1 = redditFilter(more)
     
     return (
-        <div>
+        <div className="comment-div">
             <img src={profile} className="User-img"/>
             <h4>u/{author}</h4>
             <div id={id}></div>
