@@ -24,7 +24,7 @@ export default function Comment ({author, body_html, id, downs, ups, replies, mo
                 showReplies ? setShowReplies(false) : setShowReplies(true);
             }}>...</a>}
             {
-                showReplies && t1 ? <Comments t1={t1} /> : null
+                showReplies && t1 ? <Comments t1={t1} fullname={undefined} /> : null
             }
         </div>
     )
