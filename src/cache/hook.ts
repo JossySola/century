@@ -22,21 +22,26 @@ export default async function fetchHandler(url: string, payload?: object) {
         }
         if (url && !payload) {
             await cacheStorage.add(url);
-        } else if (url && payload) {
+        }
+        if (url && payload) {
             const response = await fetch(url, payload);
             await cacheStorage.put(url, response);
+            
+            if (!response.ok) throw response;
         }
         cachedData = await getCachedData(cacheName, url);
         await deleteOldCaches(cacheName);
-    
         return cachedData;
-    } catch (e) {
-        console.error({
-            From: "Fetch Handler",
-            e,
-            Code: e.cause,
-        });
-        return e;
+
+    } catch (error) {
+        
+        return {
+            ok: error.ok,
+            status: error.status,
+            url: error.url,
+            type: error.name,
+            message: error.message
+        }
     }
 }
 
