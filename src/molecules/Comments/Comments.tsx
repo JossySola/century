@@ -22,9 +22,14 @@ export interface Prop {
     send_replies: boolean,
     ups: number
 }
+interface Props {
+    t1: Prop,
+    t3?: boolean,
+    fullname: string | undefined,
+}
 type stateArray = Array<React.JSX.Element>;
 
-export default function Comments ({t1}) {
+export default function Comments ({t1, t3, fullname}: Props) {
     const [comments, setComments] = useState<stateArray>([]);
 
     useEffect(() => {
@@ -48,15 +53,18 @@ export default function Comments ({t1}) {
         }
         setComments(firstLoad);
     }, [])
-    
+
     return (
-        <section id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
-            {comments}
-        </section>
+        <>
+            <section id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
+                {comments}
+            </section>
+            {t3 && fullname && <Submit fullname={fullname}/>}
+        </>
     )
 }
 
-const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComments: React.Dispatch<React.SetStateAction<stateArray>>) => {
+const handleInfiniteScroll = (array: Prop, comments: stateArray, setComments: React.Dispatch<React.SetStateAction<stateArray>>) => {
     const section = document.getElementById("comments-section");
     const currentPos = section && section.scrollHeight ? section.offsetHeight - section.scrollTop : 0;
     const scrollHeight = section ? section.scrollHeight : 0;
