@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useProfilePicture, useHTMLText } from "../../scripts/custom_hooks/hooks"
 import redditFilter from "../../scripts/redditFilter/redditFilter"
-import { Prop } from "../../molecules/Comments/Comments"
 import Comments from "../../molecules/Comments/Comments"
 import "./Comment.css"
  
