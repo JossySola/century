@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Comment from "../../atoms/Comment/Comment"
+import Submit from "../../atoms/Submit/Submit"
 import "./Comments.css"
 
 export interface Prop {
