@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { news as newsLoader } from './scripts/loaders/loaders.ts'
+import { index as indexLoader } from './scripts/loaders/loaders.ts'
 
 import App from './App.jsx'
 import ErrorPage from './error-page.jsx'
@@ -15,7 +16,7 @@ const router = createBrowserRouter(
   [
     {
       path: '/',
-      element: <App />, // Add permalink as State
+      element: <App />,
       errorElement: <ErrorPage />,
       children: [
         {
@@ -24,7 +25,7 @@ const router = createBrowserRouter(
             {
               index: true,
               element: <Feed />,
-              loader: newsLoader,
+              loader: indexLoader,
             },
             {
               path: 'r/:subreddit/comments/:id/:title',
