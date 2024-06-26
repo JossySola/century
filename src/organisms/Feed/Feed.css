@@ -1,0 +1,5 @@
+#feed {
+    display: inline-flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
