@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { news as newsLoader } from './scripts/loaders/loaders.ts'
+import { science as scienceLoader } from './scripts/loaders/loaders.ts'
+import { gaming as gamingLoader } from './scripts/loaders/loaders.ts'
+import { space as spaceLoader } from './scripts/loaders/loaders.ts'
+import { sports as sportsLoader } from './scripts/loaders/loaders.ts'
+import { tech as techLoader } from './scripts/loaders/loaders.ts'
 import { index as indexLoader } from './scripts/loaders/loaders.ts'
+import { submitComment as commentAction } from './scripts/actions/actions.ts'
 
 import App from './App.jsx'
 import ErrorPage from './error-page.jsx'
@@ -30,11 +36,37 @@ const router = createBrowserRouter(
             {
               path: 'r/:subreddit/comments/:id/:title',
               element: <Post />,
+              action: commentAction,
             },
             {
               path: 'news',
               element: <Feed />,
               loader: newsLoader,
+            },
+            {
+              path: 'tech',
+              element: <Feed />,
+              loader: techLoader,
+            },
+            {
+              path: 'sports',
+              element: <Feed />,
+              loader: sportsLoader,
+            },
+            {
+              path: 'astronomy',
+              element: <Feed />,
+              loader: spaceLoader,
+            },
+            {
+              path: 'science',
+              element: <Feed />,
+              loader: scienceLoader,
+            },
+            {
+              path: 'gaming',
+              element: <Feed />,
+              loader: gamingLoader,
             }
           ]
         },
