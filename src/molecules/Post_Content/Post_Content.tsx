@@ -10,19 +10,23 @@ export default function Post_Content ({t3}) {
     const url = res && size && res[size].url;
     
     return (
-        <section>
-            <User author={t3.author} src={profile} />
+        <section id="content">
+            <User subreddit={t3.subreddit_name_prefixed} author={t3.author} src={profile} />
             
             <h2>{t3.title}</h2>
-            <a href={t3.url} target="_blank">Open article</a>
-            {t3.preview && <img src={url} style={{width: url.width, height: "auto"}} />}
+            
+            
             {t3.selftext && <p>{t3.selftext}</p>}
 
-            <section>
-                <img /><span>Ups:{t3.ups} </span>
-                <img /><span>Downs:{t3.downs} </span>
-                <img /><span>Comments:{t3.num_comments} </span>
-            </section>
+            <div className="content-bottom">
+                <section>
+                    <img /><span>Ups:{t3.ups} </span>
+                    <img /><span>Downs:{t3.downs} </span>
+                    <img /><span>Comments:{t3.num_comments} </span>
+                </section>
+                <a href={t3.url} target="_blank" className="secondary">Open article</a>
+            </div>
+            
         </section>
     )
 }
