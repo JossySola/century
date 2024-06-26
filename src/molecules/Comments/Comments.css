@@ -3,5 +3,31 @@
     flex-direction: column-reverse;
     height: fit-content;
     max-height: 700px;
-    overflow: scroll;
+    overflow-x: scroll;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+}
+#comments-section::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+  
+  /* Track */
+#comments-section::-webkit-scrollbar-track {
+    background: transparent; 
+}
+#comments-section::-webkit-scrollbar-corner {
+    display: none;
+}
+   
+/* Handle */
+#comments-section::-webkit-scrollbar-thumb {
+    border-radius: 0.3rem;
+    background: #555; 
+}
+
+/* Handle on hover */
+#comments-section::-webkit-scrollbar-thumb:hover {
+    background: #646464; 
 }
