@@ -1,0 +1,10 @@
+#content {
+    border-radius: 1rem;
+    margin: 1rem;
+}
+.content-bottom {
+    width: 80%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
