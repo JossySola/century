@@ -70,7 +70,8 @@ export default function Feed () {
     data.url && useCacheTimer(data.url);
     
     return (
-        <main>
+        <main id="feed">
+            {data.error && <span>Authorizing the Web App to connect to Reddit is required to Search.</span>}
             {
                 data.elements && data.elements.map((element: Thing) => {
                     if (element.kind === "t3" as "t3") {
