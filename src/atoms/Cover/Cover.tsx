@@ -23,7 +23,7 @@ export default function Cover ({preview}: Props) {
             preview ? 
             <picture>
                 {
-                    source && <img src={source.url} style={{width: source.width, maxWidth: 732, height: "auto"}} />
+                    source && <img src={source.url} style={{width: 420, height: "auto"}} />
                 }
             </picture> : null
         }
