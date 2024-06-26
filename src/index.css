@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Old London';
+  src: url("./assets/fonts/Olondon_.otf") format("opentype");
+  src: url("./assets/fonts/OldLondonAlternate.ttf") format("truetype");
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -15,11 +20,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
   text-decoration: inherit;
+  cursor: pointer;
 }
 a:hover {
-  color: #535bf2;
+  color: #08a59d;
 }
 
 body {
@@ -31,8 +36,13 @@ body {
 }
 
 h1 {
+  font-family: "Old London";
   font-size: 3.2em;
   line-height: 1.1;
+}
+input {
+  height: 2rem;
+  margin: 0.5rem;
 }
 
 button {
@@ -47,22 +57,86 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #08a59d;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+.secondary {
+  background-color: black;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  margin: 0.5rem;
+}
+.secondary:hover {
+  background-color: #1a1d1f;
+  color: white;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
+  a {
+    color: #000000;
   }
   button {
     background-color: #f9f9f9;
+  }
+  #double-border {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    height: 3px;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  #preview-small {
+    border-bottom: 1px solid #000000;
+  }
+  #preview-big {
+    border: 1px solid #dee1e3;
+  }
+  #content {
+    background-color: #656869;
+    padding: 1rem;
+  }
+  #comments-section {
+    background-color: #333637;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #ffffff;
+    background-color: #1a1d1f;
+  }
+  a {
+    color: #ffffff;
+  }
+  button {
+    background-color: #656869;
+  }
+  #double-border {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    height: 3px;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  #preview-small {
+    border-bottom: 1px solid #656869;
+  }
+  #preview-big {
+    border: 1px solid #333637;
+  }
+  #content {
+    background-color: #656869;
+    padding: 1rem;
+  }
+  #comments-section {
+    background-color: #333637;
   }
 }
