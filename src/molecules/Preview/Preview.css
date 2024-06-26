@@ -1,0 +1,14 @@
+.preview {
+    margin: 0.5rem;
+    padding: 1rem;
+}
+#preview-small {
+    width: 100%;
+}
+#preview-small a {
+    display: flex;
+    justify-content: center;
+}
+#preview-big {
+    width: 470px;
+}
