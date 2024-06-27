@@ -118,7 +118,21 @@ export function useCacheTimer(request) {
             })
         }, 300000);
 
-        return () => {console.log("Cleaning custom hook timer..."); clearInterval(timer)};
+        return () => {
+            console.log("Cleaning custom hook timer..."); 
+            caches.keys().then(keys => {
+                for (const key of keys) {
+                    const isOurCache = key.startsWith("century-");
+                    if (isOurCache) {
+                        caches.open(key).then(cache => {
+                            console.log(cache)
+                            cache.delete(request)
+                            console.log("Custom Hook: Cache deleted")
+                        })
+                    }
+                }
+            })
+            clearInterval(timer)};
     }, [])
 }
 
