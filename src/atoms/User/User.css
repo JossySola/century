@@ -14,6 +14,11 @@
     font-size: 14px;
     text-align: left;
     align-items: center;
+    transition: border-color 0.25s;
+    border: 2px solid transparent;
+}
+#user:hover {
+    border-color: #ffbf0b;
 }
 #user h4 {
     margin: 0;
