@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Form, Outlet, Link } from 'react-router-dom'
+import _Date from '../src/atoms/Date/Date';
 import './App.css'
 
 function App() {
@@ -19,21 +20,12 @@ function App() {
 
     return () => clearInterval(timer);
   }, []);
-
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const timestamp = Date.now();
-  const now = new Date(timestamp);
-  const day = days[now.getDay()];
-  const dayNum = now.getDate().toString();
-  const month = months[now.getMonth()];
-  const year = now.getFullYear().toString();
   
   return (
     <>
       <header>
         <div id='top-div'>
-          <span style={{fontSize: 12}}>{`${day}, ${month} ${dayNum}, ${year}`}</span>
+          <_Date/>
           <button type='button'></button>
         </div>
       
