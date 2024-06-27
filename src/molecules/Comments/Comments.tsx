@@ -69,8 +69,9 @@ const handleInfiniteScroll = (array: Prop, comments: stateArray, setComments: Re
     const currentPos = section && section.scrollHeight ? section.offsetHeight - section.scrollTop : 0;
     const scrollHeight = section ? section.scrollHeight : 0;
     let numberOfNodes = section ? section.children.length: 0;
-
-    if (currentPos === scrollHeight + 16) {
+    
+    if (currentPos === scrollHeight + 25) {
+        
         let addArray: stateArray = [];
 
         for (let i: number = 1; i < 6; i++) {
