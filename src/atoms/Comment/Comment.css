@@ -1,3 +1,28 @@
-.comment-div {
+.comment {
     margin-top: 3rem;
+    display: grid;
+    grid-template-areas: "img content";
+    text-align: left;
+    align-items: center;
+    justify-content: left;
+}
+.comment img {
+    grid-area: img;
+    padding: 1rem;
+}
+.comment .content {
+    width: fit-content;
+    grid-area: content;
+    padding: 1.5rem;
+    background-color: #dee1e3;
+    color: black;
+    border-radius: 1rem;
+    line-height: 1;
+}
+.comment-interactions img {
+    width: 20px;
+    padding: 0 0.3rem 0 0.5rem;
+}
+.md a {
+    color: rgb(255, 69, 0);
 }
