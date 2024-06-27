@@ -1,0 +1,16 @@
+.replies {
+    display: grid;
+    grid-template-areas: "connector .";
+    
+}
+.connector {
+    width: 64px;
+    height: 100%;
+    grid-area: connector;
+    background-color: red;
+}
+.connector img {
+    width: 100%;
+    height: 60%;
+    background-color: blue;
+}
