@@ -37,10 +37,10 @@
 }
 .content-interactions {
     display: flex;
-    background-color: #949798;
+    background-color: transparent;
     padding: 0.8rem;
-    border-radius: 1rem;
-    border: 1px solid black;
+    border-top: 1px solid #949798;
+    border-bottom: 1px solid #949798;
     font-weight: bold;
 }
 .content-interactions img {
