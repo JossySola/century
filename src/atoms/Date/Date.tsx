@@ -20,11 +20,8 @@ export default function _Date () {
     const dayNum = now.getDate().toString();
     const month = months[now.getMonth()];
     const year = now.getFullYear().toString();
-    const hour = now.getHours().toString();
-    const minutes = now.getMinutes().toString();
-
 
     return (
-        <span id='date'>{`${day}, ${month} ${dayNum}, ${year} ${hour}:${minutes}`}</span>
+        <span id='date'>{`${day}, ${month} ${dayNum}, ${year}`}</span>
     )
 }
