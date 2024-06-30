@@ -1,16 +1,13 @@
 .replies {
     display: grid;
-    grid-template-areas: "connector .";
-    
+    grid-template-areas: "pad comment";
+    grid-template-columns: 64px 1fr;
 }
-.connector {
-    width: 64px;
-    height: 100%;
-    grid-area: connector;
-    background-color: red;
+.replies-comments {
+    grid-area: comment;
 }
-.connector img {
-    width: 100%;
-    height: 60%;
-    background-color: blue;
+.replies-connector {
+    width: 50%;
+    grid-area: pad;
+    border-right: 2px solid #656869;
 }

@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import Replies from "./Replies.tsx"
+import Replies from "./Replies.js"
  
 const meta: Meta <typeof Replies> = {
 title: "",
