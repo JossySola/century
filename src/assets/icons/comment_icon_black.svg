@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="31.398163"
+   height="31.940189"
+   viewBox="0 0 31.398163 31.940189"
+   version="1.1"
+   id="svg1"
+   xmlnsInkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlnsSodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlnsSvg="http://www.w3.org/2000/svg"
+   sodipodi:docname="comment_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <sodipodiNamedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscapeShowpageshadow="2"
+     inkscapePageopacity="0.0"
+     inkscapePagecheckerboard="0"
+     inkscapeDeskcolor="#d1d1d1"
+     inkscapeDocumentUnits="px"
+     showgrid="true"
+     showguides="true"
+     inkscapeLockguides="true">
+    <inkscapeGrid
+       id="grid1"
+       units="px"
+       originx="-0.29923222"
+       originy="-0.039069578"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+  </sodipodiNamedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscapeLabel="Layer 1"
+     inkscapeGroupmode="layer"
+     id="layer1"
+     transform="translate(-0.29923221,-0.03906958)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.25805;stroke-opacity:1"
+       d="M 31.067432,0.66809456 H 0.9282572 V 24.18366 h 9.3922078 v 6.588563 l 9.427253,-6.588563 h 11.284668 z"
+       id="path1"
+       inkscape:label="path1" />
+    <path
+       style="display:none;fill:none;stroke:#686868;stroke-width:1.14724;stroke-opacity:1"
+       d="M 29.891037,1.8776752 H 2.0978798 V 23.083821 h 8.6611232 v 5.941513 l 8.69344,-5.941513 h 10.406275 z"
+       id="path2" />
+  </g>
+</svg>
