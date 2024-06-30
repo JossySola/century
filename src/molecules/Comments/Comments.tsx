@@ -36,20 +36,24 @@ export default function Comments ({t1, t3, fullname}: Props) {
         let firstLoad: stateArray = [];
 
         for (let i: number = 0; i < 5; i++) {
-                const comment: Prop = t1[i];
-                if (comment && comment.author !== "[deleted]") {
-                    firstLoad.push(<Comment 
-                        key={comment.id}
-                        id={comment.id} 
-                        author={comment.author} 
-                        body_html={comment.body_html} 
-                        downs={comment.downs} 
-                        ups={comment.ups}
-                        replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
-                        more={comment.replies && comment.replies} />)
+            const comment: Prop = t1[i];
+            
+            if (comment && comment.author !== "[deleted]") {
+                firstLoad.push(
+                    <Comment 
+                    key={comment.id}
+                    id={comment.id} 
+                    author={comment.author} 
+                    body_html={comment.body_html}
+                    depth={comment.depth} 
+                    downs={comment.downs} 
+                    ups={comment.ups}
+                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length -1 : 0}
+                    more={comment.replies && comment.replies}/>
+                )
                 } else {
-                    break;
-                }
+                break;
+            }
         }
         setComments(firstLoad);
     }, [])
@@ -83,7 +87,8 @@ const handleInfiniteScroll = (array: Prop, comments: stateArray, setComments: Re
                     key={comment.id}
                     id={comment.id} 
                     author={comment.author} 
-                    body_html={comment.body_html} 
+                    body_html={comment.body_html}
+                    depth={comment.depth}  
                     downs={comment.downs} 
                     ups={comment.ups}
                     replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}
