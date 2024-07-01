@@ -37,3 +37,9 @@
 .md a {
     color: rgb(255, 69, 0);
 }
+.md blockquote {
+    font-style: italic;
+    color: #656869;
+    border-left: 3px solid #6568699f;
+    padding-left: 1.5rem;
+}
