@@ -33,7 +33,7 @@ function App() {
         <h1><Link to="/">The 21st Century Times</Link></h1>
         
         <Form id="search-form" role="search">
-          <input name='search' id='search' aria-label='Search' placeholder='Search...' type='search' />
+          <input name='search' id='search' aria-label='Search' placeholder='Search subreddits...' type='search' />
           <button form='search-form' className='submit' type='submit'>Go!</button>
         </Form>
 
