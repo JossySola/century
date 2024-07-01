@@ -11,7 +11,7 @@
    inkscape:export-filename="plus_icon.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
-   sodipodi:docname="minus_icon.svg"
+   sodipodi:docname="info_icon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,10 @@
        stroke="#000000"
        stroke-width="1"
        d="m 104.66071,147.16661 c 0.55881,-0.0906 1.03125,8.4e-4 1.40378,0.46651 0.60114,0.751 0.2176,1.92533 -0.72644,2.15308 -1.68741,0.40725 -2.45111,-2.05063 -0.67734,-2.61959 z"
-       style="stroke:#03a8d8;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1" /><path
-       style="fill:#000000;stroke:#03a8d8;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-       d="m 105.77333,148.46424 -1.51686,-9.2e-4"
-       id="path1-7" /></g></svg>
+       style="stroke:#080808;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1" /><path
+       style="fill:#000000;stroke:#080808;stroke-width:0.408517;stroke-dasharray:none;stroke-opacity:1"
+       d="m 105.01094,148.46407 -0.003,0.82392"
+       id="path1-7" /><path
+       style="fill:#000000;stroke:#080808;stroke-width:0.413313;stroke-dasharray:none;stroke-opacity:1"
+       d="m 105.01877,147.79747 -0.006,0.40881"
+       id="path1-7-3" /></g></svg>
