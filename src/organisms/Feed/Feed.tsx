@@ -1,6 +1,5 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useLoaderData } from "react-router-dom"
-import { useCacheTimer } from "../../scripts/custom_hooks/hooks";
 import Preview from "../../molecules/Preview/Preview";
 import Account from "../../molecules/Account/Account";
 import Subreddit from "../../molecules/Subreddit/Subreddit";
@@ -66,8 +65,6 @@ type Thing = Article | _Account | _Subreddit;
 
 export default function Feed () {
     const data: any = useLoaderData();
-    
-    data.url && useCacheTimer(data.url);
     
     return (
         <main id="feed">
