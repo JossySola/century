@@ -7,6 +7,8 @@ import redditFilter from "../../scripts/redditFilter/redditFilter"
 import Post_Content from "../../molecules/Post_Content/Post_Content"
 import Comments from "../../molecules/Comments/Comments"
 import { Prop } from "../../molecules/Comments/Comments"
+
+import back_icon from "../../assets/icons/back_icon.svg"
 import "./Post.css"
 
 type State = Prop | Array<Prop | Array<Prop>>
@@ -28,7 +30,7 @@ export default function Post () {
             <a onClick={e => {
                 e.preventDefault();
                 navigate(-1);
-            }}>Back</a>
+            }}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/></a>
             
             {
                 data && 
