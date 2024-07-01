@@ -7,6 +7,9 @@
     margin: 1rem;
     padding: 3rem !important;
 }
+#content h2 {
+    text-align: justify;
+}
 .content-user {
     width: 80%;
     display: inline-flex;
@@ -42,6 +45,7 @@
     border-top: 1px solid #949798;
     border-bottom: 1px solid #949798;
     font-weight: bold;
+    font-size: 20px;
 }
 .content-interactions img {
     width: 25px;
