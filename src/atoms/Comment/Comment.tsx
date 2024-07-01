@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useProfilePicture, useHTMLText } from "../../scripts/custom_hooks/hooks"
 import Replies from "../../molecules/Replies/Replies"
 import redditFilter from "../../scripts/redditFilter/redditFilter"
+import formatAmount from "../../scripts/amount"
 import dislike from "../../assets/icons/dislike.svg"
 import like from "../../assets/icons/like.svg"
 import plus_icon from "../../assets/icons/plus_icon.svg"
@@ -28,9 +29,9 @@ export default function Comment ({author, body_html, id, depth, downs, ups, repl
                     <div id={id}></div>
 
                     <div className="comment-interactions">
-                        <span><img src={like as unknown as string} alt="upvotes" decoding="sync"/> {ups} </span>
-                        <span><img src={dislike as unknown as string} alt="downvotes" decoding="sync"/> {downs} </span>
-                        <span><img src={comment_icon as unknown as string} alt="comments" decoding="sync"/> {replies} </span>
+                        <span><img src={like as unknown as string} alt="upvotes" decoding="sync"/> {formatAmount(ups)} </span>
+                        <span><img src={dislike as unknown as string} alt="downvotes" decoding="sync"/> {formatAmount(downs)} </span>
+                        <span><img src={comment_icon as unknown as string} alt="comments" decoding="sync"/> {formatAmount(replies)} </span>
                         { replies !== 0 && t1 && 
                             <a onClick={e => {
                                 e.preventDefault();
