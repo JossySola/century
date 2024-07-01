@@ -12,6 +12,8 @@ export function useProfilePicture(author) {
                 const response = await fetchHandler(`https://www.reddit.com/user/${name}/about.json`);
                 if (response.data) avatar = response.data.snoovatar_img; 
             }
+        } catch (e) {
+            return getRandomAvatar();
         } finally {
             if (avatar) {
                 return avatar;
