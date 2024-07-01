@@ -9,7 +9,7 @@ export default function Account ({payload}) {
     } = payload.subreddit;
 
     return (
-        <section>
+        <section className="account">
             <a href={`https://www.reddit.com${url}`} target="_blank">
                 <img src={icon_img} className="User-img"/>
                 <h4>{display_name_prefixed}</h4>
