@@ -1,0 +1,9 @@
+.submit-form {
+    background-color: rgb(51, 54, 55);
+    padding-bottom: 1rem;
+    border-radius: 0 0 1rem 1rem;
+    margin: 0px 16px 0 16px;
+}
+.submit-input {
+    width: 80%;
+}
