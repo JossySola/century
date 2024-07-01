@@ -1,11 +1,12 @@
 import React from "react"
 import { useProfilePicture } from "../../scripts/custom_hooks/hooks"
 import User from "../../atoms/User/User"
+import formatAmount from "../../scripts/amount"
 import comment_icon from "../../assets/icons/comment_icon_black.svg"
 import like from "../../assets/icons/like_black.svg"
 import dislike from "../../assets/icons/dislike_black.svg"
 import open_tab_white from "../../assets/icons/open_tab_white.svg"
-
+import info_icon from "../../assets/icons/info_icon.svg"
 import "./Post_Content.css"
  
 export default function Post_Content ({t3}) {
@@ -21,9 +22,10 @@ export default function Post_Content ({t3}) {
 
             <div className="content-bottom">
                 <section className="content-interactions">
-                    <img src={like as unknown as string} alt="upvotes"/><span>{t3.ups} </span>
-                    <img src={dislike as unknown as string} alt="downvotes"/><span>{t3.downs} </span>
-                    <img src={comment_icon as unknown as string} alt="comments"/><span>{t3.num_comments} </span>
+                    <img src={like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)} </span>
+                    <img src={dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/><span>{formatAmount(t3.downs)} </span>
+                    <img src={comment_icon as unknown as string} alt="comments" aria-label="number of comments"/><span>{formatAmount(t3.num_comments)} </span>
+                    <img src={info_icon as unknown as string} title="Comments from deleted users are filtered out" alt="Comments from deleted users are filtered out" aria-label="Comments from deleted users are filtered out"/>
                 </section>
                 <a href={t3.url} target="_blank" className="secondary">Open article <img src={open_tab_white as unknown as string} /></a>
             </div>
