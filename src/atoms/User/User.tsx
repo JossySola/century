@@ -14,9 +14,9 @@ export default function User ({subreddit, author, src}: Props) {
                 <img src={src} className="User-img"/>
                 {subreddit ? 
                 <>
-                    <h4 className="subreddit">{subreddit}</h4>
-                    <h4 className="author">{author}</h4>
-                </> : <h4 className="author" style={{fontWeight: 700}}>{author}</h4>}
+                    <h4 className="user-subreddit">{subreddit}</h4>
+                    <h4 className="user-author">{author}</h4>
+                </> : <h4 className="user-author" style={{fontWeight: 700}}>{author}</h4>}
             </section>
         </a>
     )
