@@ -27,11 +27,11 @@
     grid-area: img;
     margin-right: 0.5rem;
 }
-#user .subreddit {
+.user-subreddit {
     grid-area: r;
     font-weight: 700;
 }
-#user .author {
+.user-author {
     grid-area: u;
     color: #656869;
     font-weight: 450;
