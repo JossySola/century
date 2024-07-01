@@ -1,0 +1,30 @@
+.subreddit {
+    background-color: #dee1e3;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 1rem;
+    width: 400px;
+    height: fit-content;
+}
+.subreddit p {
+    color: black;
+    text-align: left;
+}
+.subreddit h3 {
+    color: #1a1d1f;
+}
+.subreddit-banner {
+    width: 400px;
+}
+.subreddit-icon {
+    border: 3px solid white;
+    position: relative;
+    right: 0px;
+    margin-right: 1rem;
+    background-color: #1a1d1f;
+}
+.subreddit-identity {
+    display: flex;
+    align-content: center;
+    justify-content: left;
+}
