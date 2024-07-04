@@ -79,3 +79,12 @@ export async function tech() {
     
     return {elements, url};
 }
+export async function subreddit() {
+    const pathname = window.location.pathname;
+    const url = `https://www.reddit.com${pathname}.json?raw.json=1`;
+    const feed = await fetchHandler(url);
+    const elements = redditFilter(feed);
+    
+    
+    return {elements, url, pathname};
+}
