@@ -16,7 +16,7 @@ function App() {
           }
         }
       })
-    }, 600000)
+    }, 900000)
 
     return () => clearInterval(timer);
   }, []);
