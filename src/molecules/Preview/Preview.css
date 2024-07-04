@@ -4,6 +4,10 @@
 }
 #preview-small {
     width: 100%;
+    height: fit-content;
+}
+#preview-small h2{
+    font-size: 20px;
 }
 #preview-small a {
     display: flex;
@@ -11,4 +15,5 @@
 }
 #preview-big {
     width: 470px;
+    height: fit-content;
 }
