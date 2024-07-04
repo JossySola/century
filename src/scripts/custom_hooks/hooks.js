@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import fetchHandler from "../../cache/hook";
+import { useLoaderData } from "react-router-dom";
+import redditFilter from "../redditFilter/redditFilter";
 
 export function useProfilePicture(author) {
     const [profile, setProfile] = useState("");
@@ -137,7 +139,32 @@ export function useCacheTimer(request) {
             clearInterval(timer)};
     }, [])
 }
-
+export function useFeedData(loader) {
+    const [data, setData] = useState({});
+    
+    useEffect(() => {
+        if (loader) {
+            setData(loader);
+        } else {
+            const pathname = window.location.pathname;
+            const URL = `https://www.reddit.com${pathname}.json?raw.json=1`
+            console.log(pathname)
+            
+            async() => {
+                await fetchHandler(URL).then(response => {
+                    const elements = redditFilter(response);
+                    setData({
+                        elements,
+                        URL: URL,
+                        pathname: pathname
+                    })
+                })
+            }
+        }
+    }, [])
+    return data;
+}
+// ******************************************
 export const getRandomAvatar = () => {
     const random = Math.floor(Math.random()*7);
     switch (random) {
