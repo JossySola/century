@@ -6,7 +6,7 @@ export default function Replies ({t1}) {
     
     return (
         <section className="replies">
-            <div className="replies-connector" style={t1.length === 1 ? {height: "40%"} : {height: "100%"}}></div>
+            <div className="replies-connector"></div>
             <div className="replies-comments">
                 {t1 && t1.map(comment => {
                     
