@@ -1,8 +1,10 @@
 import React from "react"
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useNavigate } from "react-router-dom"
+//import { useFeedData } from "../../scripts/custom_hooks/hooks.js"
 import Preview from "../../molecules/Preview/Preview";
 import Account from "../../molecules/Account/Account";
 import Subreddit from "../../molecules/Subreddit/Subreddit";
+import back_icon from "../../assets/icons/back_icon.svg";
 import "./Feed.css"
  
 interface Article {
@@ -65,10 +67,20 @@ type Thing = Article | _Account | _Subreddit;
 
 export default function Feed () {
     const data: any = useLoaderData();
+    const navigate = useNavigate();
     
     return (
         <main id="feed">
             {data.error && <span>Authorizing the Web App to connect to Reddit is required to Search.</span>}
+            {data.pathname && 
+                <header>
+                    <a onClick={e => {
+                        e.preventDefault();
+                        navigate(-1);
+                    }} style={{gridArea: "back"}}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/></a>
+                    <h2 style={{gridArea: "subreddit"}}>{data.pathname}</h2>
+                </header>
+            }
             {
                 data.elements && data.elements.map((element: Thing) => {
                     if (element.kind === "t3" as "t3") {

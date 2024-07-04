@@ -3,3 +3,11 @@
     justify-content: center;
     flex-flow: row wrap;
 }
+#feed header {
+    display: grid;
+    grid-template-areas: "back subreddit";
+    grid-template-columns: 64px 1fr;
+    width: 740px;
+    height: fit-content;
+    align-items: center;
+}
