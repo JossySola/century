@@ -25,6 +25,19 @@
 }
 .subreddit-identity {
     display: flex;
-    align-content: center;
     justify-content: left;
+    align-items: center;
+}
+.subreddit-button {
+    background-color: #1a1d1f;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+}
+.subreddit-button img {
+    width: 16px;
+    height: 16px;
 }
