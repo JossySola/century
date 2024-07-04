@@ -22,6 +22,10 @@ export default async function search (query: string) {
             Authorization: `Bearer ${access_token}`
         }
     }
-    window.localStorage.setItem("query", query)
+    window.localStorage.setItem("query", query);
+
+    const input: HTMLInputElement | null = document.getElementById("search");
+    input ? input.value = "" : null;
+
     return request(base + params.toString(), payload);
 }
