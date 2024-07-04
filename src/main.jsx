@@ -10,6 +10,7 @@ import { sports as sportsLoader } from './scripts/loaders/loaders.ts'
 import { tech as techLoader } from './scripts/loaders/loaders.ts'
 import { index as indexLoader } from './scripts/loaders/loaders.ts'
 import { submitComment as commentAction } from './scripts/actions/actions.ts'
+import { subreddit as subredditLoader } from './scripts/loaders/loaders.ts'
 
 import App from './App.jsx'
 import ErrorPage from './error-page.jsx'
@@ -67,7 +68,12 @@ const router = createBrowserRouter(
               path: 'gaming',
               element: <Feed />,
               loader: gamingLoader,
-            }
+            },
+            {
+              path: 'r/:subreddit',
+              element: <Feed />,
+              loader: subredditLoader
+            } 
           ]
         },
       ],
