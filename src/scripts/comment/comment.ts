@@ -5,21 +5,38 @@ export async function comment (thing_id: string, text: string) {
     const access_token: string | null = window.localStorage.getItem("access_token");
     const payload = {
         method: 'POST',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: new URLSearchParams({
             api_type: "json",
-            recaptcha_token: "a",
-            return_rtjson: "true",
-            text: `${text}`,
-            thing_id: `${thing_id}`,
-            "uh / X-Modhash header": "zee5g23a4ac5a9277f8058a4645a84318b8de053c58ecffd94"
+            //recaptcha_token: "a",
+            //return_rtjson: "false",
+            //richtext_json: "",
+            //text: `${text}`,
+            //thing_id: `${thing_id}`,
+            //"uh / X-Modhash header": `5botvt3ctoccdf6514070278fdb8a46d705dd23efa58ceb152`
         })
     }
     
-    const me = await fetch("https://oauth.reddit.com/api/me.json");
-    console.log(await me.json())
-    const response = await fetch(url, payload);
-    console.log(response);
-    return response;
+    const me = await fetch(`${base}/v1/me`);
+    const m = await me.json();
+    const body = await fetch(url, payload);
+    const response = await body.json();
+    console.log(response)
+
+    if (!response.ok) {
+        if (response.success === false) throw new Error("Unsuccessful request.")
+        if (response.json && response.json.errors) {
+            console.error({
+                error: response.json.errors[0][0],
+                msg: response.json.errors[0][1]
+            })
+            throw new Error(`${response.json.errors[0][0]}: ${response.json.errors[0][1]}`)
+        }
+        throw new Error("Failed request.");
+    }
 }
 
 export async function del (id: string) {
@@ -28,6 +45,7 @@ export async function del (id: string) {
         method: 'POST',
         body: new URLSearchParams({
             id,
+            "uh / X-Modhash header": "zee5g23a4ac5a9277f8058a4645a84318b8de053c58ecffd94"
         })
     }
 }
@@ -42,6 +60,7 @@ export async function edit (thing_id: string, text: string) {
             richtext_json: "",
             text,
             thing_id,
+            "uh / X-Modhash header": "zee5g23a4ac5a9277f8058a4645a84318b8de053c58ecffd94"
         })
     }
 }
