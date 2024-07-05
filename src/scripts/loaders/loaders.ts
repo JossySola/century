@@ -35,56 +35,56 @@ export async function index({request}) {
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url, error};
+    return {elements, error};
 }
 export async function news() {
     const url = "https://www.reddit.com/r/worldnews.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
 export async function gaming() {
     const url = "https://www.reddit.com/r/gaming.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
 export async function space() {
     const url = "https://www.reddit.com/r/space.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
 export async function sports() {
     const url = "https://www.reddit.com/r/sports.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
 export async function science() {
     const url = "https://www.reddit.com/r/science.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
 export async function tech() {
     const url = "https://www.reddit.com/r/technology.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    return {elements, url};
+    return {elements};
 }
-export async function subreddit() {
-    const pathname = window.location.pathname;
+export async function subreddit({ request }) {
+    const currentURL = new URL(request.url);
+    const pathname = currentURL.pathname;
     const url = `https://www.reddit.com${pathname}.json?raw.json=1`;
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
-    
-    return {elements, url, pathname};
+    return {elements, pathname};
 }
