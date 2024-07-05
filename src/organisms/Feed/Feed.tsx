@@ -71,7 +71,7 @@ export default function Feed () {
     
     return (
         <main id="feed">
-            {data.error && <span>Authorizing the Web App to connect to Reddit is required to Search.</span>}
+            {data.error && <span style={{color: "rgb(252, 71, 46)"}}>Authorizing the Web App to connect to Reddit is required to Search.</span>}
             {data.pathname && 
                 <header>
                     <a onClick={e => {
