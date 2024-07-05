@@ -7,7 +7,7 @@ export default function ErrorPage () {
     return (
         <div>
             <h2>Sorry, an unexpected error has occurred :'(</h2>
-            <i>{error.statusText || error.message}</i>
+            <i style={{color: "rgb(252, 71, 46)"}}>{error.statusText || error.message}</i>
         </div>
     )
 }
