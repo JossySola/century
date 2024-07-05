@@ -9,6 +9,7 @@
 .subreddit p {
     color: black;
     text-align: left;
+    font-weight: 400;
 }
 .subreddit h3 {
     color: #1a1d1f;
