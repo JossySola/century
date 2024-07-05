@@ -61,7 +61,7 @@ export default async function getAuthorization () {
         state: state,
         redirect_uri: "http://localhost:5173/",
         duration: "temporary" as "temporary",
-        scope: "submit",
+        scope: "edit identity read submit vote",
     }
     
     const q = new URLSearchParams(params);
