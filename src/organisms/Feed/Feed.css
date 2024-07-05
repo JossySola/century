@@ -2,6 +2,7 @@
     display: inline-flex;
     justify-content: center;
     flex-flow: row wrap;
+    width: 100%;
 }
 #feed header {
     display: grid;
@@ -10,4 +11,6 @@
     width: 740px;
     height: fit-content;
     align-items: center;
+    margin-bottom: 2.5rem;
+    font-size: 1.5rem;
 }
