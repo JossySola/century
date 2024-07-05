@@ -1,4 +1,4 @@
-import {comment as Action} from "../comment/comment";
+import {comment as commentAction} from "../comment/comment";
 
 export async function submitComment ({request}) {
     const data = Object.fromEntries(await request.formData());
@@ -10,7 +10,7 @@ export async function submitComment ({request}) {
         return null;
     }
     
-    const response = await Action(parent, comment);
+    const response = await commentAction(parent, comment);
     console.log(response)
 
     input ? input.value = "" : null;
