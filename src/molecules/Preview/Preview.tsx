@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
-import { useProfilePicture } from "../../scripts/custom_hooks/hooks"
 import { getRandomAvatar } from "../../scripts/custom_hooks/hooks"
 import Cover from "../../atoms/Cover/Cover"
 import Summary from "../../atoms/Summary/Summary"
