@@ -11,24 +11,20 @@ export async function comment (thing_id: string, text: string) {
         },
         body: new URLSearchParams({
             api_type: "json",
-            //recaptcha_token: "a",
-            //return_rtjson: "false",
-            //richtext_json: "",
-            //text: `${text}`,
-            //thing_id: `${thing_id}`,
-            //"uh / X-Modhash header": `5botvt3ctoccdf6514070278fdb8a46d705dd23efa58ceb152`
+            recaptcha_token: "a",
+            return_rtjson: "true",
+            richtext_json: "",
+            text: `${text}`,
+            thing_id: `${thing_id}`,
         })
     }
     
-    const me = await fetch(`${base}/v1/me`);
-    const m = await me.json();
     const body = await fetch(url, payload);
     const response = await body.json();
-    console.log(response)
 
-    if (!response.ok) {
+    if (response.ok === false) {
         if (response.success === false) throw new Error("Unsuccessful request.")
-        if (response.json && response.json.errors) {
+        if (response.json && response.json.errors.length > 0) {
             console.error({
                 error: response.json.errors[0][0],
                 msg: response.json.errors[0][1]
@@ -37,6 +33,7 @@ export async function comment (thing_id: string, text: string) {
         }
         throw new Error("Failed request.");
     }
+    return response;
 }
 
 export async function del (id: string) {
