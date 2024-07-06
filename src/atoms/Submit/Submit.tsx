@@ -2,7 +2,10 @@ import React from "react"
 import { Form } from "react-router-dom"
 import "./Submit.css"
  
-export default function Submit ({fullname}) {
+interface Props {
+    fullname: string,
+}
+export default function Submit ({fullname}: Props) {
     
     return (
         <Form id="comment-form" role="comment" method="post" className="submit-form">
