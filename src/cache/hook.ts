@@ -1,3 +1,11 @@
+interface Error {
+    ok: boolean,
+    status?: number,
+    url?: string,
+    name?: string,
+    message?: string
+}
+
 export default async function fetchHandler(url: string, payload?: object) {
     const cacheVersion = timestamp();
     const cacheName = `century-${cacheVersion}`;
@@ -33,7 +41,7 @@ export default async function fetchHandler(url: string, payload?: object) {
         await deleteOldCaches(cacheName);
         return cachedData;
 
-    } catch (error) {
+    } catch (error: Error) {
         
         return {
             ok: error.ok,
