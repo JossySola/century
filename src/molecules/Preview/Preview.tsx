@@ -9,10 +9,14 @@ import "./Preview.css"
 export default function Preview ({payload}) {
     const profile = getRandomAvatar();
     const images = payload.preview && payload.preview.images;
+    const id = payload.id;
+    const subreddit = payload.subreddit;
+    const link = `r/${subreddit}/comments/${id}`;
+    
     return (
         <article id={images ? "preview-big" : "preview-small"} className="preview">
             <User  subreddit={undefined} author={payload.author} src={profile} />
-            <Link to={payload.permalink}>
+            <Link to={link}>
                 <Cover preview={images ? images : null} />
                 <Summary  title={payload.title}/>
             </Link>
