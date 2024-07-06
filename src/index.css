@@ -112,6 +112,9 @@ button:focus-visible {
   #comments-section {
     background-color: #333637;
   }
+  #lupa {
+    background-image: url("./assets/icons/search.svg");
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -148,5 +151,8 @@ button:focus-visible {
   #comments-section {
     background-color: #333637;
     border-top: 1rem solid #333637;
+  }
+  #lupa {
+    background-image: url("./assets/icons/search_white.svg");
   }
 }
