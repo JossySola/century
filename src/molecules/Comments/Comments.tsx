@@ -23,7 +23,7 @@ export interface Prop {
     ups: number
 }
 interface Props {
-    t1: Prop,
+    t1: Array<Prop>,
     t3?: boolean,
     fullname: string | undefined,
 }
@@ -31,6 +31,15 @@ type stateArray = Array<React.JSX.Element>;
 
 export default function Comments ({t1, t3, fullname}: Props) {
     const [comments, setComments] = useState<stateArray>([]);
+
+    t1.sort((a, b) => {
+        if (a.created_utc < b.created_utc) {
+            return 1;
+        } else if (a.created_utc > b.created_utc) {
+            return -1;
+        }
+        return 0;
+    })
 
     useEffect(() => {
         let firstLoad: stateArray = [];
@@ -68,7 +77,7 @@ export default function Comments ({t1, t3, fullname}: Props) {
     )
 }
 
-const handleInfiniteScroll = (array: Prop, comments: stateArray, setComments: React.Dispatch<React.SetStateAction<stateArray>>) => {
+const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComments: React.Dispatch<React.SetStateAction<stateArray>>) => {
     const section = document.getElementById("comments-section");
     const currentPos = section && section.scrollHeight ? section.offsetHeight - section.scrollTop : 0;
     const scrollHeight = section ? section.scrollHeight : 0;
