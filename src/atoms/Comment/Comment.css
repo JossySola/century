@@ -1,5 +1,5 @@
 .comment {
-    margin-top: 3rem;
+    margin-top: 1rem;
     display: grid;
     grid-template-areas: "img content";
     text-align: left;
@@ -34,6 +34,13 @@
     width: 20px;
     padding: 0 0.3rem 0 0.5rem;
 }
+.content h4 {
+    color: #08a59d;
+    font-weight: 500;
+}
+.md {
+    line-height: 1.2rem;
+}
 .md a {
     color: rgb(255, 69, 0);
 }
@@ -42,4 +49,8 @@
     color: #656869;
     border-left: 3px solid #6568699f;
     padding-left: 1.5rem;
+}
+.md h1 {
+    font-family:'Times New Roman', Times, serif;
+    font-size: x-large;
 }
