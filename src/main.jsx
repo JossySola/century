@@ -40,6 +40,11 @@ const router = createBrowserRouter(
               action: commentAction,
             },
             {
+              path: 'r/:subreddit/comments/:id',
+              element: <Post />,
+              action: commentAction,
+            },
+            {
               path: 'news',
               element: <Feed />,
               loader: newsLoader,
