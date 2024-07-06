@@ -7,8 +7,7 @@ import { Link } from "react-router-dom";
  
 export default function Subreddit ({payload}) {
     useHTMLText(payload.public_description_html, payload.id);
-    //const url = `https://www.reddit.com/${payload.display_name_prefixed}.json?raw.json=1`;
-
+    
     return (
         <section className="subreddit">
                 <img src={payload.banner_img} className="subreddit-banner" style={{
