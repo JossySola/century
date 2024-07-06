@@ -14,11 +14,11 @@ import "./Post.css"
 type State = Prop | Array<Prop | Array<Prop>>
 
 export default function Post () {
-    const {subreddit, id, title} = useParams();
+    const {subreddit, id} = useParams();
     const [data, setData] = useState<State>();
     const navigate = useNavigate();
 
-    const url = `https://www.reddit.com/r/${subreddit}/comments/${id}/${title}.json`;
+    const url = `https://www.reddit.com/r/${subreddit}/comments/${id}/new.json`;
     const fullname = data && data[0][0].name;
 
     useEffect(() => {
