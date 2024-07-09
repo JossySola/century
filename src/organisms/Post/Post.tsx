@@ -14,11 +14,12 @@ import "./Post.css"
 type State = Prop | Array<Prop | Array<Prop>>
 
 export default function Post () {
-    const {subreddit, id} = useParams();
+    const {subreddit, id, title} = useParams();
     const [data, setData] = useState<State>();
+    const [submitEvent, setSubmitEvent] = useState<React.FormEvent<HTMLFormElement> | undefined>();
     const navigate = useNavigate();
 
-    const url = `https://www.reddit.com/r/${subreddit}/comments/${id}/new.json`;
+    const url = `https://www.reddit.com/r/${subreddit}/comments/${id}/${title}.json`;
     const fullname = data && data[0][0].name;
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export default function Post () {
                 data && 
                 <>
                     <Post_Content t3={data[0][0]}/>
-                    <Comments t1={data[1]} t3={true} fullname={fullname} />
+                    <Comments t1={data[1]} t3={true} fullname={fullname} setSubmitEvent={setSubmitEvent} />
                 </>
             }
         </article>
