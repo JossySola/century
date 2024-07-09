@@ -22,9 +22,9 @@
 .comment-connector {
     position: relative;
     right: 40px;
-    bottom: 40%;
+    bottom: 38%;
     grid-area: img;
-    height: 80%;
+    height: 75%;
     width: 32px;
     border-left: 2px solid #656869;
     border-bottom: 2px solid #656869;
