@@ -169,27 +169,27 @@ export const getRandomAvatar = () => {
     const random = Math.floor(Math.random()*7);
     switch (random) {
         case 1:
-            return "avatar_default_1";
+            return "../../assets/icons/avatar/avatar_default_1.png";
             break;
         case 2:
-            return "avatar_default_2";
+            return "../../assets/icons/avatar/avatar_default_2.png";
             break;
         case 3:
-            return "avatar_default_3";
+            return "../../assets/icons/avatar/avatar_default_3.png";
             break;
         case 4:
-            return "avatar_default_4";
+            return "../../assets/icons/avatar/avatar_default_4.png";
             break;
         case 5:
-            return "avatar_default_5";
+            return "../../assets/icons/avatar/avatar_default_5.png";
             break;
         case 6:
-            return "avatar_default_6";
+            return "../../assets/icons/avatar/avatar_default_6.png";
             break;
         case 7:
-            return "avatar_default_7";
+            return "../../assets/icons/avatar/avatar_default_7.png";
             break;
         default:
-            return "avatar_default_1";
+            return "../../assets/icons/avatar/avatar_default_1.png";
     }
 }
