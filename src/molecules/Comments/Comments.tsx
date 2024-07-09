@@ -26,10 +26,11 @@ interface Props {
     t1: Array<Prop>,
     t3?: boolean,
     fullname: string | undefined,
+    setSubmitEvent: React.Dispatch<React.SetStateAction<React.FormEvent<HTMLFormElement>>>
 }
 type stateArray = Array<React.JSX.Element>;
 
-export default function Comments ({t1, t3, fullname}: Props) {
+export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
     const [comments, setComments] = useState<stateArray>([]);
 
     t1.sort((a, b) => {
@@ -40,7 +41,7 @@ export default function Comments ({t1, t3, fullname}: Props) {
         }
         return 0;
     })
-
+    
     useEffect(() => {
         let firstLoad: stateArray = [];
 
@@ -72,7 +73,7 @@ export default function Comments ({t1, t3, fullname}: Props) {
             <section id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
                 {comments}
             </section>
-            {t3 && fullname && <Submit fullname={fullname}/>}
+            {t3 && fullname && <Submit fullname={fullname} setSubmitEvent={setSubmitEvent}/>}
         </>
     )
 }
