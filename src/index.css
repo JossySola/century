@@ -16,6 +16,19 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --orange-red: #FF4500;
+  --dark: #000000;
+  --light: #FFFFFF;
+  --secondary-juniper-blue: #00E2B7;
+  --lightmode-default: #FFFFFF;
+  --lightmode-primary: #DEE1E3;
+  --lightmode-secondary: #C6C9CA;
+  --lightmode-secondary-foreground: #949798;
+  --darkmode-default: #000000;
+  --darkmode-primary: #1A1D1F;
+  --darkmode-secondary: #333637;
+  --darkmode-secondary-foreground: #656869;
 }
 
 a {
