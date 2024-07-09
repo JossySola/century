@@ -22,10 +22,19 @@ export default function Post_Content ({t3}) {
 
             <div className="content-bottom">
                 <section className="content-interactions">
-                    <img src={like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)} </span>
-                    <img src={dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/><span>{formatAmount(t3.downs)} </span>
-                    <img src={comment_icon as unknown as string} alt="comments" aria-label="number of comments"/><span>{formatAmount(t3.num_comments)} </span>
-                    <img src={info_icon as unknown as string} title="Comments from deleted users are filtered out" alt="Comments from deleted users are filtered out" aria-label="Comments from deleted users are filtered out"/>
+
+                    <div className="light-primary content-bubble">
+                        <img src={like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)}</span>
+                    </div>
+                    
+                    <div className="light-primary content-bubble">
+                        <img src={dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/><span>{formatAmount(t3.downs)}</span>
+                    </div>
+                    
+                    <div className="light-primary content-bubble">
+                        <img src={comment_icon as unknown as string} alt="comments" aria-label="number of comments"/><span>{formatAmount(t3.num_comments)}</span>
+                        <img src={info_icon as unknown as string} className="content-info" title="Comments from deleted users are filtered out" alt="Comments from deleted users are filtered out" aria-label="Comments from deleted users are filtered out"/>
+                    </div>
                 </section>
                 <a href={t3.url} target="_blank" className="secondary">Open article <img src={open_tab_white as unknown as string} /></a>
             </div>
