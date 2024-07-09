@@ -23,7 +23,7 @@ function App() {
   
   return (
     <>
-      <header>
+      <header id='app-header'>
         <div id='top-div'>
           <_Date/>
           <button type='button'></button>
