@@ -61,7 +61,7 @@
     width: 20px;
 }
 .light-primary {
-    background-color: --lightmode-primary;
+    background-color: var(--lightmode-primary);
 }
 .content-bubble {
     margin: 0.3rem;
