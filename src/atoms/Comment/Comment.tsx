@@ -9,6 +9,14 @@ import plus_icon from "../../assets/icons/plus_icon.svg"
 import minus_icon from "../../assets/icons/minus_icon.svg"
 import comment_icon from "../../assets/icons/comment_icon.svg"
 
+import avatar_default_1 from "../../assets/icons/avatar/avatar_default_1.png"
+import avatar_default_2 from "../../assets/icons/avatar/avatar_default_2.png"
+import avatar_default_3 from "../../assets/icons/avatar/avatar_default_3.png"
+import avatar_default_4 from "../../assets/icons/avatar/avatar_default_4.png"
+import avatar_default_5 from "../../assets/icons/avatar/avatar_default_5.png"
+import avatar_default_6 from "../../assets/icons/avatar/avatar_default_6.png"
+import avatar_default_7 from "../../assets/icons/avatar/avatar_default_7.png"
+
 import "./Comment.css"
  
 export default function Comment ({author, body_html, id, depth, downs, ups, replies, more}) {
