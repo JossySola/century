@@ -3,6 +3,102 @@
   src: url("./assets/fonts/Olondon_.otf") format("opentype");
   src: url("./assets/fonts/OldLondonAlternate.ttf") format("truetype");
 }
+@media screen and (max-width: 600px) {
+  body {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+  button {
+    background-color: var(--lightmode-secondary-foreground) !important;
+    color: white;
+  }
+  #root {
+    padding: 3rem 0 0 0;
+    margin: 0;
+    width: 100%;
+  }
+  #top-div {
+    width: 90%;
+  }
+  #content {
+    width: 100%;
+    margin: 1.5rem 0 0 0;
+    padding: 1rem 0 1rem 0 !important;
+  }
+  .content-user {
+    justify-content: center;
+  }
+  .content-user h2 {
+    text-align: center !important;
+  }
+  .content-bottom {
+    justify-content: center;
+  }
+  #comments-section {
+    margin:0;
+    border-top: 1.5rem solid var(--lightmode-secondary);
+    padding: 1rem 1rem 1rem calc(1rem + 10px);
+  }
+  #comment-form {
+    margin: 0;
+  }
+  .comment {
+    grid-template-areas: 
+    "img"
+    "content";
+  }
+  .comment .User-img {
+    position: relative;
+    display: flex;
+    top: 50%;
+    justify-self: center;
+  }
+  .content h4 {
+    text-align: center;
+  }
+  .content-info {
+    display: none;
+  }
+  .content-interactions img {
+    width: 1.3rem;
+  }
+  .content-bubble span {
+    font-size: 1rem;
+  }
+  .light-primary {
+    background-color: var(--lightmode-secondary);
+  }
+  .comment-connector {
+    width: 55%;
+    height: 50%;
+    border-bottom-left-radius: 0;
+    border-bottom: none;
+    border-top: 2px solid #656869;
+    border-top-right-radius: 0.8rem;
+    right: 1.5rem;
+    top: 30%;
+  }
+  .replies-connector {
+    width: 100%;
+    border-right: none;
+    border-left: 2px solid #656869;
+  }
+  .replies {
+    grid-template-columns: 1rem 1fr;
+  }
+}
+@media screen and (max-width: 450px) {
+  nav {
+    margin-bottom: 1rem;
+  }
+  nav ul {
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+    line-height: 2.5rem;
+  }
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -90,7 +186,6 @@ button:focus-visible {
   color: white;
 }
 
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -118,15 +213,36 @@ button:focus-visible {
   #preview-big {
     border: 1px solid #dee1e3;
   }
-  #content {
-    background-color: #656869;
-    padding: 1rem;
-  }
   #comments-section {
-    background-color: #333637;
+    background-color: var(--lightmode-secondary);
+  }
+  #comment-form {
+    background-color: var(--lightmode-secondary);
   }
   #lupa {
     background-image: url("./assets/icons/search.svg");
+  }
+  #user {
+    background-color: #f9f9f9;
+  }
+  .user-subreddit {
+    color: black;
+  }
+  .user-author {
+    color: var(--darkmode-primary);
+  }
+  #content {
+    background-color: var(--lightmode-primary);
+    color: #000000;
+  }
+  #content h2 {
+    color: black;
+  }
+  #content p {
+    margin: 0.85em;
+  }
+  .content {
+    background-color: #f9f9f9 !important;
   }
 }
 
