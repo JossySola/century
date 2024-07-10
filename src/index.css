@@ -91,6 +91,9 @@
   .cover-image {
     width: 90vw;
   }
+  #preview-big {
+    width: 100%;
+  }
 }
 @media screen and (max-width: 450px) {
   nav {
