@@ -1,4 +1,5 @@
 import {comment as commentAction} from "../comment/comment";
+import getAuthorization from "../authorization/authorization";
 
 export async function submitComment ({request}) {
     const data = Object.fromEntries(await request.formData());
@@ -14,15 +15,30 @@ export async function submitComment ({request}) {
         return null;
     }
     
-    const response = await commentAction(parent, comment);
-
-    await caches.keys().then(keys => {
-        for (const key of keys) {
-            caches.open(key).then(async (cache) => {
-                await cache.delete(`https://www.reddit.com/${link}.json`);
-            }) 
+    try {
+        const response = await commentAction(parent, comment);
+        if (response.ok === false) {
+            throw new Error("Failed fetch from 'submitComment' action.");
         }
-    })
+        return response;
 
-    return response;
+    } catch (error) {
+        console.error(error);
+        getAuthorization();
+    } finally {
+        await caches.keys().then(keys => {
+            for (const key of keys) {
+                caches.open(key).then(async (cache) => {
+                    await cache.delete(`https://www.reddit.com/${link}.json`).then(response => {
+                        if (response) {
+                            console.log("From submitComment Action: cache deleted");
+                        } else {
+                            console.log("From submitComment Action: Cache deletion failed!");
+                        }
+                    })
+                }) 
+            }
+        })
+    }
+    
 }
