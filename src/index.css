@@ -10,7 +10,7 @@
     align-items: center;
   }
   button {
-    background-color: var(--lightmode-secondary-foreground) !important;
+    background-color: var(--lightmode-secondary-foreground);
     color: white;
   }
   #root {
@@ -47,6 +47,7 @@
     grid-template-areas: 
     "img"
     "content";
+    grid-template-rows: 1rem 1fr;
   }
   .comment .User-img {
     position: relative;
@@ -67,7 +68,7 @@
     font-size: 1rem;
   }
   .light-primary {
-    background-color: var(--lightmode-secondary);
+    background-color: var(--lightmode-primary);
   }
   .comment-connector {
     width: 55%;
@@ -86,6 +87,9 @@
   }
   .replies {
     grid-template-columns: 1rem 1fr;
+  }
+  .cover-image {
+    width: 90vw;
   }
 }
 @media screen and (max-width: 450px) {
