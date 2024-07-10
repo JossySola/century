@@ -50,7 +50,7 @@ export default function Post_Content ({t3}) {
                         <img src={dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/><span>{formatAmount(t3.downs)}</span>
                     </button>
                     
-                    <a className="light-primary content-bubble" href="#comments-section">
+                    <a className="light-primary content-bubble" href="#comment-form">
                         <img src={comment_icon as unknown as string} alt="comments" aria-label="number of comments"/><span>{formatAmount(t3.num_comments)}</span>
                         <img src={info_icon as unknown as string} className="content-info" title="Comments from deleted users are filtered out" alt="Comments from deleted users are filtered out" aria-label="Comments from deleted users are filtered out"/>
                     </a>
