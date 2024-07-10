@@ -34,6 +34,15 @@
     width: 20px;
     padding: 0 0.3rem 0 0.5rem;
 }
+.comment-interactions button {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    color: var(--darkmode-secondary-foreground);
+}
+.comment-interactions button:hover {
+    border-color: transparent;
+}
 .content h4 {
     color: #08a59d;
     font-weight: 500;
