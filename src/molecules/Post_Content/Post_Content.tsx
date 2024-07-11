@@ -4,6 +4,8 @@ import User from "../../atoms/User/User"
 import formatAmount from "../../scripts/amount"
 import comment_icon from "../../assets/icons/comment_icon_black.svg"
 import like from "../../assets/icons/like_black.svg"
+import liked from "../../assets/icons/liked.svg"
+import disliked from "../../assets/icons/disliked.svg"
 import dislike from "../../assets/icons/dislike_black.svg"
 import open_tab_white from "../../assets/icons/open_tab_white.svg"
 import info_icon from "../../assets/icons/info_icon.svg"
@@ -11,7 +13,7 @@ import { vote } from "../../scripts/voting/voting"
 import "./Post_Content.css"
  
 export default function Post_Content ({t3}) {
-    const [voting, setVoting] = useState("0");
+    const [voting, setVoting] = useState(t3.likes === true ? "1" : "0");
     const profile = useProfilePicture(t3.author);
     
     return (
@@ -34,7 +36,7 @@ export default function Post_Content ({t3}) {
                             setVoting("0")
                         }
                     }}>
-                        <img src={like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)}</span>
+                        <img src={voting === "1" ? liked as unknown as string : like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)}</span>
                     </button>
                     
                     <button className="light-primary content-bubble" onClick={e => {
@@ -47,8 +49,7 @@ export default function Post_Content ({t3}) {
                             setVoting("0");
                         }
                     }}>
-                        <img src={dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/><span>{formatAmount(t3.downs)}</span>
-                    </button>
+                        <img src={voting === "-1" ? disliked as unknown as string : dislike as unknown as string} alt="downvotes" aria-label="number of downvotes"/></button>
                     
                     <a className="light-primary content-bubble" href="#comment-form">
                         <img src={comment_icon as unknown as string} alt="comments" aria-label="number of comments"/><span>{formatAmount(t3.num_comments)}</span>
