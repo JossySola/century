@@ -4,7 +4,9 @@ import Replies from "../../molecules/Replies/Replies"
 import redditFilter from "../../scripts/redditFilter/redditFilter"
 import formatAmount from "../../scripts/amount"
 import dislike from "../../assets/icons/dislike.svg"
+import disliked from "../../assets/icons/disliked.svg"
 import like from "../../assets/icons/like.svg"
+import liked from "../../assets/icons/liked.svg"
 import plus_icon from "../../assets/icons/plus_icon.svg"
 import minus_icon from "../../assets/icons/minus_icon.svg"
 import comment_icon from "../../assets/icons/comment_icon.svg"
@@ -40,7 +42,7 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
                                 setVoting("0")
                             }
                         }}>
-                            <img src={like as unknown as string} alt="upvotes" decoding="sync"/> {formatAmount(ups)}
+                            <img src={voting === "1" ? liked as unknown as string : like as unknown as string} alt="upvotes" decoding="sync"/> {formatAmount(ups)}
                         </button>
                         
                         <button onClick={e => {
@@ -53,7 +55,7 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
                                 setVoting("0");
                             }
                         }}>
-                            <img src={dislike as unknown as string} alt="downvotes" decoding="sync"/> {formatAmount(downs)}
+                            <img src={voting === "-1" ? disliked as unknown as string : dislike as unknown as string} alt="downvotes" decoding="sync"/> {formatAmount(downs)}
                         </button>
 
                         <button>
