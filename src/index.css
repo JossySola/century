@@ -93,6 +93,9 @@
   #preview-big {
     width: 100%;
   }
+  #date {
+    display: none;
+  }
 }
 @media screen and (max-width: 450px) {
   nav {
