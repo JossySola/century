@@ -1,6 +1,5 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { getRandomAvatar } from "../../scripts/custom_hooks/hooks"
 import Cover from "../../atoms/Cover/Cover"
 import Summary from "../../atoms/Summary/Summary"
 import User from "../../atoms/User/User"
@@ -20,4 +19,33 @@ export default function Preview ({payload}) {
             </Link>
         </article>
     )
+}
+
+export const getRandomAvatar = () => {
+    const random = Math.floor(Math.random()*7);
+    switch (random) {
+        case 1:
+            return `${process.env['PUBLIC_URL']}/avatar_default_1.png`;
+            break;
+        case 2:
+            return `${process.env['PUBLIC_URL']}/avatar_default_2.png`;
+            break;
+        case 3:
+            return `${process.env['PUBLIC_URL']}/avatar_default_3.png`;
+            break;
+        case 4:
+            return `${process.env['PUBLIC_URL']}/avatar_default_4.png`;
+            break;
+        case 5:
+            return `${process.env['PUBLIC_URL']}/avatar_default_5.png`;
+            break;
+        case 6:
+            return `${process.env['PUBLIC_URL']}/avatar_default_6.png`;
+            break;
+        case 7:
+            return `${process.env['PUBLIC_URL']}/avatar_default_7.png`;
+            break;
+        default:
+            return `${process.env['PUBLIC_URL']}/avatar_default_1.png`;
+    }
 }
