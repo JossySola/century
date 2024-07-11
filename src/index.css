@@ -40,6 +40,9 @@
     border-top: 1.5rem solid var(--lightmode-secondary);
     padding: 1rem 2rem 1rem calc(2rem + 10px);
   }
+  #comments-section::-webkit-scrollbar {
+    width: 1rem;
+}
   #comment-form {
     margin: 0;
   }
