@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom";
 import redditFilter from "../redditFilter/redditFilter";
 import fetchHandler from "../../cache/hook";
 import getAccessToken from "../access/access";
@@ -11,6 +12,7 @@ export async function index({request}) {
     const stateSent = window.localStorage.getItem("state");
     const stateReceived = pathname.searchParams.get("state");
     const temporal = window.localStorage.getItem("query");
+    const link = window.localStorage.getItem("tempLink");
     
     if (query) {
         const response = await search(query);
@@ -20,12 +22,18 @@ export async function index({request}) {
     if (code) {
         if (stateSent && stateReceived) {
             window.localStorage.setItem("access_token", code);
-            if (temporal !== undefined && temporal !== null) {
-                const access = await getAccessToken(stateSent, stateReceived, code);
-                if (access) {
+            const access = await getAccessToken(stateSent, stateReceived, code);
+            if (access) {
+                if (temporal !== undefined && temporal !== null) {
                     const response = await search(temporal);
                     const elements = redditFilter(response);
+                    window.localStorage.removeItem("query");
                     return { elements };
+                }
+                if (link) {
+                    const temp = link;
+                    window.localStorage.removeItem("tempLink");
+                    return redirect(`http://localhost:5173/${temp}/`);
                 }
             }
         }
@@ -82,7 +90,7 @@ export async function tech() {
 export async function subreddit({ request }) {
     const currentURL = new URL(request.url);
     const pathname = currentURL.pathname;
-    const url = `https://www.reddit.com${pathname}.json?raw.json=1`;
+    const url = `https://www.reddit.com${pathname}.json?raw_json=1`;
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
