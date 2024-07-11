@@ -15,12 +15,12 @@ export default function Subreddit ({payload}) {
                 }}/>
                 
                 <div className="subreddit-identity">
-                    <img src={payload.icon_img} className="subreddit-icon" style={{
+                    {payload.icon_img && <img src={payload.icon_img} className="subreddit-icon" style={{
                         backgroundColor: payload.key_color,
                         borderRadius: "50%",
                         width: 64,
                         height: 64
-                    }}/>
+                    }}/>}
                     <h3>{payload.display_name_prefixed}</h3>
                     <a href={`https://www.reddit.com${payload.url}`} target="_blank" className="subreddit-button"><img src={open_tab_white as unknown as string} alt="Open subreddit in another tab" aria-label="Open subreddit in another tab"/></a>
                 </div>
