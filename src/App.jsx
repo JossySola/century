@@ -26,7 +26,6 @@ function App() {
       <header id='app-header'>
         <div id='top-div'>
           <_Date/>
-          <button type='button'></button>
         </div>
       
 
