@@ -23,6 +23,7 @@ interface Listing {
         id: string,
         is_blocked: boolean,
         key_color: string,
+        likes: boolean | null,
         link_id: string,
         name: string,
         num_comments: number,
@@ -85,6 +86,7 @@ export default function redditFilter (obj: Listing) {
                     downs,
                     id,
                     link_id,
+                    likes,
                     name,
                     parent_id,
                     replies,
@@ -100,6 +102,7 @@ export default function redditFilter (obj: Listing) {
                     downs,
                     id,
                     kind: "t1",
+                    likes,
                     link_id,
                     name,
                     parent_id,
@@ -140,6 +143,7 @@ export default function redditFilter (obj: Listing) {
                     created_utc,
                     downs,
                     id,
+                    likes,
                     name,
                     num_comments,
                     permalink,
@@ -160,6 +164,7 @@ export default function redditFilter (obj: Listing) {
                     downs,
                     id,
                     kind: "t3",
+                    likes,
                     name,
                     num_comments,
                     permalink,
@@ -242,6 +247,3 @@ export default function redditFilter (obj: Listing) {
         return obj.map(child => redditFilter(child));
     }
 }
-
-//wwwGET("worldnews.json?raw_json=1");
-//wwwGET("worldnews/comments/1d1iybe/rworldnews_live_thread_russian_invasion_of.json")
