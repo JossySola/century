@@ -5,6 +5,7 @@ import Post_Content from "../../molecules/Post_Content/Post_Content"
 import Comments from "../../molecules/Comments/Comments"
 import { Prop } from "../../molecules/Comments/Comments"
 import back_icon from "../../assets/icons/back_icon.svg"
+import post_loading from "../../assets/icons/loading_post_light.svg";
 import "./Post.css"
 
 type State = Prop | Array<Prop | Array<Prop>> | object;
@@ -12,29 +13,44 @@ type State = Prop | Array<Prop | Array<Prop>> | object;
 export default function Post () {
     const {subreddit, id, title} = useParams();
     const [data, setData] = useState<State | undefined>();
+    const [loading, setLoading] = useState<boolean>(true);
     const [submitEvent, setSubmitEvent] = useState<React.FormEvent<HTMLFormElement> | undefined>();
     const navigate = useNavigate();
 
     const fullname = data && data[0][0].name;
 
     useEffect(() => {
-        getPostData(subreddit, id, title).then(response => setData(response));
+        getPostData(subreddit, id, title).then(response => {
+            setData(response);
+            setLoading(false);
+        });
     }, [submitEvent])
-
+    
     return (
-        <article>
+        <>
             <a onClick={e => {
-                e.preventDefault();
-                navigate(-1);
-            }}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/></a>
+                    e.preventDefault();
+                    navigate(-1);
+                }}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/>
+            </a>
             
             {
-                data && 
-                <>
-                    <Post_Content t3={data[0][0]}/>
-                    <Comments t1={data[1]} t3={true} fullname={fullname} setSubmitEvent={setSubmitEvent} />
-                </>
+                loading ? 
+                <div className="post-loading">
+                    <img src={post_loading as unknown as string} />
+                </div> : null
             }
-        </article>
+
+            <article>
+                {
+                    data && 
+                    <>
+                        <Post_Content t3={data[0][0]}/>
+                        <Comments t1={data[1]} t3={true} fullname={fullname} setSubmitEvent={setSubmitEvent} />
+                    </>
+                }
+            </article>
+        </>
+        
     )
 }
