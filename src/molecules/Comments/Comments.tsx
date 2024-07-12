@@ -50,7 +50,6 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
             const comment: Prop = t1[i];
             
             if (comment && comment.author !== "[deleted]") {
-                console.log(comment.replies)
                 firstLoad.push(
                     <Comment 
                     key={comment.id}
@@ -108,7 +107,7 @@ const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComme
                     downs={comment.downs} 
                     name={comment.name}
                     ups={comment.ups}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length-1 : 0}
+                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
                     more={comment.replies && comment.replies} />)
             } else {
                 break;
