@@ -72,8 +72,8 @@ export default function Feed () {
 
     return (
         <>
-            <div className="feed-loading" style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
-                <img src={loading as unknown as string} />
+            <div style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
+                <img className="feed-loading" src={loading as unknown as string} />
             </div>
 
             <main id="feed" style={navigation.state === "loading" ? {display: "none"} : {display: ""}}>

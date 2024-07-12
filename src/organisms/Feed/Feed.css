@@ -17,7 +17,7 @@
 .feed-loading {
     width: 100%;
     height: auto;
-    margin-top: 2rem;
+    margin-top: 1rem;
     animation: loading 0.7s infinite alternate-reverse;
 }
 
