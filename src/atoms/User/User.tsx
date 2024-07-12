@@ -11,7 +11,7 @@ export default function User ({subreddit, author, preview}: Props) {
     const profile = useProfilePicture(author,preview);
     
     return (
-        <a href={`https://www.reddit.com/u/${author}/`} target="_blank">
+        <a href={`https://www.reddit.com/u/${author}/`} target="_blank" style={{width: "fit-content"}}>
             <section id="user" className={subreddit ? "grid-3" : "grid-2"}>
                 { typeof profile === "string" && <img src={profile} className="User-img"/>}
                 { typeof profile === "number" && <img src={`avatar_default_${profile}.png`} className="User-img"/>}
