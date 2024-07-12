@@ -24,6 +24,13 @@ export default function Post () {
             setData(response);
             setLoading(false);
         });
+        const constantFetch = setInterval(() => {
+            getPostData(subreddit, id, title).then(response => {
+                setData(response);
+            });
+        }, 60000);
+
+        return () => clearInterval(constantFetch);
     }, [submitEvent])
     
     return (
