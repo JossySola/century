@@ -14,3 +14,18 @@
     margin-bottom: 2.5rem;
     font-size: 1.5rem;
 }
+.feed-loading {
+    width: 100%;
+    height: auto;
+    margin-top: 2rem;
+    animation: loading 0.7s infinite alternate-reverse;
+}
+
+@keyframes loading {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 0.1;
+    }
+}
