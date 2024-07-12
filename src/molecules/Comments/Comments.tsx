@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Comment from "../../atoms/Comment/Comment"
 import Submit from "../../atoms/Submit/Submit"
+import loading from "../../assets/icons/loading_dots.svg"
 import "./Comments.css"
 
 export interface Prop {
@@ -68,11 +69,14 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
         }
         setComments(firstLoad);
     }, [])
-
+    
     return (
         <>
-            <section id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
+            <section  id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
                 {comments}
+                {
+                    comments.length !== t1.length ? <img src={loading as unknown as string} className="comments-loading"/> : null
+                }
             </section>
             {t3 && fullname && <Submit fullname={fullname} setSubmitEvent={setSubmitEvent}/>}
         </>
