@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { useProfilePicture } from "../../scripts/custom_hooks/hooks"
 import User from "../../atoms/User/User"
 import formatAmount from "../../scripts/amount"
 import comment_icon from "../../assets/icons/comment_icon_black.svg"
@@ -14,12 +13,11 @@ import "./Post_Content.css"
  
 export default function Post_Content ({t3}) {
     const [voting, setVoting] = useState(t3.likes === true ? "1" : "0");
-    const profile = useProfilePicture(t3.author);
     
     return (
         <section id="content">
             <div className="content-user">
-                <User subreddit={t3.subreddit_name_prefixed} author={t3.author} src={profile} />
+                <User subreddit={t3.subreddit_name_prefixed} author={t3.author}/>
                 <h2>{t3.title}</h2>
             </div>
             {t3.selftext && <p>{t3.selftext}</p>}
