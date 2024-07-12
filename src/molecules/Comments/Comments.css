@@ -31,3 +31,18 @@
 #comments-section::-webkit-scrollbar-thumb:hover {
     background: #646464; 
 }
+.comments-loading {
+    width: 64px;
+    margin: 1rem;
+    animation: loading 0.5s infinite alternate;
+    align-self: center;
+}
+
+@keyframes loading {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
+}
