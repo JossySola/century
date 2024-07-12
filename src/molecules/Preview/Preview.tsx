@@ -10,7 +10,7 @@ export default function Preview ({payload}) {
     
     return (
         <article id={images ? "preview-big" : "preview-small"} className="preview">
-            <User  subreddit={undefined} author={payload.author}/>
+            <User  subreddit={undefined} author={payload.author} preview={true}/>
             <Link to={payload.permalink}>
                 <Cover preview={images ? images : null}/>
                 <Summary  title={payload.title}/>
