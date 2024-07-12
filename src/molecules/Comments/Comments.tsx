@@ -50,6 +50,7 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
             const comment: Prop = t1[i];
             
             if (comment && comment.author !== "[deleted]") {
+                console.log(comment.replies)
                 firstLoad.push(
                     <Comment 
                     key={comment.id}
