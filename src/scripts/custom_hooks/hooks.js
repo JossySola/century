@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import fetchHandler from "../../cache/hook";
 import redditFilter from "../redditFilter/redditFilter";
 
-export function useProfilePicture(author) {
+export function useProfilePicture(author, preview) {
     const [profile, setProfile] = useState("");
     const random = () => {
         const n = Math.floor(Math.random()*7);
@@ -14,6 +14,10 @@ export function useProfilePicture(author) {
             return n;
         }
     };
+
+    if (preview) {
+        return random();
+    }
     
     const getUserImage = async (name) => {
         let avatar = "";
