@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
 import fetchHandler from "../../cache/hook";
-import { useLoaderData } from "react-router-dom";
 import redditFilter from "../redditFilter/redditFilter";
 
 export function useProfilePicture(author) {
     const [profile, setProfile] = useState("");
+    const random = () => {
+        const n = Math.floor(Math.random()*7);
+        if (n === 0) {
+            return random();
+        } else if (n > 7) {
+            return random();
+        } else {
+            return n;
+        }
+    };
     
     const getUserImage = async (name) => {
         let avatar = "";
@@ -15,12 +24,12 @@ export function useProfilePicture(author) {
                 if (response.data) avatar = response.data.snoovatar_img; 
             }
         } catch (e) {
-            return getRandomAvatar();
+            console.error(e);
         } finally {
             if (avatar) {
                 return avatar;
             } else {
-                return getRandomAvatar();
+                return random();
             }
         }
     }
@@ -163,33 +172,4 @@ export function useFeedData(loader) {
         }
     }, [])
     return data;
-}
-// ******************************************
-export const getRandomAvatar = () => {
-    const random = Math.floor(Math.random()*7);
-    switch (random) {
-        case 1:
-            return `${process.env.PUBLIC_URL}/avatar_default_1.png`;
-            break;
-        case 2:
-            return `${process.env.PUBLIC_URL}/avatar_default_2.png`;
-            break;
-        case 3:
-            return `${process.env.PUBLIC_URL}/avatar_default_3.png`;
-            break;
-        case 4:
-            return `${process.env.PUBLIC_URL}/avatar_default_4.png`;
-            break;
-        case 5:
-            return `${process.env.PUBLIC_URL}/avatar_default_5.png`;
-            break;
-        case 6:
-            return `${process.env.PUBLIC_URL}/avatar_default_6.png`;
-            break;
-        case 7:
-            return `${process.env.PUBLIC_URL}/avatar_default_7.png`;
-            break;
-        default:
-            return `${process.env.PUBLIC_URL}/avatar_default_1.png`;
-    }
 }
