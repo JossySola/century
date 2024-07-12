@@ -60,7 +60,7 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
                     downs={comment.downs} 
                     ups={comment.ups}
                     name={comment.name}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length -1 : 0}
+                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
                     more={comment.replies && comment.replies}/>
                 )
                 } else {
