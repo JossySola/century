@@ -19,13 +19,18 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
     const profile = useProfilePicture(author);
     body_html && useHTMLText(body_html, id);
 
-    const t1 = redditFilter(more)
+    const t1 = redditFilter(more);
     
     return (
         <div className="comment-div">
             <div className="comment" style={depth > 0 ? {margin: "0.5rem"} : undefined}>
                 {depth > 0 ? <div className="comment-connector"></div> : null}
-                <img src={profile} className="User-img"/>
+
+                {
+                    typeof profile === "string" ? 
+                        <img src={profile} className="User-img"/> : 
+                        <img src={"../../assets/icons/plus_icon.svg"} className="User-img"/>
+                }
 
                 <div className="content">
                     <h4>u/{author}</h4>
