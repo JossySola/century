@@ -42,10 +42,9 @@ export default function Post () {
             </a>
             
             {
-                loading ? 
-                <div className="post-loading">
-                    <img src={post_loading as unknown as string} />
-                </div> : null
+                loading ?
+                    <img className="post-loading" src={post_loading as unknown as string} />
+                : null
             }
 
             <article>
