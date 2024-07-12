@@ -99,6 +99,9 @@
   #date {
     display: none;
   }
+  .post-loading, .feed-loading {
+    width: 99vw;
+  }
 }
 @media screen and (max-width: 450px) {
   nav {
