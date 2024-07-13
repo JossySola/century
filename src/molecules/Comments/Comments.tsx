@@ -13,6 +13,7 @@ export interface Prop {
     downs: number,
     id: string,
     link_id: string,
+    likes: boolean | null,
     name: string,
     parent_id: string,
     replies: {
@@ -59,6 +60,7 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
                     depth={comment.depth} 
                     downs={comment.downs} 
                     ups={comment.ups}
+                    likes={comment.likes}
                     name={comment.name}
                     replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
                     more={comment.replies && comment.replies}/>
@@ -104,7 +106,8 @@ const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComme
                     author={comment.author} 
                     body_html={comment.body_html}
                     depth={comment.depth}  
-                    downs={comment.downs} 
+                    downs={comment.downs}
+                    likes={comment.likes} 
                     name={comment.name}
                     ups={comment.ups}
                     replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
