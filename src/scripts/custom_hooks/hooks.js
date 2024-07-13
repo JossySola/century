@@ -5,7 +5,9 @@ import redditFilter from "../redditFilter/redditFilter";
 export function useProfilePicture(author, preview) {
     const [profile, setProfile] = useState("");
 
-    if (preview) null;
+    if (preview) {
+        return null;
+    }
     
     const getUserImage = async (name) => {
         try {
