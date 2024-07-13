@@ -3,7 +3,7 @@ import redditFilter from "../redditFilter/redditFilter";
 export default async function getPostData(subreddit: string | undefined, id: string | undefined, title: string | undefined): Promise<object | undefined> {
     const access_token = window.localStorage.getItem("access_token");
     const publicEndpoint = `https://www.reddit.com/r/${subreddit}/comments/${id}/${title}.json`;
-    const privateEndpoint = `https://oauth.reddit.com/comments/${id}.json`;
+    const privateEndpoint = `https://oauth.reddit.com/comments/${id}?sort=new`;
 
     const payload = {
         method: "GET",
