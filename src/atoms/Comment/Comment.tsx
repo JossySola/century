@@ -18,15 +18,15 @@ import avatar4 from "../../assets/avatar_default_4.png"
 import avatar5 from "../../assets/avatar_default_5.png"
 import avatar6 from "../../assets/avatar_default_6.png"
 import avatar7 from "../../assets/avatar_default_7.png"
+import getCachedOrNewImage from "../../profiles.js"
 import "./Comment.css"
  
+
 export default function Comment ({author, body_html, id, depth, downs, ups, likes, name, replies, more}) {
     const [showReplies, setShowReplies] = useState(false);
     const [voting, setVoting] = useState(likes === true ? "1" : "0");
     const profile = useProfilePicture(author);
     const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
-    const randomIndex = Math.floor(Math.random() * avatars.length);
-    const imagePath = avatars[randomIndex];
 
     body_html && useHTMLText(body_html, id);
 
@@ -40,7 +40,7 @@ export default function Comment ({author, body_html, id, depth, downs, ups, like
                 {
                     profile ? 
                         <img src={profile} className="User-img"/> : 
-                        <img src={imagePath} className="User-img"/>
+                        <img src={getCachedOrNewImage(avatars, author)} className="User-img"/>
                 }
 
                 <div className="content">

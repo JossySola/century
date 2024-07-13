@@ -7,6 +7,7 @@ import avatar4 from "../../assets/avatar_default_4.png"
 import avatar5 from "../../assets/avatar_default_5.png"
 import avatar6 from "../../assets/avatar_default_6.png"
 import avatar7 from "../../assets/avatar_default_7.png"
+import getCachedOrNewImage from "../../profiles.js"
 import "./User.css"
 
 interface Props {
@@ -17,14 +18,12 @@ interface Props {
 export default function User ({subreddit, author, preview}: Props) {
     const profile = useProfilePicture(author, preview);
     const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
-    const randomIndex = Math.floor(Math.random() * avatars.length);
-    const imagePath = avatars[randomIndex];
     
     return (
         <a href={`https://www.reddit.com/u/${author}/`} target="_blank" style={{width: "fit-content"}}>
             <section id="user" className={subreddit ? "grid-3" : "grid-2"}>
                 { typeof profile === "string" && <img src={profile} className="User-img"/>}
-                { !profile && <img src={imagePath} className="User-img"/>}
+                { !profile && <img src={getCachedOrNewImage(avatars, author)} className="User-img"/>}
                 
                 
                 {subreddit ? 
