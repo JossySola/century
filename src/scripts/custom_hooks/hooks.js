@@ -4,42 +4,27 @@ import redditFilter from "../redditFilter/redditFilter";
 
 export function useProfilePicture(author, preview) {
     const [profile, setProfile] = useState("");
-    const random = () => {
-        const n = Math.floor(Math.random()*7);
-        if (n === 0) {
-            return random();
-        } else if (n > 7) {
-            return random();
-        } else {
-            return n;
-        }
-    };
 
-    if (preview) {
-        return random();
-    }
+    if (preview) null;
     
     const getUserImage = async (name) => {
-        let avatar = "";
         try {
             if (name === "[deleted]") return;
             if (name || name !== undefined) {
                 const response = await fetchHandler(`https://www.reddit.com/user/${name}/about.json`);
-                if (response.data) avatar = response.data.snoovatar_img; 
+                if (response.data) {
+                    return response.data.snoovatar_img;
+                }
             }
         } catch (e) {
             console.error(e);
-        } finally {
-            if (avatar) {
-                return avatar;
-            } else {
-                return random();
-            }
+            return null;
         }
-    }
+    };
+
     useEffect(() => {
         getUserImage(author).then(response => setProfile(response));
-    }, [])
+    }, []);
 
     return profile;
 }
