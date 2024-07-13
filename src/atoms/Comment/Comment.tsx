@@ -25,7 +25,7 @@ export default function Comment ({author, body_html, id, depth, downs, ups, like
     const [voting, setVoting] = useState(likes === true ? "1" : "0");
     const profile = useProfilePicture(author);
     const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
-    const randomIndex = Math.floor(Math.random() * avatars.length);
+    const randomIndex = Math.floor(Math.random() * avatars.length -1);
     const imagePath = avatars[randomIndex];
 
     body_html && useHTMLText(body_html, id);
