@@ -17,7 +17,7 @@ interface Props {
 export default function User ({subreddit, author, preview}: Props) {
     const profile = useProfilePicture(author, preview);
     const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
-    const randomIndex = Math.floor(Math.random() * avatars.length -1);
+    const randomIndex = Math.floor(Math.random() * avatars.length);
     const imagePath = avatars[randomIndex];
     
     return (
