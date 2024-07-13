@@ -11,12 +11,23 @@ import plus_icon from "../../assets/icons/plus_icon.svg"
 import minus_icon from "../../assets/icons/minus_icon.svg"
 import comment_icon from "../../assets/icons/comment_icon.svg"
 import { vote } from "../../scripts/voting/voting"
+import avatar1 from "../../assets/avatar_default_1.png"
+import avatar2 from "../../assets/avatar_default_2.png"
+import avatar3 from "../../assets/avatar_default_3.png"
+import avatar4 from "../../assets/avatar_default_4.png"
+import avatar5 from "../../assets/avatar_default_5.png"
+import avatar6 from "../../assets/avatar_default_6.png"
+import avatar7 from "../../assets/avatar_default_7.png"
 import "./Comment.css"
  
-export default function Comment ({author, body_html, id, depth, downs, ups, name, replies, more}) {
+export default function Comment ({author, body_html, id, depth, downs, ups, likes, name, replies, more}) {
     const [showReplies, setShowReplies] = useState(false);
-    const [voting, setVoting] = useState("0");
+    const [voting, setVoting] = useState(likes === true ? "1" : "0");
     const profile = useProfilePicture(author);
+    const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
+    const randomIndex = Math.floor(Math.random() * avatars.length);
+    const imagePath = avatars[randomIndex];
+
     body_html && useHTMLText(body_html, id);
 
     const t1 = redditFilter(more);
@@ -27,9 +38,9 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
                 {depth > 0 ? <div className="comment-connector"></div> : null}
 
                 {
-                    typeof profile === "string" ? 
+                    profile ? 
                         <img src={profile} className="User-img"/> : 
-                        <img src={"../../assets/icons/plus_icon.svg"} className="User-img"/>
+                        <img src={imagePath} className="User-img"/>
                 }
 
                 <div className="content">
@@ -41,13 +52,15 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
                             e.preventDefault();
                             if (voting === "0" || voting === "-1") {
                                 vote(name, "1");
-                                setVoting("1")
+                                setVoting("1");
+                                ups++;
                             } else {
                                 vote(name, "0");
-                                setVoting("0")
+                                setVoting("0");
+                                ups--;
                             }
                         }}>
-                            <img src={voting === "1" ? liked as unknown as string : like as unknown as string} alt="upvotes" decoding="sync"/> {formatAmount(ups)}
+                            <img src={voting === "1" ? liked as unknown as string : like as unknown as string} alt="upvotes" decoding="sync"/><span>{formatAmount(ups)}</span>
                         </button>
                         
                         <button onClick={e => {
@@ -60,7 +73,7 @@ export default function Comment ({author, body_html, id, depth, downs, ups, name
                                 setVoting("0");
                             }
                         }}>
-                            <img src={voting === "-1" ? disliked as unknown as string : dislike as unknown as string} alt="downvotes" decoding="sync"/> {formatAmount(downs)}
+                            <img src={voting === "-1" ? disliked as unknown as string : dislike as unknown as string} alt="downvotes" decoding="sync"/><span>{formatAmount(downs)}</span>
                         </button>
 
                         <button>
