@@ -28,10 +28,12 @@ export default function Post_Content ({t3}) {
                         e.preventDefault();
                         if (voting === "0" || voting === "-1") {
                             vote(t3.name, "1");
-                            setVoting("1")
+                            setVoting("1");
+                            t3.ups++;
                         } else {
                             vote(t3.name, "0");
-                            setVoting("0")
+                            setVoting("0");
+                            t3.ups--;
                         }
                     }}>
                         <img src={voting === "1" ? liked as unknown as string : like as unknown as string} alt="upvotes" aria-label="number of upvotes"/><span>{formatAmount(t3.ups)}</span>
