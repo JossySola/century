@@ -49,7 +49,7 @@ function App() {
         </ul>
       </nav>
 
-      <main>
+      <main id='app-outlet'>
         <Outlet />
       </main>
     </>
