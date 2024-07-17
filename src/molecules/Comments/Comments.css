@@ -1,12 +1,29 @@
 #comments-section {
     display: flex;
     flex-direction: column-reverse;
-    height: fit-content;
-    max-height: 700px;
+    max-height: 650px;
     overflow-x: scroll;
-    border-radius: 1rem 1rem 0 0;
-    margin: 1rem 1rem 0 1rem;
     padding: 1rem;
+    width: auto;
+}
+#comments-sort {
+    padding: 1rem;
+    border-radius: 1rem 1rem 0 0;
+    width: auto;
+}
+#comments-wrapper {
+    padding: 2rem 2rem 1rem 2rem;
+    max-height: 700px;
+    width: auto;
+}
+label, select {
+    margin-left: 1rem;
+    font-size: 1.2rem;
+}
+select {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-radius: 10px;
+    padding: 0.5rem;
 }
 #comments-section::-webkit-scrollbar {
     width: 10px;
@@ -33,7 +50,7 @@
 }
 .comments-loading {
     width: 64px;
-    margin: 1rem;
+    margin: 1.5rem 1rem 1rem 1rem;
     animation: loading 0.5s infinite alternate;
     align-self: center;
 }
