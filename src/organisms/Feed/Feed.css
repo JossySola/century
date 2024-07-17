@@ -2,7 +2,6 @@
     display: inline-flex;
     justify-content: center;
     flex-flow: row wrap;
-    width: 100%;
 }
 #feed header {
     display: grid;
@@ -13,6 +12,16 @@
     align-items: center;
     margin-bottom: 2.5rem;
     font-size: 1.5rem;
+}
+.feed-loadmore {
+    border: none;
+    background-color: #d83901;
+    border-radius: 999px;
+    margin: 1.5rem 0 1.5rem 0;
+}
+.feed-loadmore:hover {
+    border: none;
+    background-color: #db4914;
 }
 .feed-loading {
     width: 100%;
@@ -27,5 +36,20 @@
     }
     to {
         opacity: 0.1;
+    }
+}
+
+.feed-spinner {
+    animation-name: spin;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
     }
 }
