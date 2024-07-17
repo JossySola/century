@@ -4,11 +4,6 @@
   src: url("./assets/fonts/OldLondonAlternate.ttf") format("truetype");
 }
 @media screen and (max-width: 600px) {
-  body {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
   button {
     background-color: var(--lightmode-secondary-foreground);
     color: white;
@@ -17,6 +12,12 @@
     padding: 3rem 0 0 0;
     margin: 0;
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
   }
   #top-div {
     width: 90%;
@@ -28,11 +29,10 @@
   }
   .content-user {
     justify-content: center;
-  }
-  .content-user h2 {
-    text-align: center !important;
+    text-align: center;
   }
   .content-bottom {
+    flex-direction: column;
     justify-content: center;
   }
   #comments-section {
@@ -96,12 +96,19 @@
   #preview-big {
     width: 100%;
   }
+  .preview {
+    width: 100%;
+    margin: 0.5rem 0 0.5rem 0;
+  }
   #date {
     display: none;
   }
   .post-loading, .feed-loading {
     width: 99vw;
   }
+  #user-anchor {
+    margin-right: 0;
+}
 }
 @media screen and (max-width: 450px) {
   nav {
@@ -153,7 +160,9 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  display: flex !important;
+  flex-flow: column nowrap;
+  align-items: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -235,6 +244,12 @@ button:focus-visible {
   #comments-section {
     background-color: var(--lightmode-secondary);
   }
+  #comments-wrapper {
+    background-color: var(--lightmode-secondary);
+  }
+  #comments-sort {
+    background-color: var(--lightmode-secondary);
+  }
   #comment-form {
     background-color: var(--lightmode-secondary);
   }
@@ -294,9 +309,14 @@ button:focus-visible {
   }
   #content {
     background-color: #656869;
-    padding: 1rem;
   }
   #comments-section {
+    background-color: #333637;
+  }
+  #comments-wrapper {
+    background-color: #333637;
+  }
+  #comments-sort {
     background-color: #333637;
     border-top: 1rem solid #333637;
   }
