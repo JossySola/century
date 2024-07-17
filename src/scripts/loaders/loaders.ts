@@ -24,13 +24,13 @@ export async function index({request}) {
             window.localStorage.setItem("access_token", code);
             const access = await getAccessToken(stateSent, stateReceived, code);
             if (access) {
-                if (temporal !== undefined && temporal !== null) {
+                if (temporal !== null) {
                     const response = await search(temporal);
                     const elements = redditFilter(response);
                     window.localStorage.removeItem("query");
                     return { elements };
                 }
-                if (link) {
+                if (link !== null) {
                     const temp = link;
                     window.localStorage.removeItem("tempLink");
                     return redirect(`http://localhost:5173/${temp}/`);
