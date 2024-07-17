@@ -1,11 +1,12 @@
-import React from "react"
-import { useLoaderData, useNavigate, useNavigation } from "react-router-dom"
+import React from "react";
+import { useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import Preview from "../../molecules/Preview/Preview";
 import Account from "../../molecules/Account/Account";
 import Subreddit from "../../molecules/Subreddit/Subreddit";
 import back_icon from "../../assets/icons/back_icon.svg";
-import loading from "../../assets/icons/loading_feed_light.svg"
-import "./Feed.css"
+import loading from "../../assets/icons/loading_feed_light.svg";
+import spinner from "../../assets/icons/mobile_loading.png";
+import "./Feed.css";
  
 interface Article {
     author: string;
@@ -69,13 +70,20 @@ export default function Feed () {
     const data: any = useLoaderData();
     const navigate = useNavigate();
     const navigation = useNavigation();
-
+    const width = window.screen.width;
+    
     return (
         <>
-            <div style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
-                <img className="feed-loading" src={loading as unknown as string} />
-            </div>
-
+            {
+                width <= 600 ? 
+                <div className="feed-spinner" style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
+                    <img src={spinner as unknown as string} />
+                </div> : 
+                <div style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
+                    <img className="feed-loading" src={loading as unknown as string} />
+                </div>
+            }
+            
             <main id="feed" style={navigation.state === "loading" ? {display: "none"} : {display: ""}}>
                 {data.error && <span style={{color: "rgb(252, 71, 46)"}}>Authorizing the Web App to connect to Reddit is required to Search.</span>}
                 {data.pathname && 
