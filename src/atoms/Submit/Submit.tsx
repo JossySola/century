@@ -4,14 +4,14 @@ import "./Submit.css"
  
 interface Props {
     fullname: string,
-    setSubmitEvent: React.Dispatch<React.SetStateAction<React.FormEvent<HTMLFormElement>>>
+    setSortType: React.Dispatch<React.SetStateAction<string>>
 }
-export default function Submit ({fullname, setSubmitEvent}: Props) {
+export default function Submit ({fullname, setSortType}: Props) {
     
     return (
         <>
-            <Form id="comment-form" role="comment" method="post" className="submit-form" onSubmit={(e) => {
-                setSubmitEvent(e);
+            <Form id="comment-form" role="comment" method="post" className="submit-form" onSubmit={() => {
+                setSortType("new");
             }}>
                 <input name="comment" id="submit-comment" aria-label="Comment" placeholder="Write a comment..." type="comment" className="submit-input"/>
                 <input name="fullname" value={fullname} style={{display: "none"}} readOnly/>
