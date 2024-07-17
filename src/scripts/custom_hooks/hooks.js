@@ -30,7 +30,6 @@ export function useProfilePicture(author, preview) {
 
     return profile;
 }
-
 export function useHTMLText(body_html, id) {
     const [text, setText] = useState("");
 
@@ -103,7 +102,6 @@ export function useHTMLText(body_html, id) {
     
     if (text) insertToDiv(text);
 }
-
 export function useCacheTimer(request) {
     useEffect(() => {
         const timer = setInterval(() => {
@@ -163,4 +161,40 @@ export function useFeedData(loader) {
         }
     }, [])
     return data;
+}
+export async function usePostDataFetcher(subreddit, id, title, sort) {
+    
+    let loggedIn = false;
+    const access_token = window.localStorage.getItem("access_token");
+    const publicEndpoint = `https://www.reddit.com/r/${subreddit}/comments/${id}/${title}.json`;
+    const privateEndpoint = `https://oauth.reddit.com/comments/${id}/?sort=${sort}`;
+    
+    const privatePayload = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }
+
+    try {
+        const body = await fetch(privateEndpoint, privatePayload);
+        const response = await body.json();
+        
+        if (response.length === 2 && typeof response[0] === "object" && typeof response[1] === "object") {
+            loggedIn = true;
+            const JSON = redditFilter(response)
+            return {JSON, loggedIn};
+        } else {
+            throw new Error("Unauthorized");
+        }
+    } catch(e) {
+        const body = await fetch(publicEndpoint);
+        const response = await body.json();
+
+        if(response) {
+            const JSON = redditFilter(response)
+            return {JSON, loggedIn};
+        }
+    }
 }
