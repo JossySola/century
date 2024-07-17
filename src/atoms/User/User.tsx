@@ -20,7 +20,7 @@ export default function User ({subreddit, author, preview}: Props) {
     const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7];
     
     return (
-        <a href={`https://www.reddit.com/u/${author}/`} target="_blank" style={{width: "fit-content"}}>
+        <a id="user-anchor" href={`https://www.reddit.com/u/${author}/`} target="_blank" style={{width: "fit-content"}}>
             <section id="user" className={subreddit ? "grid-3" : "grid-2"}>
                 { typeof profile === "string" && <img src={profile} className="User-img"/>}
                 { !profile && <img src={getCachedOrNewImage(avatars, author)} className="User-img"/>}
