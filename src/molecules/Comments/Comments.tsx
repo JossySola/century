@@ -28,21 +28,14 @@ interface Props {
     t1: Array<Prop>,
     t3?: boolean,
     fullname: string | undefined,
-    setSubmitEvent: React.Dispatch<React.SetStateAction<React.FormEvent<HTMLFormElement>>>
+    sortType: "best" | "new" | "top" | "controversial" | "old",
+    setSortType: React.Dispatch<React.SetStateAction<string>>,
+    loggedIn: boolean
 }
 type stateArray = Array<React.JSX.Element>;
 
-export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
+export default function Comments ({t1, t3, fullname, sortType, setSortType, loggedIn}: Props) {
     const [comments, setComments] = useState<stateArray>([]);
-
-    t1.sort((a, b) => {
-        if (a.created_utc < b.created_utc) {
-            return 1;
-        } else if (a.created_utc > b.created_utc) {
-            return -1;
-        }
-        return 0;
-    })
     
     useEffect(() => {
         let firstLoad: stateArray = [];
@@ -74,13 +67,37 @@ export default function Comments ({t1, t3, fullname, setSubmitEvent}: Props) {
     
     return (
         <>
-            <section  id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
-                {comments}
-                {
-                    comments.length !== t1.length ? <img src={loading as unknown as string} className="comments-loading"/> : null
-                }
-            </section>
-            {t3 && fullname && <Submit fullname={fullname} setSubmitEvent={setSubmitEvent}/>}
+            {
+                loggedIn ? <div id="comments-sort">
+                                <label>Sort by:</label>
+                                <select name="sorting" id="comments-selection" defaultValue={sortType} aria-label="Select how the comments are sorted" onChange={() => {
+                                    const select = document.getElementById("comments-selection");
+                                    if (select) {
+                                        setSortType(select.value);
+                                    }
+                                }}>
+                                    <option value="best">Best</option>
+                                    <option value="new">New</option>
+                                    <option value="top"> Top</option>
+                                    <option value="controversial">Controversial</option>
+                                    <option value="old">Old</option>
+                                </select>
+                            </div> 
+                : null
+            }
+            
+            <div id="comments-wrapper">
+                <section  id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
+                    
+                    
+                    {comments}
+                    {
+                        comments.length !== t1.length ? <img src={loading as unknown as string} className="comments-loading"/> : null
+                    }
+                </section>
+            </div>
+            
+            {t3 && fullname && <Submit fullname={fullname} setSortType={setSortType}/>}
         </>
     )
 }
