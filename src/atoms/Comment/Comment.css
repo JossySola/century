@@ -30,6 +30,11 @@
     border-bottom: 2px solid #656869;
     border-bottom-left-radius: 20px;
 }
+.comment-interactions {
+    display: flex;
+    align-items: left;
+    flex-flow: column wrap;
+}
 .comment-interactions img {
     width: 20px;
     padding: 0 0.3rem 0 0.5rem;
@@ -46,6 +51,20 @@
 .content h4 {
     color: #08a59d;
     font-weight: 500;
+}
+.interactions-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    bottom: 0;
+    background-color: white;
+    border-radius: 999px;
+}
+.interactions-right button {
+    border: 0;
+    padding: 0.5rem;
+    background-color: transparent;
 }
 .md {
     line-height: 1.2rem;
