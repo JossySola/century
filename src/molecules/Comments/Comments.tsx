@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Comment from "../../atoms/Comment/Comment"
 import Submit from "../../atoms/Submit/Submit"
-import loading from "../../assets/icons/loading_dots.svg"
+import loading_dots from "../../assets/icons/loading_dots.svg"
 import "./Comments.css"
 
 export interface Prop {
@@ -35,14 +35,17 @@ interface Props {
 type stateArray = Array<React.JSX.Element>;
 
 export default function Comments ({t1, t3, fullname, sortType, setSortType, loggedIn}: Props) {
+    const scrollPositionRef = useRef(0);
+    const containerRef = useRef(null);
     const [comments, setComments] = useState<stateArray>([]);
+    const [loading, setLoading] = useState(false);
+    const [trigger, setTrigger] = useState(false);
     
     useEffect(() => {
         let firstLoad: stateArray = [];
 
         for (let i: number = 0; i < 5; i++) {
             const comment: Prop = t1[i];
-            
             if (comment && comment.author !== "[deleted]") {
                 firstLoad.push(
                     <Comment 
@@ -55,15 +58,76 @@ export default function Comments ({t1, t3, fullname, sortType, setSortType, logg
                     ups={comment.ups}
                     likes={comment.likes}
                     name={comment.name}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
-                    more={comment.replies && comment.replies}/>
+                    replies={getRepliesAmount(comment)}
+                    more={comment.replies && comment.replies}
+                    setTrigger={setTrigger}
+                    trigger={trigger}/>
                 )
                 } else {
                 break;
             }
         }
         setComments(firstLoad);
-    }, [])
+    }, [t1, trigger])
+
+    useEffect(() => {
+        // Preserve scroll position
+        if (!loading) {
+            restoreScrollPosition();
+        }
+    }, [comments, loading])
+
+    const saveScrollPosition = () => {
+        if (containerRef.current) {
+            scrollPositionRef.current = containerRef.current.scrollTop;
+        }
+    }
+    const restoreScrollPosition = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = scrollPositionRef.current;
+        }
+    }
+    const loadMoreData = () => {
+        setLoading(true);
+        saveScrollPosition();
+        const section = document.getElementById("comments-section");
+        let numberOfNodes = section ? section.children.length: 0;
+        let addArray: stateArray = [];
+
+        for (let i: number = 1; i < 6; i++) {
+            const index: number = i + numberOfNodes;
+            const comment: Prop = t1[index];
+
+            if (comment && comment.author !== "[deleted]") {
+                addArray.push(<Comment 
+                    key={comment.id}
+                    id={comment.id} 
+                    author={comment.author} 
+                    body_html={comment.body_html}
+                    depth={comment.depth}  
+                    downs={comment.downs}
+                    likes={comment.likes} 
+                    name={comment.name}
+                    ups={comment.ups}
+                    replies={getRepliesAmount(comment)}
+                    more={comment.replies && comment.replies} />)
+            } else {
+                break;
+            }
+        }
+        setComments(comments.concat(addArray));
+        setLoading(false);
+    }
+    const handleInfiniteScroll = () => {
+        if (containerRef.current) {
+            const {scrollTop, scrollHeight, clientHeight} = containerRef.current;
+            const scroll = (scrollTop * -1) + clientHeight;
+            const height = scrollHeight -1;
+            if (scroll >= height) {
+                loadMoreData();
+            }
+        }
+    }
     
     return (
         <>
@@ -73,6 +137,7 @@ export default function Comments ({t1, t3, fullname, sortType, setSortType, logg
                                 <select name="sorting" id="comments-selection" defaultValue={sortType} aria-label="Select how the comments are sorted" onChange={() => {
                                     const select = document.getElementById("comments-selection");
                                     if (select) {
+                                        setComments([]);
                                         setSortType(select.value);
                                     }
                                 }}>
@@ -87,52 +152,48 @@ export default function Comments ({t1, t3, fullname, sortType, setSortType, logg
             }
             
             <div id="comments-wrapper">
-                <section  id="comments-section" onScroll={() => handleInfiniteScroll(t1, comments, setComments)}>
-                    
-                    
-                    {comments}
+                <section  ref={containerRef} id="comments-section" onScroll={() => handleInfiniteScroll()}>
                     {
-                        comments.length !== t1.length ? <img src={loading as unknown as string} className="comments-loading"/> : null
+                        loading || !comments ? <img src={loading_dots as unknown as string} className="comments-loading"/> : comments
+                    }
+                    
+                    {
+                        comments && comments.length !== t1.length ? <img src={loading_dots as unknown as string} className="comments-loading"/> : null
                     }
                 </section>
             </div>
             
-            {t3 && fullname && <Submit fullname={fullname} setSortType={setSortType}/>}
+            {t3 && fullname && <Submit fullname={fullname} setSortType={setSortType} trigger={trigger} setTrigger={setTrigger}/>}
         </>
     )
 }
 
-const handleInfiniteScroll = (array: Array<Prop>, comments: stateArray, setComments: React.Dispatch<React.SetStateAction<stateArray>>) => {
-    const section = document.getElementById("comments-section");
-    const currentPos = section && section.scrollHeight ? section.offsetHeight - section.scrollTop : 0;
-    const scrollHeight = section ? section.scrollHeight : 0;
-    let numberOfNodes = section ? section.children.length: 0;
-    
-    if (currentPos === scrollHeight + 25) {
-        
-        let addArray: stateArray = [];
+export const getRepliesAmount = (comment) => {
+    if (comment && comment.replies !== "") {
+        const children = comment.replies.data.children;
+        const isString = typeof comment.replies === "string";
+        const isEmpty = children.length === 0 ? true : false;
+        const isKindMore = children[0].kind === "more" ? true : false;
+        let amount = 0;
 
-        for (let i: number = 1; i < 6; i++) {
-            const index: number = i + numberOfNodes;
-            const comment: Prop = array[index];
-
-            if (comment && comment.author !== "[deleted]") {
-                addArray.push(<Comment 
-                    key={comment.id}
-                    id={comment.id} 
-                    author={comment.author} 
-                    body_html={comment.body_html}
-                    depth={comment.depth}  
-                    downs={comment.downs}
-                    likes={comment.likes} 
-                    name={comment.name}
-                    ups={comment.ups}
-                    replies={typeof comment.replies !== "string" && comment.replies.data.children.length > 0 ? comment.replies.data.children.length : 0}
-                    more={comment.replies && comment.replies} />)
-            } else {
-                break;
+        if (!isString || !isEmpty) {
+            if (isKindMore) {
+                return 0;
             }
+            if (children !== undefined) {
+                children.map(child => {
+                    if (child.kind !== "more") {
+                        amount++;
+                    } else {
+                        return;
+                    }
+                })
+                return amount;
+            }
+            return amount;
+        } else {
+            return 0;
         }
-        return setComments(comments.concat(addArray));
     }
+    return 0;
 }
