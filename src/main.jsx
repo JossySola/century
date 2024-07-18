@@ -11,6 +11,7 @@ import { tech as techLoader } from './scripts/loaders/loaders.ts'
 import { index as indexLoader } from './scripts/loaders/loaders.ts'
 import { submitComment as commentAction } from './scripts/actions/actions.ts'
 import { subreddit as subredditLoader } from './scripts/loaders/loaders.ts'
+import { post as PostLoader } from "./scripts/loaders/loaders.ts"
 
 import App from './App.jsx'
 import ErrorPage from './error-page.jsx'
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
             {
               path: 'r/:subreddit/comments/:id/:title',
               element: <Post />,
+              loader: PostLoader,
               action: commentAction,
             },
             {
