@@ -1,3 +1,4 @@
+import getAuthorization from "../authorization/authorization";
 const base = "https://oauth.reddit.com/api";
 const access_token: string | null = window.localStorage.getItem("access_token");
 
@@ -47,6 +48,17 @@ export async function del (id: string) {
         body: new URLSearchParams({
             id,
         })
+    }
+
+    try {
+        const body = await fetch(url, payload);
+        const response = await body.json();
+        if (response.ok === false) {
+            throw new Error("Failed request from 'comment > del' function");
+        }
+        return response;
+    } catch (e) {
+        getAuthorization();
     }
 }
 
