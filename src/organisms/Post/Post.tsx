@@ -26,14 +26,6 @@ export default function Post () {
             setLoggedIn(response.loggedIn);
             setLoading(false);
         });
-        const constantFetch = setInterval(() => {
-            usePostDataFetcher(subreddit, id, title, sortType).then(response => {
-                setData(response.JSON);
-                setLoggedIn(response.loggedIn);
-            });
-        }, 60000);
-
-        return () => clearInterval(constantFetch);
     }, [sortType])
     
     return (
