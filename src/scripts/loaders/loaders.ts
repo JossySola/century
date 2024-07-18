@@ -93,6 +93,21 @@ export async function subreddit({ request }) {
     const url = `https://www.reddit.com${pathname}.json?raw_json=1`;
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
-    
+
     return {elements, pathname};
+}
+export async function post() {
+    const access_token = window.localStorage.getItem("access_token");
+    const me = await fetch(`https://oauth.reddit.com/api/me.json`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        }
+    });
+    const mejson = await me.json();
+    if (mejson.ok) {
+        window.sessionStorage.setItem("me", mejson.data.name);
+    }
+    
+    return mejson;
 }
