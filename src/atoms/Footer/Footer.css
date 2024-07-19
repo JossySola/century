@@ -18,6 +18,9 @@ footer details {
     cursor: pointer;
     text-align: justify;
 }
+footer details a {
+    color: white;
+}
 summary {
     cursor: pointer;
     text-align: center;
