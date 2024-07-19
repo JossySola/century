@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { usePostDataFetcher } from "../../scripts/custom_hooks/hooks";
-import { Thing } from "../../types/types";
+import { Thing, SVG } from "../../types/types";
 import Post_Content from "../../molecules/Post_Content/Post_Content"
 import Comments from "../../molecules/Comments/Comments"
 import back_icon from "../../assets/icons/back_icon.svg"
 import post_loading from "../../assets/icons/loading_post_light.svg";
+import spinner from "../../assets/icons/mobile_loading.png";
 import "./Post.css"
 
 export default function Post () {
@@ -15,6 +16,7 @@ export default function Post () {
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [sortType, setSortType] = useState<"best" | "new" | "top" | "controversial" | "old">("best");
     const navigate = useNavigate();
+    const width = window.screen.width;
 
     const fullname = data && data[0][0].name;
     
@@ -35,18 +37,34 @@ export default function Post () {
     
     return (
         <>
+            {
+                // Go Back button
+            }
             <a onClick={e => {
                     e.preventDefault();
                     navigate(-1);
-                }}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/>
+                }}><img src={back_icon as SVG as string} alt="Go Back" aria-label="Go Back"/>
             </a>
             
             {
-                loading ?
-                    <img className="post-loading" src={post_loading as unknown as string} />
-                : null
+                // Display spinner if width is <= 600px
             }
-
+            {
+                loading && width <= 600 ?
+                    <img className="post-loading" src={spinner as SVG as string} /> :
+                    null
+            }
+            {
+                // Display gray shadow if width is > 600px
+            }
+            {
+                loading && width > 600 ?
+                    <img className="post-loading" src={post_loading as SVG as string} /> :
+                    null
+            }
+            {
+                // Display 2 components that makes up the whole POST
+            }
             <article id="post">
                 {
                     data && 
