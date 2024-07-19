@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Form, Outlet, Link } from 'react-router-dom'
-import _Date from '../src/atoms/Date/Date';
+import _Date from './atoms/Date/Date'
+import Footer from './atoms/Footer/Footer'
 import './App.css'
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
       <main id='app-outlet'>
         <Outlet />
       </main>
+      <Footer />
     </>
   )
 }

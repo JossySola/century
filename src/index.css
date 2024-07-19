@@ -107,7 +107,10 @@
   }
   #user-anchor {
     margin-right: 0;
-}
+  }
+  footer {
+    width: 100%;
+  }
 }
 @media screen and (max-width: 450px) {
   nav {
