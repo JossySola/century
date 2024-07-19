@@ -111,6 +111,16 @@
   footer {
     width: 100%;
   }
+  .subreddit {
+    width: 100%;
+  }
+  #feed header {
+    grid-template-areas: 
+    "back"
+    "subreddit";
+    width: 100%;
+    font-size: 1.2rem;
+  }
 }
 @media screen and (max-width: 450px) {
   nav {
