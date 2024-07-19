@@ -62,7 +62,7 @@ export default function Footer () {
             </details>
 
             <div className="footer-madein">
-                <p>Made with 💖 in Mexico</p>
+                <p>Made with ❤️ in Mexico</p>
                 <img src={mexico as SVG as string} alt="Mexico seal"></img>
             </div>
             
