@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { usePostDataFetcher } from "../../scripts/custom_hooks/hooks.js";
+import { usePostDataFetcher } from "../../scripts/custom_hooks/hooks";
+import { Thing } from "../../types/types";
 import Post_Content from "../../molecules/Post_Content/Post_Content"
 import Comments from "../../molecules/Comments/Comments"
-import { Prop } from "../../molecules/Comments/Comments"
 import back_icon from "../../assets/icons/back_icon.svg"
 import post_loading from "../../assets/icons/loading_post_light.svg";
 import "./Post.css"
 
-type State = Prop | Array<Prop | Array<Prop>> | object;
-
 export default function Post () {
-    const {subreddit, id, title} = useParams();
-    const [data, setData] = useState<State | undefined>();
+    const {subreddit, id, title} = useParams<string>();
+    const [data, setData] = useState<Thing | undefined>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [sortType, setSortType] = useState<"best" | "new" | "top" | "controversial" | "old">("best");
     const navigate = useNavigate();
 
     const fullname = data && data[0][0].name;
     
     useEffect(() => {
-        usePostDataFetcher(subreddit, id, title, sortType).then(response => {
-            setData(response.JSON);
-            setLoggedIn(response.loggedIn);
-            setLoading(false);
-        });
+        // Every time the user changes the Sort type for the comments,
+        // this hook will run
+        if (subreddit && id && title) {
+            // Fetches new data for the same post but in a different Sort type
+            usePostDataFetcher(subreddit, id, title, sortType).then(response => {
+                if (response) {
+                    setData(response.JSON);
+                    setLoggedIn(response.loggedIn);
+                    setLoading(false);
+                }
+            });
+        }
     }, [sortType])
     
     return (

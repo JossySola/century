@@ -1,5 +1,6 @@
 import React from "react";
 import { useLoaderData, useNavigate, useNavigation } from "react-router-dom";
+import { SVG, FeedLoader } from "../../types/types";
 import Preview from "../../molecules/Preview/Preview";
 import Account from "../../molecules/Account/Account";
 import Subreddit from "../../molecules/Subreddit/Subreddit";
@@ -7,67 +8,9 @@ import back_icon from "../../assets/icons/back_icon.svg";
 import loading from "../../assets/icons/loading_feed_light.svg";
 import spinner from "../../assets/icons/mobile_loading.png";
 import "./Feed.css";
- 
-interface Article {
-    author: string;
-    author_fullname: string;
-    created_utc: number;
-    downs: number;
-    id: string;
-    kind: "t3";
-    name: string;
-    num_comments: number;
-    permalink: string;
-    preview: object;
-    selftext: string;
-    selftext_html: string | null;
-    subreddit: string;
-    subreddit_id: string;
-    subreddit_name_prefixed: string;
-    title: string;
-    ups: number;
-    url: string;
-}
-interface _Account {
-    created_utc: number,
-    icon_img: string,
-    id: string,
-    is_blocked: boolean,
-    kind: "t2",
-    name: string,
-    snoovatar_img: string,
-    subreddit: object,
-    verified: boolean,
-}
-interface _Subreddit {
-    banner_background_color: string,
-    banner_background_image: string,
-    banner_img: string,
-    banner_size: Array<number>,
-    community_icon: string,
-    created_utc: number,
-    description_html: string,
-    display_name_prefixed: string,
-    header_img: string,
-    header_size: Array<number>,
-    header_title: string,
-    icon_img: string,
-    icon_size: Array<number>,
-    id: string,
-    key_color: string,
-    kind: "t5",
-    name: string,
-    primary_color: string,
-    public_description_html: string,
-    subscribers: number,
-    title: string,
-    url: string,
-}
-
-type Thing = Article | _Account | _Subreddit;
 
 export default function Feed () {
-    const data: any = useLoaderData();
+    const data = useLoaderData() as FeedLoader;
     const navigate = useNavigate();
     const navigation = useNavigation();
     const width = window.screen.width;
@@ -75,28 +18,38 @@ export default function Feed () {
     return (
         <>
             {
+                // If the width of the screen is < 600px, use the Spinner icon for loading, otherwise, the gray shadow
                 width <= 600 ? 
                 <div className="feed-spinner" style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
-                    <img src={spinner as unknown as string} />
+                    <img src={spinner as SVG as string} />
                 </div> : 
                 <div style={navigation.state === "loading" ? {display: ""} : {display: "none"}}>
-                    <img className="feed-loading" src={loading as unknown as string} />
+                    <img className="feed-loading" src={loading as SVG as string} />
                 </div>
             }
             
             <main id="feed" style={navigation.state === "loading" ? {display: "none"} : {display: ""}}>
                 {data.error && <span style={{color: "rgb(252, 71, 46)"}}>Authorizing the Web App to connect to Reddit is required to Search.</span>}
+                {   
+                    /* When the user searches something, the loader will return: elements and pathname as properties
+                       This will display a "Back" button to navigate back as well as a header to display the name of
+                       the Subreddit
+                    */
+                }
                 {data.pathname && 
                     <header>
                         <a onClick={e => {
                             e.preventDefault();
                             navigate(-1);
-                        }} style={{gridArea: "back"}}><img src={back_icon as unknown as string} alt="Go Back" aria-label="Go Back"/></a>
+                        }} style={{gridArea: "back"}}><img src={back_icon as SVG as string} alt="Go Back" aria-label="Go Back"/></a>
                         <h2 style={{gridArea: "subreddit"}}>{data.pathname}</h2>
                     </header>
                 }
                 {
-                    data.elements && data.elements.map((element: Thing) => {
+                    // Maps through the elements and according to their "kind", it returns either a Preview, Subreddit or Account
+                }
+                {
+                    data.elements && data.elements.map((element) => {
                         if (element.kind === "t3" as "t3") {
                             if (element.author !== "[deleted]") {
                                 return <Preview payload={element} key={element.id}/>
