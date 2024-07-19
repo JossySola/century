@@ -115,9 +115,7 @@
     width: 100%;
   }
   #feed header {
-    grid-template-areas: 
-    "back"
-    "subreddit";
+    display: flex;
     width: 100%;
     font-size: 1.2rem;
     justify-content: center;
