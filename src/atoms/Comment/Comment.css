@@ -5,6 +5,7 @@
     text-align: left;
     align-items: center;
     justify-content: left;
+    min-width: 260px;
 }
 .comment img {
     grid-area: img;
