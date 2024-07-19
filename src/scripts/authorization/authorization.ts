@@ -1,9 +1,9 @@
-const generateStr = (length: number) => {
+const generateStr = (length: number): string => {
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~-_';
     const values = crypto.getRandomValues(new Uint8Array(length));
     return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
-function isValid (char: number) {
+function isValid (char: number): number {
     if(char > 45 && char < 48) {
         char += 2;
     } else if(char > 57 && char < 65) {
@@ -21,7 +21,7 @@ function isValid (char: number) {
     }
     return char;
 }
-const encrypt = (str: string) => {
+const encrypt = (str: string): Array<string> => {
     let newStr: Array<string> = [];
     const len = str.length;
     const numPlaces = Math.floor(Math.random()*len+1);

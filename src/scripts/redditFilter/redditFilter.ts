@@ -1,78 +1,10 @@
-interface Listing {
-    kind: string,
-    data: {
-        children: any[],
-        author: string,
-        author_fullname: string,
-        banner_background_color: string,
-        banner_background_image: string,
-        banner_img: string,
-        banner_size: Array<number>,
-        body_html: string,
-        community_icon: string,
-        created_utc: number,
-        description_html: string,
-        depth: number,
-        display_name_prefixed: string,
-        downs: number,
-        header_img: string,
-        header_size: Array<number>,
-        header_title: string,
-        icon_img: string,
-        icon_size: Array<number>,
-        id: string,
-        is_blocked: boolean,
-        key_color: string,
-        likes: boolean | null,
-        link_id: string,
-        name: string,
-        num_comments: number,
-        permalink: string,
-        preview: {
-            enabled: boolean,
-            images: [
-                {
-                    id: string,
-                    resolutions: [
-                        {
-                            height: number,
-                            url: string,
-                            width: number,
-                        }
-                    ],
-                    source: {
-                        height: number,
-                        url: string,
-                        width: number,
-                    },
-                    variants: object
-                }
-            ]
-        },
-        primary_color: string,
-        public_description_html: string,
-        selftext: string,
-        selftext_html: string,
-        snoovatar_img: string,
-        subreddit: string,
-        subreddit_id: string,
-        subreddit_name_prefixed: string,
-        subscribers: number,
-        title: string,
-        parent_id: string,
-        replies: number,
-        send_replies: boolean,
-        ups: number,
-        url: string,
-        verified: boolean
-    }
-}
+import { Thing, Listing } from "../../types/types";
 
-export default function redditFilter (obj: Listing) {
-    if (obj.kind) {
+export default function redditFilter (obj: Thing | Listing | Array<Listing>) {
+    if (!Array.isArray(obj)) {
         switch (obj.kind) {
             case 'Listing': {
-                const map = obj.data.children.map(child => redditFilter(child));
+                const map = obj.data.children.map((child: Thing) => redditFilter(child));
                 return map;
             }
             case 't1': {
@@ -179,9 +111,6 @@ export default function redditFilter (obj: Listing) {
                     url
                 }
             }
-            case 't4': {
-                // Message
-            }
             case 't5': {
                 // Subreddit
                 const {
@@ -232,18 +161,15 @@ export default function redditFilter (obj: Listing) {
                     url,
                 }
             }
-            case 't6': {
-                // Award
-            }
             case 'more': {
-                return;
+                return null;
             }
             default: {
-                throw new Error(`The object kind: ${obj.kind} was not found in the Switch cases.`)
+                throw new Error(`The object kind was not found in the Switch cases.`);
             }
         }
     } else if (Array.isArray(obj)) {
-        // Possible infinite loop
-        return obj.map(child => redditFilter(child));
+        // Condition when the argument is an Array of two Listings (objects). Commonly seen when the API returns one listing with the post data and the second listing with the post comments
+        return obj.map((child) => redditFilter(child));
     }
 }
