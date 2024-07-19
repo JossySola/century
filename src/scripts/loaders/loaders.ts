@@ -27,12 +27,12 @@ export async function index({request}) {
                 if (temporal !== null) {
                     const response = await search(temporal);
                     const elements = redditFilter(response);
-                    window.localStorage.removeItem("query");
+                    window.sessionStorage.removeItem("query");
                     return { elements };
                 }
                 if (link !== null) {
                     const temp = link;
-                    window.localStorage.removeItem("tempLink");
+                    window.sessionStorage.removeItem("tempLink");
                     return redirect(`http://localhost:5173/${temp}/`);
                 }
             }
