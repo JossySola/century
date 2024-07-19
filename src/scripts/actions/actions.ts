@@ -2,6 +2,7 @@ import {comment as commentAction} from "../comment/comment";
 import getAuthorization from "../authorization/authorization";
 
 export async function submitComment ({request}) {
+    // This function is called by React Router as an action
     const data = Object.fromEntries(await request.formData());
     const url = new URL(request.url);
     const pathname = url.pathname;
@@ -24,7 +25,27 @@ export async function submitComment ({request}) {
 
     } catch (error) {
         console.error(error);
-        window.localStorage.setItem("tempLink", link);
+        window.sessionStorage.setItem("tempLink", link);
         getAuthorization();
+    }
+}
+export async function getCurrentUser (): Promise<string | null| undefined> {
+    // This function returns the name of the current logged in Reddit user
+    const access_token = window.localStorage.getItem("access_token");
+    try {
+        const me = await fetch(`https://oauth.reddit.com/api/me.json`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        });
+        const mejson = await me.json();
+        
+        if (me.ok) {
+            window.sessionStorage.setItem("me", mejson.data.name);
+            return mejson.data.name;
+        }
+    } catch (e) {
+        return null;
     }
 }
