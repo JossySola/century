@@ -280,6 +280,9 @@ button:focus-visible {
   .content {
     background-color: #f9f9f9 !important;
   }
+  #submit, .submit {
+    border: 1px solid var(--darkmode-secondary-foreground);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
