@@ -46,9 +46,13 @@ export default function Footer () {
                     <br></br>
                     The collection and usage of data will always be for the Reddit platform communication purpose, if applicable.
                     <br></br><br></br>
-                    No personal information is required by this Web Application, unless the User decides to write a comment in a post, which will direct them to the Reddit's Authorization page. The User may be asked for their Reddit username and password in order to give the Web Application permission to take actions (i.e. write and post a comment) in their behalf. However, any Authentication and/or Authorization process that requires sensitive data from the User will always take place on Reddit's official platform.
+                    No personal information is required by this Web Application, unless the User decides to take some actions such as submitting a comment, upvoting or downvoting a post or comment or searching, which will direct them to the Reddit's Authorization page.
                     <br></br><br></br>
-                    The Web Application does not store any data either externally (as it is not connected to any database) or locally. There may be interaction with the local cache by the Web Application's coding toolkit, targeting the performance of the Web Application and its functionality.
+                    The User may be asked for their Reddit username and password to sign in, or sign up if the User does not have a Reddit account in order to give the Web Application permission to take actions (i.e. write and post a comment) on their behalf. However, any Authentication and/or Authorization process that requires any sensitive data from the User will always take place on Reddit's official platform.
+                    <br></br><br></br>
+                    The Web Application only stores data locally in cache, meaning there is no database where data is stored but only stored in the User’s device. The data saved in local storage is the access token and state token. The data saved in session storage is text such as a query the User typed to search before being redirected to the Reddit Authorization page, the URL path the User was at before being redirected to the Reddit Authorization page and variables referencing PNG images. The data stored in cache is data fetched from Reddit such as user profile images, posts and comments.
+                    <br></br><br></br>
+                    The Web App deleted its cache every time is visited as well as every 15 minutes. The session storage is cleared once the data is consumed by the Web App or when the page session ends (A page session lasts as long as the tab or the browser is open, and survives over page reloads and restores). The local storage has no expiration time, however, it can be cleared by the User, the way of cleaning this data depends on the browser but usually it’s done by clearing the browser data and/or cookies.
                 </details>
                 <details>
                     <summary>Terms of Use</summary>
