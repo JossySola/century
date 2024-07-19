@@ -53,13 +53,13 @@ export default async function getAuthorization () {
     window.localStorage.setItem("state", state);
 
     const endpoint = new URL("https://www.reddit.com/api/v1/authorize");
-    const client_id = "l5_-5TT-vFgloN4_53HJoQ";
+    const client_id = import.meta.env['VITE_CLIENT_ID'];
 
     const params: Params = {
         client_id: client_id,
         response_type: "code",
         state: state,
-        redirect_uri: "https://www.centurytimes.jossysola.com/",
+        redirect_uri: "https://centurytimes.jossysola.com/",
         duration: "temporary" as "temporary",
         scope: "edit identity read submit vote",
     }

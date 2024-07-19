@@ -12,12 +12,11 @@ export default async function getAccessToken (stateSent: string, stateReceived: 
         body: new URLSearchParams({
             grant_type: "authorization_code",
             code,
-            redirect_uri: "https://www.centurytimes.jossysola.com/"
+            redirect_uri: "https://centurytimes.jossysola.com/"
         })
     }
 
     if (stateSent === stateReceived) {
-        console.log(client_secret)
         const body = await fetch("https://www.reddit.com/api/v1/access_token", payload);
         const response = await body.json();
         window.localStorage.setItem("access_token", response.access_token)
