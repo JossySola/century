@@ -1,9 +1,11 @@
 import React from "react"
 import Comment from "../../atoms/Comment/Comment"
 import { getRepliesAmount } from "../Comments/Comments"
+import { CommentOnlyData } from "../../types/types"
 import "./Replies.css"
- 
-export default function Replies ({t1}) {
+
+type Props = {t1: Array<CommentOnlyData>}
+export default function Replies ({t1}: Props) {
     
     return (
         <section className="replies">
@@ -22,7 +24,10 @@ export default function Replies ({t1}) {
                         ups={comment.ups}
                         name={comment.name}
                         replies={getRepliesAmount(comment)}
-                        more={comment.replies && comment.replies}/>
+                        more={comment.replies ? comment.replies : ""}
+                        self={false}
+                        comments={undefined}
+                        setComments={undefined}/>
                     }
                 })}
             </div>
