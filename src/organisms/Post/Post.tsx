@@ -51,7 +51,7 @@ export default function Post () {
             }
             {
                 loading && width <= 600 ?
-                    <img className="post-loading" src={spinner as SVG as string} /> :
+                    <img className="feed-spinner" src={spinner as SVG as string} /> :
                     null
             }
             {
