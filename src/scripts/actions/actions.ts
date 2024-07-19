@@ -24,7 +24,6 @@ export async function submitComment ({request}) {
         return response;
 
     } catch (error) {
-        console.error(error);
         window.sessionStorage.setItem("tempLink", link);
         getAuthorization();
     }
