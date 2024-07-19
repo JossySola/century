@@ -196,7 +196,7 @@ export interface More {
     kind: "more"
 }
 export interface FeedLoader {
-    elements: Array<ThingOnlyData>,
+    elements: Array<ThingOnlyData> | Array<Thing>,
     error?: null | string,
     url?: string,
     pathname?: string
