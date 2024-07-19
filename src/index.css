@@ -111,7 +111,10 @@
   footer {
     width: 100%;
   }
-  .subreddit, .subreddit-header {
+  .subreddit {
+    width: 100%;
+  }
+  .subreddit-header {
     width: 100%;
   }
   #feed header {
