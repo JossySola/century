@@ -6,8 +6,8 @@ export default async function getAccessToken (stateSent: string, stateReceived: 
     const payload = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${encode}`
+            Authorization: `Basic ${encode}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
             grant_type: "authorization_code",
@@ -17,6 +17,7 @@ export default async function getAccessToken (stateSent: string, stateReceived: 
     }
 
     if (stateSent === stateReceived) {
+        console.log(client_secret)
         const body = await fetch("https://www.reddit.com/api/v1/access_token", payload);
         const response = await body.json();
         window.localStorage.setItem("access_token", response.access_token)
