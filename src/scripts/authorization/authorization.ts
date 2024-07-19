@@ -59,7 +59,7 @@ export default async function getAuthorization () {
         client_id: client_id,
         response_type: "code",
         state: state,
-        redirect_uri: "http://localhost:5173/",
+        redirect_uri: "https://www.centurytimes.jossysola.com/",
         duration: "temporary" as "temporary",
         scope: "edit identity read submit vote",
     }

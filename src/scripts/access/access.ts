@@ -12,7 +12,7 @@ export default async function getAccessToken (stateSent: string, stateReceived: 
         body: new URLSearchParams({
             grant_type: "authorization_code",
             code,
-            redirect_uri: "http://localhost:5173/"
+            redirect_uri: "https://www.centurytimes.jossysola.com/"
         })
     }
 
