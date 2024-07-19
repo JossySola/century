@@ -45,10 +45,12 @@ footer img {
 }
 .footer-madein {
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
+}
+.footer-madein img {
+    margin: 0
 }
 .footer-poweredwith {
     display: flex;
