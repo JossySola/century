@@ -15,7 +15,7 @@
 }
 #app-header {
   grid-area: header;
-  margin: 3rem 0 0 0;
+  margin-top: 15vh;
   width: 100%;
 }
 #app-outlet {
