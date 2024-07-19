@@ -116,6 +116,7 @@
   }
   #feed header {
     display: flex;
+    flex-flow: column wrap;
     width: 100%;
     font-size: 1.2rem;
     justify-content: center;
