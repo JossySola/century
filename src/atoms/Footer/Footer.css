@@ -16,10 +16,13 @@ footer img {
 .footer-technologies {
     display: flex;
     flex-flow: column;
-    border-bottom: 1px solid var(--darkmode-primary);
     width: fit-content;
     align-self: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.footer-icons {
+    border-radius: 1rem;
+    border: 1px solid var(--darkmode-primary);
 }
 .footer-madein {
     display: flex;

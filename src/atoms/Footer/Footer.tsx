@@ -23,7 +23,7 @@ export default function Footer () {
             <section className="footer-technologies">
 
                 <p>Technologies used</p>
-                <div>
+                <div className="footer-icons">
                     <a target="_blank" href="https://github.com/"><img src={github as SVG as string} alt="Github icon" title="Github"></img></a>
                     <a target="_blank" href="https://inkscape.org/"><img src={inkscape as SVG as string} alt="Inkscape icon" title="Inkscape"></img></a>
                     <a target="_blank" href="https://reactrouter.com/en/main"><img src={react_router as SVG as string} alt="React Router icon" title="React Router"></img></a>
