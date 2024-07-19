@@ -22,7 +22,7 @@ export default function Subreddit ({payload}: Props) {
                 {
                     // Render the Subreddit community's profile image, name, and a link to their Reddit page
                 }
-                <div className="subreddit-identity">
+                <div className="subreddit-identity" style={payload.banner_img ? {justifyContent: "center"} : {justifyContent: "left"}}>
                     {payload.icon_img && <img src={payload.icon_img} className="subreddit-icon" style={{
                         backgroundColor: payload.key_color,
                         borderRadius: "50%",
