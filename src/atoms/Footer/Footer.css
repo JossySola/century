@@ -8,6 +8,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color: white;
 }
 .footer-details {
     margin: 1.5rem 4rem 4rem 4rem;
