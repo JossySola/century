@@ -6,13 +6,11 @@ import './App.css'
 function App() {
   useEffect(() => {
     const timer = setInterval(() => {
-      console.log("App.jsx: Setting timer...")
       caches.keys().then(keys => {
         for (const key of keys) {
           const isOurCache = key.startsWith("century-");
           if (isOurCache) {
             caches.delete(key);
-            console.log("App.jsx: Cache deleted")
           }
         }
       })
