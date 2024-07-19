@@ -15,6 +15,7 @@ footer {
 }
 footer details {
     margin: 1rem;
+    cursor: pointer;
 }
 footer details a {
     text-decoration: underline;
