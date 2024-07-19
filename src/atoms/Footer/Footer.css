@@ -4,7 +4,7 @@ footer {
     height: 35vh;
     grid-area: footer;
     margin-top: 10vh;
-    padding: 1.5rem;
+    padding: 1.5rem 0 1.5rem 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
