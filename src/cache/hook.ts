@@ -13,11 +13,11 @@ export default async function fetchHandler(url: string, payload?: object) {
     let cachedData = await getCachedData(cacheName, url);
 
     if (cachedData) {
-        console.log("Cached data retrieved.");
+        //console.log("Cached data retrieved.");
         return cachedData;
     }
 
-    console.log("Fetching fresh data...");
+    //console.log("Fetching fresh data...");
 
     const cacheStorage = await caches.open(cacheName);
 
