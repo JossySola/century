@@ -1,22 +1,12 @@
 import React from "react"
+import { Preview } from "../../types/types"
 import "./Cover.css"
 
-interface Props {
-    preview: {
-        images: [
-            {
-                source: {
-                    height: number,
-                    url: string,
-                    width: number,
-                }
-            }
-        ]
-    } | null
-}
+
+type Props = { preview: Preview | null };
 export default function Cover ({preview}: Props) {
     const source = preview ? preview[0].source : "";
-    
+    // Used by the <Preview> component if there is a cover image available
     return (
         <>
         {
