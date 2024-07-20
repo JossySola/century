@@ -1,5 +1,5 @@
 export default function formatAmount (amount: number): string {
-    const amountAsString = amount.toString();
+    const amountAsString = amount !== null ? amount.toString() : "0";
     const length: number = amountAsString.length;
     let formatedAmount: string = "";
     
