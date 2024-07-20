@@ -18,6 +18,9 @@
   margin-top: 15vh;
   width: 100%;
 }
+.app-loading {
+  grid-area: header;
+}
 #app-outlet {
   grid-area: body;
   width: 100%;
