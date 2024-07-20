@@ -26,7 +26,7 @@ function App() {
   return (
     <>
       {
-        navigation.state === "loading" ? <img src={spinner} className='feed-spinner app-loading'/> : null
+        //navigation.state === "loading" ? <img src={spinner} className='feed-spinner app-loading'/> : null
       }
       <header id='app-header'>
         <div id='top-div'>
