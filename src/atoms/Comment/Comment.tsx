@@ -125,22 +125,6 @@ export default function Comment ({
                                 </a>
                             }
                         </div>
-                        {
-                            self && comments !== undefined && setComments !== undefined ? 
-                            <div className="interactions-right" style={{margin: "1rem"}}>
-                                <button type="button" onClick={(e) => {
-                                    e.preventDefault();
-                                    del(name);
-                                    /*
-                                    const newArr = comments.filter((comment) => {
-                                        console.log(comment)
-                                        return comment.key !== id
-                                    });
-                                    setComments(newArr)
-                                    */
-                                }}><img src={bin as SVG as string}  alt="delete comment"/></button>
-                            </div> : null
-                        }
                     </div>
                 </div>
             </div>
@@ -150,3 +134,22 @@ export default function Comment ({
         </div>
     )
 }
+
+/*
+{
+    self && comments !== undefined && setComments !== undefined ? 
+    <div className="interactions-right" style={{margin: "1rem"}}>
+        <button type="button" onClick={(e) => {
+            e.preventDefault();
+            del(name);
+            
+            const newArr = comments.filter((comment) => {
+                console.log(comment)
+                return comment.key !== id
+            });
+            setComments(newArr)
+            
+        }}><img src={bin as SVG as string}  alt="delete comment"/></button>
+    </div> : null
+}
+*/
