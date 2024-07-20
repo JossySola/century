@@ -37,6 +37,7 @@ After 6 months of working in this project, which is a long time, I couldn't keep
 4. Adding CSS animations so the render changes don't look stiff
 5. Follow a Subreddit community
 6. Save an article/link
+7. Refactor components as some of them don't follow SRP
 
 
 [^1]: Term part of the [**Atomic Design**](https://atomicdesign.bradfrost.com/chapter-2/) technique.
