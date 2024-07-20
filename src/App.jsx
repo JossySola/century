@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { Form, Outlet, Link } from 'react-router-dom'
+import { Form, Outlet, Link, useNavigation } from 'react-router-dom'
 import _Date from './atoms/Date/Date'
 import Footer from './atoms/Footer/Footer'
+import spinner from './assets/icons/mobile_loading.png'
 import './App.css'
 
 function App() {
@@ -20,8 +21,13 @@ function App() {
     return () => clearInterval(timer);
   }, []);
   
+  const navigation = useNavigation();
+  
   return (
     <>
+      {
+        navigation.state === "loading" ? <img src={spinner} className='feed-spinner'/> : null
+      }
       <header id='app-header'>
         <div id='top-div'>
           <_Date/>
