@@ -38,7 +38,7 @@ export default function Footer () {
             <details className="footer-details">
                 <summary>Privacy Policy & Terms of Use</summary>
                 <br></br>
-                These Terms of Use and Privacy Policy (or "Terms") govern your use of this website, (hereafter, "Web Application" which refers to the URI: <a href="https://www.centurytimes.jossysola.com/">www.centurytimes.jossysola.com</a>). You (hereafter, "the User") agree with these Terms by accessing and using the Web Application's features.
+                These Terms of Use and Privacy Policy (or "Terms") govern your use of this website, (hereafter, "Web Application" which refers to the URI: <a href="https://centurytimes.jossysola.com">www.centurytimes.jossysola.com</a>). You (hereafter, "the User") agree with these Terms by accessing and using the Web Application's features.
                 <br></br>
 
                 <details>
@@ -62,7 +62,7 @@ export default function Footer () {
             </details>
 
             <div className="footer-madein">
-                <p>Made with ❤️ in Mexico</p>
+                <p>Made with ❤️ in México</p>
                 <img src={mexico as SVG as string} alt="Mexico seal"></img>
             </div>
             
