@@ -1,6 +1,6 @@
 import getAuthorization from "../authorization/authorization";
 const base = "https://oauth.reddit.com/api";
-const access_token: string | null = window.localStorage.getItem("access_token");
+const access_token: string | null = window.sessionStorage.getItem("access_token");
 
 export async function comment (thing_id: string, text: string) {
     const url = `${base}/comment`;
