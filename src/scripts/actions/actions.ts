@@ -28,15 +28,16 @@ export async function submitComment ({request}) {
     }
     
     try {
-        const response = await commentAction(parent, comment);
-        if (response.ok === false) {
-            throw new Error("Failed fetch from 'submitComment' action.");
+        const body = await commentAction(parent, comment);
+        const response = await body.json();
+        if (response.ok) {
+            return response;
         }
-        return response;
-
     } catch (error) {
+        window.sessionStorage.removeItem("tempLink");
         window.sessionStorage.setItem("tempLink", link);
         getAuthorization();
+        return null
     }
 }
 export async function getCurrentUser (): Promise<string | null| undefined> {
