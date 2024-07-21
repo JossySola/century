@@ -28,12 +28,7 @@ export async function submitComment ({request}) {
     }
     
     try {
-        const response = await commentAction(parent, comment);
-        if (response) {
-            return response;
-        } else {
-            return null;
-        }
+        return await commentAction(parent, comment);
     } catch (error) {
         window.sessionStorage.removeItem("tempLink");
         window.sessionStorage.setItem("tempLink", link);
