@@ -27,7 +27,6 @@ export default function Submit ({fullname, setComments, comments}: Props) {
     return (
         <>
             <Form id="comment-form" role="comment" method="post" className="submit-form" onSubmit={(e) => {
-                    e.preventDefault();
                     // If User submits the Form, a <Comment> component is created
                     // Then using the React hook "setComments", the new component
                     // is added to the comments array
