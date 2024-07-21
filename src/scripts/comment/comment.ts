@@ -1,8 +1,9 @@
 import getAuthorization from "../authorization/authorization";
 const base = "https://oauth.reddit.com/api";
-const access_token: string | null = window.sessionStorage.getItem("access_token");
+
 
 export async function comment (thing_id: string, text: string) {
+    const access_token: string | null = window.localStorage.getItem("access_token");
     const url = `${base}/comment`;
     const payload = {
         method: 'POST',
@@ -23,8 +24,8 @@ export async function comment (thing_id: string, text: string) {
     try {
         const body = await fetch(url, payload);
         const response = await body.json();
-
-        if (response.ok) {
+        
+        if (response) {
             return response;
         }
     } catch (e) {
@@ -34,6 +35,7 @@ export async function comment (thing_id: string, text: string) {
 }
 
 export async function del (id: string) {
+    const access_token: string | null = window.localStorage.getItem("access_token");
     const url = `${base}/del`;
     const payload = {
         method: 'POST',
@@ -59,6 +61,7 @@ export async function del (id: string) {
 }
 
 export async function edit (thing_id: string, text: string) {
+    const access_token: string | null = window.localStorage.getItem("access_token");
     const url = `${base}/editusertext`;
     const payload = {
         method: 'POST',

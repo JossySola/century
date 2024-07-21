@@ -28,9 +28,8 @@ export async function submitComment ({request}) {
     }
     
     try {
-        const body = await commentAction(parent, comment);
-        const response = await body.json();
-        if (response.ok) {
+        const response = await commentAction(parent, comment);
+        if (response) {
             return response;
         }
     } catch (error) {
