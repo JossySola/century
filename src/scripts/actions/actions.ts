@@ -31,6 +31,8 @@ export async function submitComment ({request}) {
         const response = await commentAction(parent, comment);
         if (response) {
             return response;
+        } else {
+            return null;
         }
     } catch (error) {
         window.sessionStorage.removeItem("tempLink");
