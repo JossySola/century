@@ -1,12 +1,23 @@
 import {comment as commentAction} from "../comment/comment";
 import getAuthorization from "../authorization/authorization";
 
+// This function is called by React Router as an action
 export async function submitComment ({request}) {
-    // This function is called by React Router as an action
+    
+    // request is an object with specific properties such as: 
+    // body, bodyUsed, cache, credentials, destination, headers, integrity, isHistoryNavigation, keepalive, method (POST, GET), mode, redirect, referrer, referrerPolicy, signal, targetAddressSpace, url
     const data = Object.fromEntries(await request.formData());
+    // Object.fromEntries transforms a list of key-value pairs into an object
+    // formData() method of the Request interface reads the request body and returns it as a promise that resolves with a FormData object
+    // The FormData interface provides a way to construct a set of key/value pairs representing form fields and their values
+
     const url = new URL(request.url);
+    // example: http://localhost:5173/r/gaming/comments/1e8170e/10_years_ago_the_beta_for_destiny_1/
     const pathname = url.pathname;
+    // example: /r/gaming/comments/1e8170e/10_years_ago_the_beta_for_destiny_1/
     const link = pathname.slice(1,pathname.length-1);
+    // example: r/gaming/comments/1e8170e/10_years_ago_the_beta_for_destiny_1
+    
     const comment = data['comment'];
     const parent = data['fullname'];
     const input= document.getElementById("submit-comment") as HTMLInputElement;
