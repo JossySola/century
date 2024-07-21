@@ -26,6 +26,15 @@ export async function submitComment ({request}) {
     if (!data['comment']) {
         return null;
     }
+
+    const response = await commentAction(parent, comment);
+
+    if (response) {
+        return response;
+    } else {
+        return null;
+    }
+    /*
     try {
         return await commentAction(parent, comment);
     } catch (error) {
@@ -33,6 +42,7 @@ export async function submitComment ({request}) {
         window.sessionStorage.setItem("tempLink", link);
         return getAuthorization();
     }
+        */
 }
 export async function getCurrentUser (): Promise<string | null| undefined> {
     // This function returns the name of the current logged in Reddit user
