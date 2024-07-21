@@ -11,9 +11,8 @@ export async function index({request}) {
     const error = pathname.searchParams.get("error");
     const stateSent = window.localStorage.getItem("state");
     const stateReceived = pathname.searchParams.get("state");
-    const temporal = window.localStorage.getItem("query");
-    const link = window.localStorage.getItem("tempLink");
-    
+    const temporal = window.sessionStorage.getItem("query");
+    const link = window.sessionStorage.getItem("tempLink");
     if (query) {
         const response = await search(query);
         const elements = redditFilter(response);
@@ -21,7 +20,6 @@ export async function index({request}) {
     }
     if (code) {
         if (stateSent && stateReceived) {
-            window.localStorage.setItem("access_token", code);
             const access = await getAccessToken(stateSent, stateReceived, code);
             if (access) {
                 if (temporal !== null) {
