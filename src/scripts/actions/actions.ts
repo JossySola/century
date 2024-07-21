@@ -26,14 +26,12 @@ export async function submitComment ({request}) {
     if (!data['comment']) {
         return null;
     }
-    
     try {
         return await commentAction(parent, comment);
     } catch (error) {
         window.sessionStorage.removeItem("tempLink");
         window.sessionStorage.setItem("tempLink", link);
-        getAuthorization();
-        return null
+        return getAuthorization();
     }
 }
 export async function getCurrentUser (): Promise<string | null| undefined> {
