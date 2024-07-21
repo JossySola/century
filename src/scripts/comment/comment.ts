@@ -78,4 +78,7 @@ export async function edit (thing_id: string, text: string) {
             thing_id,
         })
     }
+    const body = await fetch(url, payload);
+    const response = await body.json();
+    return response;
 }
