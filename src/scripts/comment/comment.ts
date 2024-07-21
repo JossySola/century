@@ -20,21 +20,17 @@ export async function comment (thing_id: string, text: string) {
         })
     }
     
-    const body = await fetch(url, payload);
-    const response = await body.json();
+    try {
+        const body = await fetch(url, payload);
+        const response = await body.json();
 
-    if (response.ok === false) {
-        if (response.success === false) throw new Error("Unsuccessful request from 'comment' function.");
-        if (response.json && response.json.errors.length > 0) {
-            console.error({
-                error: response.json.errors[0][0],
-                msg: response.json.errors[0][1]
-            });
-            throw new Error(`${response.json.errors[0][0]}: ${response.json.errors[0][1]}`);
+        if (response.ok) {
+            return response;
         }
-        throw new Error("Failed request from 'comment' function.");
+    } catch (e) {
+        return null;
     }
-    return response;
+    
 }
 
 export async function del (id: string) {
