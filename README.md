@@ -24,6 +24,7 @@ In this second repository, I started to build the project from **top to bottom**
         2. `.stories.tsx`
         3. `.test.js`
         4. `.tsx`
+    
     However, in this project I used neither the Storybook file extension nor the Jest test one
 
 After 6 months of working in this project, which is a long time, I couldn't keep up with the flowchart update, however, at this ending moment I'll update it to see how robust it looks and somehow upload it here for everyone to see. [**See Flowchart**](https://github.com/JossySola/century/blob/main/flowchart.pdf)
