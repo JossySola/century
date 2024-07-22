@@ -39,6 +39,14 @@ After 6 months of working in this project, which is a long time, I couldn't keep
 6. Save an article/link
 7. Refactor components as some of them don't follow SRP
 
+PS: If you feel like collaborating and working on these features, you will have to get a `client_id` and `client_secret` from the [Reddit API Platform](https://www.reddit.com/prefs/apps) following the instructions, then create a `.env.local` in the root directory with the next variables:
+- **VITE_CLIENT_ID=<client_id>**
+- **VITE_CLIENT_SECRET=<client_secret>**
+
+In addition, push your work in a new branch with the name of the feature you want to work on, always linking it to this repository.
+
+#### Happy coding! 
+
 
 [^1]: Term part of the [**Atomic Design**](https://atomicdesign.bradfrost.com/chapter-2/) technique.
 [^2]: > *Many endpoints on Reddit use the same protocol for controlling pagination and filtering. These endpoints are called Listings [...]* [**Reddit API Documentation**](https://www.reddit.com/dev/api/)
