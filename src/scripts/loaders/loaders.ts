@@ -31,7 +31,7 @@ export async function index({request}) {
                 if (link !== null) {
                     const temp = link;
                     window.sessionStorage.removeItem("tempLink");
-                    return redirect(`https://www.centurytimes.jossysola.com/${temp}/`);
+                    return redirect(`https://centurytimes.jossysola.com/${temp}/`);
                 }
             }
         }
