@@ -2,7 +2,7 @@ import getAuthorization from "../authorization/authorization";
 const base = "https://oauth.reddit.com/api";
 
 
-export async function comment (thing_id: string, text: string) {
+export async function comment (thing_id: string, text: string, link: string) {
     const access_token: string | null = window.localStorage.getItem("access_token");
     const url = `${base}/comment`;
     const payload = {
@@ -29,7 +29,9 @@ export async function comment (thing_id: string, text: string) {
             return response;
         }
     } catch (e) {
-        return null;
+        window.sessionStorage.removeItem("tempLink");
+        window.sessionStorage.setItem("tempLink", link);
+        return getAuthorization();
     }
     
 }
