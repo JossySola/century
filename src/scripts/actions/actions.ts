@@ -1,5 +1,4 @@
 import {comment as commentAction} from "../comment/comment";
-import getAuthorization from "../authorization/authorization";
 
 // This function is called by React Router as an action
 export async function submitComment ({request}) {
@@ -23,26 +22,12 @@ export async function submitComment ({request}) {
     const input= document.getElementById("submit-comment") as HTMLInputElement;
     input ? input.value = "" : null;
     
-    if (!data['comment']) {
+    if (!comment) {
         return null;
     }
 
-    const response = await commentAction(parent, comment);
-
-    if (response) {
-        return response;
-    } else {
-        return null;
-    }
-    /*
-    try {
-        return await commentAction(parent, comment);
-    } catch (error) {
-        window.sessionStorage.removeItem("tempLink");
-        window.sessionStorage.setItem("tempLink", link);
-        return getAuthorization();
-    }
-        */
+    const response = await commentAction(parent, comment, link);
+    return response;
 }
 export async function getCurrentUser (): Promise<string | null| undefined> {
     // This function returns the name of the current logged in Reddit user
