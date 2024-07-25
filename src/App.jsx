@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Form, Outlet, Link, useNavigation } from 'react-router-dom'
+import { getUserlessAuthorization } from './scripts/authorization/authorization'
 import _Date from './atoms/Date/Date'
 import Footer from './atoms/Footer/Footer'
 import spinner from './assets/icons/mobile_loading.png'
@@ -20,6 +21,10 @@ function App() {
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    getUserlessAuthorization();
+  }, [])
   
   const navigation = useNavigation();
   
