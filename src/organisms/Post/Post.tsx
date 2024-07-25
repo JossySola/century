@@ -8,12 +8,13 @@ import back_icon from "../../assets/icons/back_icon.svg"
 import post_loading from "../../assets/icons/loading_post_light.svg";
 import spinner from "../../assets/icons/mobile_loading.png";
 import "./Post.css"
+import { getUserlessAuthorization } from "../../scripts/authorization/authorization";
+import { getCurrentUser } from "../../scripts/actions/actions";
 
 export default function Post () {
     const {subreddit, id, title} = useParams<string>();
     const [data, setData] = useState<Thing | undefined>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [sortType, setSortType] = useState<"best" | "new" | "top" | "controversial" | "old">("best");
     const navigate = useNavigate();
     const width = window.screen.width;
@@ -28,12 +29,21 @@ export default function Post () {
             usePostDataFetcher(subreddit, id, title, sortType).then(response => {
                 if (response) {
                     setData(response.JSON);
-                    setLoggedIn(response.loggedIn);
                     setLoading(false);
                 }
             });
         }
     }, [sortType])
+
+    useEffect(() => {
+        getCurrentUser().then(response => {
+            if (response === undefined || response === null) {
+                getUserlessAuthorization();
+            } else {
+                return;
+            }
+        })
+    }, [])
     
     return (
         <>
@@ -70,7 +80,7 @@ export default function Post () {
                     data && 
                     <>
                         <Post_Content t3={data[0][0]}/>
-                        <Comments t1={data[1]} t3={true} fullname={fullname} sortType={sortType} setSortType={setSortType} loggedIn={loggedIn}/>
+                        <Comments t1={data[1]} t3={true} fullname={fullname} sortType={sortType} setSortType={setSortType}/>
                     </>
                 }
             </article>
