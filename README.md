@@ -24,6 +24,7 @@ In this second repository, I started to build the project from **top to bottom**
         2. `.stories.tsx`
         3. `.test.js`
         4. `.tsx`
+    
     However, in this project I used neither the Storybook file extension nor the Jest test one
 
 After 6 months of working in this project, which is a long time, I couldn't keep up with the flowchart update, however, at this ending moment I'll update it to see how robust it looks and somehow upload it here for everyone to see. [**See Flowchart**](https://github.com/JossySola/century/blob/main/flowchart.pdf)
@@ -38,6 +39,14 @@ After 6 months of working in this project, which is a long time, I couldn't keep
 5. Follow a Subreddit community
 6. Save an article/link
 7. Refactor components as some of them don't follow SRP
+
+PS: If you feel like collaborating and working on these features, you will have to get a `client_id` and `client_secret` from the [Reddit API Platform](https://www.reddit.com/prefs/apps) following the instructions, then create a `.env.local` in the root directory with the next variables:
+- **VITE_CLIENT_ID=<client_id>**
+- **VITE_CLIENT_SECRET=<client_secret>**
+
+In addition, push your work in a new branch with the name of the feature you want to work on, always linking it to this repository.
+
+#### Happy coding! 
 
 
 [^1]: Term part of the [**Atomic Design**](https://atomicdesign.bradfrost.com/chapter-2/) technique.
