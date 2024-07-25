@@ -31,55 +31,55 @@ export async function index({request}) {
                 if (link !== null) {
                     const temp = link;
                     window.sessionStorage.removeItem("tempLink");
-                    return redirect(`https://centurytimes.jossysola.com/${temp}/`);
+                    return redirect(`http://centurytimes.jossysola.com/${temp}/`);
                 }
             }
         }
     }
 
-    const url = "https://www.reddit.com/r/worldnews.json?raw_json=1";
+    const url = "http://www.reddit.com/r/worldnews.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url, error};
 }
 export async function news() {
-    const url = "https://www.reddit.com/r/worldnews.json?raw_json=1";
+    const url = "http://www.reddit.com/r/worldnews.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url};
 }
 export async function gaming() {
-    const url = "https://www.reddit.com/r/gaming.json?raw_json=1";
+    const url = "http://www.reddit.com/r/gaming.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url};
 }
 export async function space() {
-    const url = "https://www.reddit.com/r/space.json?raw_json=1";
+    const url = "http://www.reddit.com/r/space.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url};
 }
 export async function sports() {
-    const url = "https://www.reddit.com/r/sports.json?raw_json=1";
+    const url = "http://www.reddit.com/r/sports.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url};
 }
 export async function science() {
-    const url = "https://www.reddit.com/r/science.json?raw_json=1";
+    const url = "http://www.reddit.com/r/science.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
     return {elements, url};
 }
 export async function tech() {
-    const url = "https://www.reddit.com/r/technology.json?raw_json=1";
+    const url = "http://www.reddit.com/r/technology.json?raw_json=1";
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
     
@@ -88,7 +88,7 @@ export async function tech() {
 export async function subreddit({ request }) {
     const currentURL = new URL(request.url);
     const pathname = currentURL.pathname;
-    const url = `https://www.reddit.com${pathname}.json?raw_json=1`;
+    const url = `http://www.reddit.com${pathname}.json?raw_json=1`;
     const feed = await fetchHandler(url);
     const elements = redditFilter(feed);
 
@@ -96,7 +96,7 @@ export async function subreddit({ request }) {
 }
 export async function post() {
     const access_token = window.localStorage.getItem("access_token");
-    const me = await fetch(`https://oauth.reddit.com/api/me.json`, {
+    const me = await fetch(`http://oauth.reddit.com/api/me.json`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${access_token}`
