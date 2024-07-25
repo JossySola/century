@@ -190,7 +190,7 @@ export function useFeedData(loader) {
     return data;
 }
 
-type hookOutput = {JSON: Thing, loggedIn: boolean};
+type hookOutput = {JSON: Thing};
 export async function usePostDataFetcher(subreddit: string, id: string, title: string, sort: string): Promise<hookOutput | undefined> {
     
     let loggedIn = false;
@@ -198,7 +198,7 @@ export async function usePostDataFetcher(subreddit: string, id: string, title: s
     const publicEndpoint = `https://www.reddit.com/r/${subreddit}/comments/${id}/${title}.json`;
     const privateEndpoint = sort === "reply" || sort === "del" ? `https://oauth.reddit.com/comments/${id}/?sort=new` : `https://oauth.reddit.com/comments/${id}/?sort=${sort}`;
     
-    const privatePayload = {
+    const payload = {
         method: "GET",
         headers: {
             Authorization: `Bearer ${access_token}`,
@@ -207,24 +207,24 @@ export async function usePostDataFetcher(subreddit: string, id: string, title: s
     }
 
     try {
-        const body = await fetch(privateEndpoint, privatePayload);
+        const body = await fetch(privateEndpoint, payload);
         const response = await body.json();
         // The expected response from either of the URL endpoints above is an array with two objects
         // or in this case, two Listings. [t3, t1]
         if (response.length === 2 && typeof response[0] === "object" && typeof response[1] === "object") {
             loggedIn = true;
             const JSON = redditFilter(response);
-            return {JSON, loggedIn};
+            return {JSON};
         } else {
             throw new Error("Unauthorized");
         }
     } catch(e) {
-        const body = await fetch(publicEndpoint);
+        const body = await fetch(publicEndpoint, payload);
         const response = await body.json();
 
         if(response) {
             const JSON = redditFilter(response);
-            return {JSON, loggedIn};
+            return {JSON};
         }
     }
 }
