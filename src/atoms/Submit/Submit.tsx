@@ -3,6 +3,7 @@ import { Form } from "react-router-dom"
 import { getCurrentUser } from "../../scripts/actions/actions"
 import Comment from "../../atoms/Comment/Comment"
 import "./Submit.css"
+import getAuthorization from "../../scripts/authorization/authorization"
  
 interface Props {
     fullname: string,
@@ -48,6 +49,8 @@ export default function Submit ({fullname, setComments, comments}: Props) {
                     
                     if (me) {
                         setComments((prev) => [comment, ...prev])
+                    } else {
+                        getAuthorization();
                     }
                     
                 }}>
