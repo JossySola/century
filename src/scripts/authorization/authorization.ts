@@ -75,3 +75,32 @@ export default async function getAuthorization () {
     window.location.href = endpoint.toString();
     // Replaces the current URL the user is at with the endpoint URL as a string
 }
+
+export async function getUserlessAuthorization() {
+    const endpoint = "https://www.reddit.com/api/v1/access_token";
+    const client_id = import.meta.env['VITE_CLIENT_ID'];
+    const client_secret = import.meta.env['VITE_CLIENT_SECRET'];
+    const encode = window.btoa(client_id + ':' + client_secret);
+    const payload = {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${encode}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            grant_type: "client_credentials",
+            scope: "*"
+        })
+    }
+
+    try {
+        const body = await fetch(endpoint, payload);
+        const response = await body.json();
+        
+        window.localStorage.setItem("access_token", response.access_token);
+        return response.access_token;
+    } catch (error) {
+        console.error(error)
+        return false;
+    }
+}
