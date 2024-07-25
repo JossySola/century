@@ -165,7 +165,7 @@ export default function redditFilter (obj: Thing | Listing | Array<Listing>) {
                 return null;
             }
             default: {
-                throw new Error(`The object kind was not found in the Switch cases.`);
+                throw new Error(`The object kind ${obj.kind} was not found in the Switch cases.`);
             }
         }
     } else if (Array.isArray(obj)) {
