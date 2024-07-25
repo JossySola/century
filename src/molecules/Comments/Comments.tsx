@@ -12,10 +12,9 @@ interface Props {
     fullname: string,
     sortType: string,
     setSortType: React.Dispatch<React.SetStateAction<string>>,
-    loggedIn: boolean
 }
 type stateArray = Array<React.JSX.Element>;
-export default function Comments ({t1, t3, fullname, sortType, setSortType, loggedIn}: Props) {
+export default function Comments ({t1, t3, fullname, sortType, setSortType}: Props) {
     const scrollPositionRef = useRef(0);
     const containerRef = useRef(null);
     const [comments, setComments] = useState<stateArray>([]);
@@ -128,7 +127,7 @@ export default function Comments ({t1, t3, fullname, sortType, setSortType, logg
         <>
             <div id="comments-sort">
             {
-                loggedIn ? 
+                me ? 
                     <>
                         <label>Sort by:</label>
                         <select name="sorting" id="comments-selection" defaultValue={sortType} aria-label="Select how the comments are sorted" onChange={() => {
