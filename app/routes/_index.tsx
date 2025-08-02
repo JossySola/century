@@ -3,7 +3,7 @@ import type { Route } from "./+types/_index";
 import { userContext } from "../context";
 
 export async function loader({ context }: Route.LoaderArgs) {
-    console.log(context.get(userContext))
+    //console.log(context.get(userContext))
 }
 
 export default function Main({ loaderData }: Route.ComponentProps) {
