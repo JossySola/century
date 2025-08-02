@@ -1,0 +1,1 @@
+import{w as t,p as s,O as o,S as r}from"./chunk-C37GKA54-uaW3nMWz.js";const x=t(function(){return s.jsxs("html",{children:[s.jsx("head",{}),s.jsxs("body",{children:[s.jsx(o,{}),s.jsx(r,{})]})]})});export{x as default};
