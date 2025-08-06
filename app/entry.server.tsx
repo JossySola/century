@@ -13,7 +13,7 @@ export default function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   routerContext: EntryContext,
-  loadContext: unstable_RouterContextProvider
+  loadContext: AppLoadContext
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
