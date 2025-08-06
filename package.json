@@ -14,13 +14,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@clerk/react-router": "^1.8.9",
     "@heroui/react": "^2.8.0-beta.15",
+    "@heroui/theme": "^2.4.20",
     "@react-router/dev": "^7.7.1",
     "@react-router/fs-routes": "^7.7.1",
     "@react-router/node": "^7.7.1",
     "@react-router/remix-routes-option-adapter": "^7.7.1",
     "@react-router/serve": "^7.7.1",
+    "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
     "dotenv": "^16.6.1",
     "framer-motion": "^12.23.12",
