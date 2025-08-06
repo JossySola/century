@@ -3,10 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
-import { authMiddleware } from "./middleware/auth";
 
-
-export const unstable_middleware = [authMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   
 }
