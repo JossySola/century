@@ -4,4 +4,7 @@ export default {
   buildDirectory: "build",
   ssr: true,
   basename: "/",
+  future: {
+    unstable_middleware: true,
+  },
 } satisfies Config;
