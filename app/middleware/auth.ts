@@ -1,4 +1,4 @@
-/*
+
 import { type unstable_RouterContext } from "react-router";
 
 type Context = {
@@ -41,4 +41,4 @@ export const authMiddleware = async (
     } else {
         return response;
     }
-}*/
+}
