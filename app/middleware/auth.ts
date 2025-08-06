@@ -1,12 +1,11 @@
-import { type Access } from "../sessions.server";
-import { userContext } from "../context";
+
 import { type unstable_RouterContext } from "react-router";
 
 type Context = {
-    set: (context: unstable_RouterContext, object: Access) => void,
-    get: () => Access,
+    set: (context: unstable_RouterContext, object: unknown) => void,
+    get: () => void,
 }
-let userlessToken: Access = {
+let userlessToken = {
     "access_token": "",
     "token_type": "bearer",
     "expires_in": 0,
@@ -17,8 +16,8 @@ export const authMiddleware = async (
     { request, context }: { request: Request, context: Context },
     next: () => Promise<Response>
 ) => {
-    const access_token = request.headers.get("access_token");
-
+    const access_token = request.headers.get("userless_reddit");
+    const response = await next();
     if (!access_token) {
         const client_id = process.env.VITE_CLIENT_ID;
         const client_secret = process.env.VITE_CLIENT_SECRET;
@@ -36,9 +35,10 @@ export const authMiddleware = async (
                 }),
             });
             userlessToken = await request.json();
-            context.set(userContext, userlessToken);
+            response.headers.append("userless_reddit", "p");
+            return response;
         }
     } else {
-        return next();
+        return response;
     }
 }
