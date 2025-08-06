@@ -35,7 +35,7 @@ export const authMiddleware = async (
                 }),
             });
             userlessToken = await request.json();
-            response.headers.append("userless_reddit", "p");
+            response.headers.append("userless_reddit", userlessToken.access_token.toString());
             return response;
         }
     } else {
