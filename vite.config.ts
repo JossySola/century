@@ -7,7 +7,4 @@ export default defineConfig({
     reactRouter(),
     tailwindcss(),
   ],
-  build: {
-    sourcemap: true,
-  },
 });
