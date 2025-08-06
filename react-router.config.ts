@@ -6,7 +6,4 @@ export default {
   ssr: true,
   basename: "/",
   presets: [vercelPreset()],
-  future: {
-    unstable_middleware: true,
-  },
 } satisfies Config;
