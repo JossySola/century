@@ -1,0 +1,15 @@
+{
+  "D:/projects/century/app/app.css": {
+    "file": "assets/app-BqWhL5zo.css",
+    "src": "D:/projects/century/app/app.css"
+  },
+  "virtual:react-router/server-build": {
+    "file": "index.js",
+    "name": "server-build",
+    "src": "virtual:react-router/server-build",
+    "isEntry": true,
+    "assets": [
+      "assets/app-BqWhL5zo.css"
+    ]
+  }
+}

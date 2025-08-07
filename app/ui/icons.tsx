@@ -1,4 +1,3 @@
-"use client"
 export function MenuAlt({ height = 16, width = 16, color = "currentColor" }) {
     return (
         <svg 

@@ -1,5 +1,4 @@
-"use client"
-import { Card, CardBody, CardFooter, CardHeader, Divider, Image, User } from "@heroui/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react"
 import { Heart, HeartFill } from "../icons"
 import { formatAmount } from "../../utils"
 
@@ -17,31 +16,75 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
     title: string,
     ups: number,
 }) {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    // Make a useEffect fetch when isOpen is true, to gather further data from subreddit
     return (
-       <Card className="w-full md:w-[532px] p-5">
-            <CardHeader className="flex flex-col gap-3 text-center">
-                <User name={author} description={subreddit} />
-                <h5>{title}</h5>
-            </CardHeader>
-            <CardBody className="flex flex-col justify-center items-center text-center">
-                {
-                    thumbnail 
-                    ? <Image src={thumbnail} width={thumbnail_width} />
-                    : null 
-                }
-                <p>{selftext}</p>
-            </CardBody>
-            <Divider />
-            <CardFooter className="flex flex-row text-gray-500">
-                <div className="flex flex-row justify-center items-center gap-3">
+        <>
+        <button onClick={() => onOpen()}>
+            <Card className="w-full md:w-[532px] p-5">
+                <CardHeader className="flex flex-col gap-3 text-center">
+                    <User name={author} description={subreddit} />
+                    <h4>{title}</h4>
+                </CardHeader>
+                <CardBody className="flex flex-col justify-center items-center text-center">
                     {
-                        ups > 0
-                        ? <HeartFill />
-                        : <Heart />
+                        thumbnail 
+                        ? <Image src={thumbnail} width={thumbnail_width} />
+                        : null 
                     }
-                    <span className="">{formatAmount(ups)}</span>
-                </div>
-            </CardFooter>
-       </Card> 
+                    <p>{selftext}</p>
+                </CardBody>
+                <Divider />
+                <CardFooter className="flex flex-row text-gray-500">
+                    <div className="flex flex-row justify-center items-center gap-3">
+                        {
+                            ups > 0
+                            ? <HeartFill />
+                            : <Heart />
+                        }
+                        <span className="">{formatAmount(ups)}</span>
+                    </div>
+                </CardFooter>
+            </Card>
+        </button>
+        <Modal 
+        isOpen={isOpen} 
+        placement="top" 
+        size="5xl" 
+        scrollBehavior="inside" 
+        backdrop="blur" 
+        onOpenChange={onOpenChange}>
+            <ModalContent>
+                {onClose => (
+                    <>
+                    <ModalHeader className="flex flex-col justify-center items-start gap-3">
+                        <User name={author} description={subreddit} />
+                        <h5>{title}</h5>
+                    </ModalHeader>
+                    <ModalBody>
+                        {
+                            thumbnail 
+                            ? <Image src={thumbnail} width={thumbnail_width} />
+                            : null 
+                        }
+                        <p>{selftext}</p>
+                        <Divider />
+                        <div className="flex flex-row justify-center items-center gap-3">
+                            {
+                                ups > 0
+                                ? <HeartFill />
+                                : <Heart />
+                            }
+                            <span className="">{formatAmount(ups)}</span>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onPress={onClose}><span>Close</span></Button>
+                    </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+        </>
     )
 }

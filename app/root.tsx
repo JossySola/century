@@ -3,25 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
-import { authMiddleware } from "./middleware/auth";
-
-
-export const unstable_middleware = [authMiddleware];
-export async function loader({ request, context }: Route.LoaderArgs) {
-  
-}
-
-export function HydrateFallback() {
-    return <p>Loading...</p>
-}
-export default function App({ loaderData }: Route.ComponentProps) {
-  return (
-      <>
-        <HeaderMenu />
-        <Outlet />
-      </>
-  )
-}
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -60,7 +41,14 @@ export function Layout({
         </html>
     )
 }
-
+export default function App() {
+  return (
+      <>
+        <HeaderMenu />
+        <Outlet />
+      </>
+  )
+}
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!'
   let details = 'An unexpected error occurred.'
@@ -86,4 +74,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       )}
     </main>
   )
+}
+export function HydrateFallback() {
+    return <p>Loading...</p>
 }

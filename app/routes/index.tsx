@@ -132,13 +132,16 @@ interface Thing {
         wls: number,
     }
 }
-export async function loader({ context }: Route.LoaderArgs) {
-    const request = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1");
-    const response = await request.json();
+export async function loader({request}: Route.LoaderArgs) {
+    const cookieHeader = request.headers.get("Cookie");
+    console.log(cookieHeader)
+    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1");
+    const response = await req.json();
     return response.data.children;
 }
 
 export default function Main({ loaderData }: Route.ComponentProps) {
+    
     const posts = useMemo(() => loaderData && loaderData.map((element: Thing, index: number) => {
         return <PostCard
         key={ index }
