@@ -133,11 +133,13 @@ interface Thing {
     }
 }
 export async function loader({request}: Route.LoaderArgs) {
+    /*
     const cookieHeader = request.headers.get("Cookie");
     console.log(cookieHeader)
     const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1");
     const response = await req.json();
     return response.data.children;
+    */
 }
 
 export default function Main({ loaderData }: Route.ComponentProps) {
