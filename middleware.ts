@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const REDDIT_ACCESS_TOKEN_COOKIE = "_reddit_access_token";
+//const REDDIT_ACCESS_TOKEN_COOKIE = "_reddit_access_token";
 export async function middleware(request: NextRequest) {
+    console.log("Running middleware...")
+    /*
     try {
         let response = NextResponse.next();
         let accessToken = request.cookies.get(REDDIT_ACCESS_TOKEN_COOKIE);
@@ -63,6 +65,7 @@ export async function middleware(request: NextRequest) {
         console.error("An unhandled error occurred in the middleware:", error);
         return new Response("Internal Server Error.", { status: 500 });
     }
+    */
 }
 export const config = {
     matcher: ["/((?!api|_next/static|auth|_next/image|favicon.ico|assets).*)"],
