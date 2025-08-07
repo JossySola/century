@@ -18,7 +18,6 @@
     "@heroui/react": "^2.8.0-beta.15",
     "@heroui/theme": "^2.4.20",
     "@react-router/dev": "^7.8.0",
-    "@react-router/fs-routes": "^7.8.0",
     "@react-router/node": "^7.8.0",
     "@react-router/serve": "^7.8.0",
     "@tailwindcss/vite": "^4.1.11",
