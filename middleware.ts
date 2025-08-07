@@ -68,12 +68,5 @@ export function middleware(request: NextRequest) {
     */
 }
 export const config = {
-    matcher: [
-        {
-            source: '/',
-            missing: [
-                { type: 'cookie', key: '_reddit_access_token' }
-            ],
-        },
-    ],
+    matcher: ['/'],
 };
