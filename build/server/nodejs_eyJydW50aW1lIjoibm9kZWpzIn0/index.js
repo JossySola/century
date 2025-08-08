@@ -300,11 +300,6 @@ function PostCard({ author, subreddit, id, permalink, num_comments, selftext, su
 async function loader({
   request
 }) {
-  const cookieHeader = request.headers.get("Cookie");
-  console.log(cookieHeader);
-  const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1");
-  const response = await req.json();
-  return response.data.children;
 }
 const index = UNSAFE_withComponentProps(function Main({
   loaderData
