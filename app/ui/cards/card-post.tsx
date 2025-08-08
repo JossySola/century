@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react"
 import { Heart, HeartFill } from "../icons"
-import { formatAmount } from "../../utils"
+import { formatAmount } from "../../utils/format-amount"
 
 export default function PostCard({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
