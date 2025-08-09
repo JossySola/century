@@ -1,8 +1,10 @@
-import { isRouteErrorResponse, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { isRouteErrorResponse, Link, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
+import NavList from "./ui/lists/nav-list";
+import Search from "./ui/inputs/search";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -45,6 +47,10 @@ export default function App() {
   return (
       <>
         <HeaderMenu />
+        <nav className="mb-5 mt-5">
+          <Search />
+          <NavList />
+        </nav>
         <Outlet />
       </>
   )
