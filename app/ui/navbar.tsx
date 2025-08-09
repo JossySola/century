@@ -10,23 +10,23 @@ export default function HeaderMenu() {
                 <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
             </NavbarContent>
             <NavbarContent justify="center">
-                <NavbarBrand><h1 className="title">The 21st Century Times</h1></NavbarBrand>
+                <NavbarBrand><h1 className="title text-[8vw] sm:text-[2.25rem]">The 21st Century Times</h1></NavbarBrand>
             </NavbarContent>
             <NavbarMenu>
                 <NavbarMenuItem>
-                    <Link to={"#"} className="w-full">Science</Link>
+                    <Link to="/astronomy" className="w-full font-semibold">Astronomy</Link>
                 </NavbarMenuItem>
                 <NavbarItem>
-                    <Link to={"#"} className="w-full">Technology</Link>
+                    <Link to="/gaming" className="w-full font-semibold">Gaming</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to={"#"} className="w-full">Sports</Link>
+                    <Link to="/science" className="w-full font-semibold">Science</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to={"#"} className="w-full">Astronomy</Link>
+                    <Link to="/sports" className="w-full font-semibold">Sports</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to={"#"} className="w-full">Gaming</Link>
+                    <Link to="/tech" className="w-full font-semibold">Tech</Link>
                 </NavbarItem>
             </NavbarMenu>
         </Navbar>
