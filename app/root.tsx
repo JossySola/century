@@ -35,9 +35,9 @@ export function Layout({
               <Links />
             </head>
             <body className="flex flex-col items-center gap-3 p-3">
-                <main>
+                
                   { children }
-                </main>
+                  
                 <Analytics />
                 <ScrollRestoration />
                 <Scripts />
