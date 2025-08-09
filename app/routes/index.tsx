@@ -230,6 +230,8 @@ export async function action({ request }: Route.ActionArgs) {
         },
     });
     if (req.status !== 200) {
+        console.error(req.statusText);
+        console.error(req.status)
         throw new Error("Failed at fetching subreddits");
     }
     const response = await req.json();
