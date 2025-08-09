@@ -1,55 +1,10 @@
-import { commitSession, getSession } from "~/sessions.server";
+import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/tech";
 import { useEffect, useMemo, useState } from "react";
 import type { Thing } from "./news";
-import { data, useActionData, useSubmit } from "react-router";
+import { useActionData, useSubmit } from "react-router";
 import T5 from "~/ui/cards/t5";
 
-export async function loader({request}: Route.LoaderArgs) {
-    const session = await getSession(
-        request.headers.get("Cookie"),
-    );
-    const access_token = session.has("access_token");
-
-    if (!access_token) {
-        const client_id = process.env.REDDIT_CLIENT_ID;
-        const client_secret = process.env.REDDIT_CLIENT_SECRET;
-        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-            method: "POST",
-            headers: {
-                Authorization: `Basic ${encode}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': "centurytimes/2.0",
-            },
-            body: new URLSearchParams({
-                grant_type: "client_credentials",
-                scope: "*"
-            })
-        });
-        if (req.status !== 200) {
-            throw new Error("Failed at fetching subreddits");
-        }
-        const res = await req.json();
-        session.set("access_token", res.access_token);
-        return data(
-            { error: session.get("error") },
-            { 
-                headers: {
-                    "Set-Cookie": await commitSession(session),
-                },
-            },
-        );
-    }
-    return data(
-        { error: session.get("error") },
-        {
-            headers: {
-                "Set-Cookie": await commitSession(session),
-            },
-        },
-    );
-}
 export default function Main({ actionData }: Route.ComponentProps) {
     const [data, setData] = useState<Array<Thing>>([]);
     const submit = useSubmit();
