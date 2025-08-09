@@ -49,7 +49,9 @@ export async function action({ request }: Route.ActionArgs) {
     const req = await fetch("https://www.reddit.com/r/space.json?raw_json=1", {
         method: "GET",
         headers: {
-            "Authorization": `${tokenCookie}`,
+            'Authorization': `Basic ${tokenCookie}`,
+            'Content-Type': 'application/json',
+            'User-Agent': "centurytimes/2.0",
         },
     });
     if (req.status !== 200) {
