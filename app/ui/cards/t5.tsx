@@ -1,8 +1,10 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react"
 import { Heart, HeartFill, Message } from "../icons"
 import { formatAmount } from "../../utils/format-amount"
+import { useEffect } from "react";
+import Comments from "../drawers/comments";
 
-export default function PostCard({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
+export default function T5({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
     subreddit: string,
     id: string,
@@ -21,10 +23,10 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
     return (
         <>
         <button onClick={() => onOpen()} className="cursor-pointer">
-            <Card className="w-full md:w-[532px] p-5">
+            <Card className="w-full max-w-[90vw] md:w-[532px] p-5">
                 <CardHeader className="flex flex-col gap-3 text-center">
                     <User name={author} description={subreddit} />
-                    <h4>{title}</h4>
+                    <h4 className="w-full">{title}</h4>
                 </CardHeader>
                 <CardBody className="flex flex-col justify-center items-center text-center">
                     {
@@ -32,7 +34,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                         ? <Image src={thumbnail} width={thumbnail_width} />
                         : null 
                     }
-                    <p>{selftext}</p>
+                    <p className="w-full line-clamp-3 overflow-hidden text-ellipsis">{selftext}</p>
                 </CardBody>
                 <Divider />
                 <CardFooter className="flex flex-row text-gray-500">
@@ -52,7 +54,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
         <Modal 
         isOpen={isOpen} 
         placement="top" 
-        size="5xl" 
+        size="lg" 
         scrollBehavior="inside" 
         backdrop="blur" 
         onOpenChange={onOpenChange}>
@@ -61,7 +63,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                     <>
                     <ModalHeader className="flex flex-col justify-center items-start gap-3">
                         <User name={author} description={subreddit} />
-                        <h5>{title}</h5>
+                        <h5 className="w-full">{title}</h5>
                     </ModalHeader>
                     <ModalBody>
                         {
@@ -69,7 +71,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                             ? <Image src={thumbnail} width={thumbnail_width} />
                             : null 
                         }
-                        <p>{selftext}</p>
+                        <p className="w-full overflow-clip p-x-3">{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
                             <Heart />
@@ -77,6 +79,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                             <Message />
                             <span>{ num_comments.toString() }</span>
                         </div>
+                        <Comments num_comments={num_comments} />
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onPress={onClose}><span>Close</span></Button>
