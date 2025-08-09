@@ -1,11 +1,11 @@
-import type { Route } from "./+types/_index";
-import { useMemo } from "react";
+import type { Route } from "./+types/index";
+import { useEffect, useMemo, useState } from "react";
 import PostCard from "../ui/cards/card-post";
 import {
   getSession,
   commitSession,
 } from "../sessions.server";
-import { data } from "react-router";
+import { data, useActionData, useSubmit } from "react-router";
  
 interface Thing {
     kind: "t1" | "t2" | "t3" | "t4" | "t5" | "t6";
@@ -146,7 +146,7 @@ export async function loader({request}: Route.LoaderArgs) {
     if (!access_token) {
         const client_id = process.env.REDDIT_CLIENT_ID;
         const client_secret = process.env.REDDIT_CLIENT_SECRET;
-        const encode = window.btoa(client_id + ':' + client_secret);
+        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
         const req = await fetch("https://www.reddit.com/api/v1/access_token", {
             method: "POST",
             headers: {
@@ -158,36 +158,45 @@ export async function loader({request}: Route.LoaderArgs) {
                 scope: "*"
             })
         });
+        if (req.status !== 200) {
+            throw new Error("Failed at fetching subreddits");
+        }
         const res = await req.json();
-        if (res) {
-            session.set("access_token", res.access_token);
-            return data(
-                { error: session.get("error") },
-                { 
-                    headers: {
-                        "Set-Cookie": await  commitSession(session),
-                    },
+        session.set("access_token", res.access_token);
+        return data(
+            { error: session.get("error") },
+            { 
+                headers: {
+                    "Set-Cookie": await commitSession(session),
                 },
-            );
-        };
+            },
+        );
     }
-    const tokenCookie = session.get("access_token");
-    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic " + btoa(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`),
+    return data(
+        { error: session.get("error") },
+        {
+            headers: {
+                "Set-Cookie": await commitSession(session),
+            },
         },
-    });
-    const response = await req.json();
-    if (response) {
-        return response.data.children;
-    }
+    );
 }
 
-export default function Main({ loaderData }: Route.ComponentProps) {
-    
-    const posts = useMemo(() => loaderData && loaderData.map((element: Thing, index: number) => {
+export default function Main({ actionData }: Route.ComponentProps) {
+    const [data, setData] = useState<Array<Thing>>([]);
+    const submit = useSubmit();
+    const actionResult = useActionData<typeof action>();
+
+    useEffect(() => {
+        submit({}, { method: 'POST' })
+    }, [submit]);
+    useEffect(() => {
+        if (actionResult) {
+            setData(actionResult);
+        }
+    }, [actionResult]);
+
+    const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
         return <PostCard
         key={ index }
         author={ element.data.author }
@@ -202,12 +211,27 @@ export default function Main({ loaderData }: Route.ComponentProps) {
         thumbnail_width={ element.data.thumbnail_width }
         title={ element.data.title }
         ups={ element.data.ups }/>
-    }), loaderData);
+    }), data);
     return (
         posts
     )
 }
 
 export async function action({ request }: Route.ActionArgs) {
-
+    const session = await getSession(
+        request.headers.get("Cookie"),
+    );
+    const tokenCookie = session.get("access_token");
+    
+    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
+        method: "GET",
+        headers: {
+            "Authorization": `${tokenCookie}`,
+        },
+    });
+    if (req.status !== 200) {
+        throw new Error("Failed at fetching subreddits");
+    }
+    const response = await req.json();
+    return response.data.children;
 }

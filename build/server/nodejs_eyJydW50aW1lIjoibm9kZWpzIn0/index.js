@@ -1,12 +1,12 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { PassThrough } from "node:stream";
 import { createReadableStreamFromReadable } from "@react-router/node";
-import { ServerRouter, Link, UNSAFE_withComponentProps, Outlet, UNSAFE_withErrorBoundaryProps, isRouteErrorResponse, UNSAFE_withHydrateFallbackProps, Links, ScrollRestoration, Scripts } from "react-router";
+import { ServerRouter, Link, UNSAFE_withComponentProps, Outlet, UNSAFE_withErrorBoundaryProps, isRouteErrorResponse, UNSAFE_withHydrateFallbackProps, Links, ScrollRestoration, Scripts, createCookieSessionStorage, useSubmit, useActionData, data } from "react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { Analytics } from "@vercel/analytics/react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarBrand, NavbarMenu, NavbarMenuItem, NavbarItem, useDisclosure, Card, CardHeader, User, CardBody, Image, Divider, CardFooter, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 const streamTimeout = 5e3;
 function handleRequest(request, responseStatusCode, responseHeaders, routerContext, loadContext) {
   return new Promise((resolve, reject) => {
@@ -297,14 +297,75 @@ function PostCard({ author, subreddit, id, permalink, num_comments, selftext, su
     )
   ] });
 }
+const { getSession, commitSession, destroySession } = createCookieSessionStorage(
+  {
+    cookie: {
+      name: "__session",
+      httpOnly: true,
+      maxAge: 8400,
+      path: "/",
+      secure: true
+    }
+  }
+);
 async function loader({
   request
 }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const access_token = session.has("access_token");
+  if (!access_token) {
+    const client_id = process.env.REDDIT_CLIENT_ID;
+    const client_secret = process.env.REDDIT_CLIENT_SECRET;
+    const encode = Buffer.from(client_id + ":" + client_secret).toString("base64");
+    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${encode}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+        scope: "*"
+      })
+    });
+    if (req.status !== 200) {
+      throw new Error("Failed at fetching subreddits");
+    }
+    const res = await req.json();
+    session.set("access_token", res.access_token);
+    return data({
+      error: session.get("error")
+    }, {
+      headers: {
+        "Set-Cookie": await commitSession(session)
+      }
+    });
+  }
+  return data({
+    error: session.get("error")
+  }, {
+    headers: {
+      "Set-Cookie": await commitSession(session)
+    }
+  });
 }
 const index = UNSAFE_withComponentProps(function Main({
-  loaderData
+  actionData
 }) {
-  const posts = useMemo(() => loaderData && loaderData.map((element, index2) => {
+  const [data2, setData] = useState([]);
+  const submit = useSubmit();
+  const actionResult = useActionData();
+  useEffect(() => {
+    submit({}, {
+      method: "POST"
+    });
+  }, [submit]);
+  useEffect(() => {
+    if (actionResult) {
+      setData(actionResult);
+    }
+  }, [actionResult]);
+  const posts = useMemo(() => data2 && data2.map((element, index2) => {
     return /* @__PURE__ */ jsx(PostCard, {
       author: element.data.author,
       id: element.data.id,
@@ -319,12 +380,25 @@ const index = UNSAFE_withComponentProps(function Main({
       title: element.data.title,
       ups: element.data.ups
     }, index2);
-  }), loaderData);
+  }), data2);
   return posts;
 });
 async function action({
   request
 }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const tokenCookie = session.get("access_token");
+  const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
+    method: "GET",
+    headers: {
+      "Authorization": `${tokenCookie}`
+    }
+  });
+  if (req.status !== 200) {
+    throw new Error("Failed at fetching subreddits");
+  }
+  const response = await req.json();
+  return response.data.children;
 }
 const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -332,7 +406,7 @@ const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   default: index,
   loader
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-DcPbzQLg.js", "imports": ["/assets/index-BVCoK7dQ.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/assets/root-Bsy-ykM7.js", "imports": ["/assets/index-BVCoK7dQ.js", "/assets/chunk-736YWA4T-BJ8wTIYx.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/index": { "id": "routes/index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/index-BufWeAP4.js", "imports": ["/assets/index-BVCoK7dQ.js", "/assets/chunk-736YWA4T-BJ8wTIYx.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/assets/manifest-1fd6b100.js", "version": "1fd6b100", "sri": void 0 };
+const serverManifest = { "entry": { "module": "/assets/entry.client-CQub-_qe.js", "imports": ["/assets/index-CB8Hv3N3.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/assets/root-C9_czZgo.js", "imports": ["/assets/index-CB8Hv3N3.js", "/assets/chunk-736YWA4T-DiDz-dEl.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/index": { "id": "routes/index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/index-cButzsxB.js", "imports": ["/assets/index-CB8Hv3N3.js", "/assets/chunk-736YWA4T-DiDz-dEl.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/assets/manifest-ecddcb0a.js", "version": "ecddcb0a", "sri": void 0 };
 const assetsBuildDirectory = "build\\client";
 const basename = "/";
 const future = { "unstable_middleware": false, "unstable_optimizeDeps": false, "unstable_splitRouteModules": false, "unstable_subResourceIntegrity": false, "unstable_viteEnvironmentApi": false };
