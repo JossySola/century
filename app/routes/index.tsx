@@ -1,7 +1,12 @@
 import type { Route } from "./+types/_index";
 import { useMemo } from "react";
 import PostCard from "../ui/cards/card-post";
-
+import {
+  getSession,
+  commitSession,
+} from "../sessions.server";
+import { data } from "react-router";
+ 
 interface Thing {
     kind: "t1" | "t2" | "t3" | "t4" | "t5" | "t6";
     data: {
@@ -133,13 +138,51 @@ interface Thing {
     }
 }
 export async function loader({request}: Route.LoaderArgs) {
-    /*
-    const cookieHeader = request.headers.get("Cookie");
-    console.log(cookieHeader)
-    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1");
+    const session = await getSession(
+        request.headers.get("Cookie"),
+    );
+    const access_token = session.has("access_token");
+
+    if (!access_token) {
+        const client_id = process.env.REDDIT_CLIENT_ID;
+        const client_secret = process.env.REDDIT_CLIENT_SECRET;
+        const encode = window.btoa(client_id + ':' + client_secret);
+        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+            method: "POST",
+            headers: {
+                Authorization: `Basic ${encode}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                grant_type: "client_credentials",
+                scope: "*"
+            })
+        });
+        const res = await req.json();
+        if (res) {
+            session.set("access_token", res.access_token);
+            return data(
+                { error: session.get("error") },
+                { 
+                    headers: {
+                        "Set-Cookie": await  commitSession(session),
+                    },
+                },
+            );
+        };
+    }
+    const tokenCookie = session.get("access_token");
+    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + btoa(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`),
+        },
+    });
     const response = await req.json();
-    return response.data.children;
-    */
+    if (response) {
+        return response.data.children;
+    }
 }
 
 export default function Main({ loaderData }: Route.ComponentProps) {
