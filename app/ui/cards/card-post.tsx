@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react"
-import { Heart, HeartFill } from "../icons"
+import { Heart, HeartFill, Message } from "../icons"
 import { formatAmount } from "../../utils/format-amount"
 
 export default function PostCard({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
@@ -20,7 +20,7 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
     // Make a useEffect fetch when isOpen is true, to gather further data from subreddit
     return (
         <>
-        <button onClick={() => onOpen()}>
+        <button onClick={() => onOpen()} className="cursor-pointer">
             <Card className="w-full md:w-[532px] p-5">
                 <CardHeader className="flex flex-col gap-3 text-center">
                     <User name={author} description={subreddit} />
@@ -42,7 +42,9 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                             ? <HeartFill />
                             : <Heart />
                         }
-                        <span className="">{formatAmount(ups)}</span>
+                        <span>{formatAmount(ups)}</span>
+                        <Message />
+                        <span>{ num_comments.toString() }</span>
                     </div>
                 </CardFooter>
             </Card>
@@ -70,12 +72,10 @@ export default function PostCard({ author, subreddit, id, permalink, num_comment
                         <p>{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
-                            {
-                                ups > 0
-                                ? <HeartFill />
-                                : <Heart />
-                            }
-                            <span className="">{formatAmount(ups)}</span>
+                            <Heart />
+                            <span>{formatAmount(ups)}</span>
+                            <Message />
+                            <span>{ num_comments.toString() }</span>
                         </div>
                     </ModalBody>
                     <ModalFooter>
