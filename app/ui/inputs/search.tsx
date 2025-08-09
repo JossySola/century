@@ -2,7 +2,7 @@ import { Button, Input } from "@heroui/react";
 import { MagnifyingGlass } from "../icons";
 
 export default function Search() {
-    return <form className="w-full flex flex-row gap-3 justify-center items-center">
+    return <form method="post" className="w-full flex flex-row gap-3 justify-center items-center">
         <Input 
         label="Search on Reddit" 
         variant="underlined" 
@@ -15,6 +15,6 @@ export default function Search() {
             label: "text-sm font-sans",
             input: "h-full"
         }} />
-        <Button color="primary"><span className="text-lg">Go</span></Button>
+        <Button color="primary" type="submit"><span className="text-lg">Go</span></Button>
     </form>
 }
