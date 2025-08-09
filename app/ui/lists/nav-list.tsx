@@ -10,31 +10,31 @@ export default function NavList() {
             </div>
             
             <ul className="inline-flex gap-5">
-                <li><NavLink preventScrollReset to="/space" prefetch="intent" 
+                <li><NavLink preventScrollReset to="space" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 
                     isPending ? "pb-2 border-b-4 transparent" :
                     ""
                 )}>Space</NavLink></li>
-                <li><NavLink preventScrollReset to="/gaming" prefetch="intent" 
+                <li><NavLink preventScrollReset to="gaming" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 
                     isPending ? "pb-2 border-b-4 transparent" :
                     ""
                 )}>Gaming</NavLink></li>
-                <li><NavLink preventScrollReset to="/science" prefetch="intent" 
+                <li><NavLink preventScrollReset to="science" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 
                     isPending ? "pb-2 border-b-4 transparent" :
                     ""
                 )}>Science</NavLink></li>
-                <li><NavLink preventScrollReset to="/sports" prefetch="intent" 
+                <li><NavLink preventScrollReset to="sports" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 
                     isPending ? "pb-2 border-b-4 transparent" :
                     ""
                 )}>Sports</NavLink></li>
-                <li><NavLink preventScrollReset to="/tech" prefetch="intent" 
+                <li><NavLink preventScrollReset to="tech" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 
                     isPending ? "pb-2 border-b-4 transparent" :

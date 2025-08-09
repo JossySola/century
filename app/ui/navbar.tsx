@@ -22,19 +22,19 @@ export default function HeaderMenu() {
             <NavbarMenu className="pt-10 gap-3">
                 <Search />
                 <NavbarMenuItem>
-                    <Link to="/space" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SpookyTopic/> Space</Link>
+                    <Link to="space" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SpookyTopic/> Space</Link>
                 </NavbarMenuItem>
                 <NavbarItem>
-                    <Link to="/gaming" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><GamesTopic /> Gaming</Link>
+                    <Link to="gaming" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><GamesTopic /> Gaming</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to="/science" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SciencesTopic /> Science</Link>
+                    <Link to="science" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SciencesTopic /> Science</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to="/sports" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SportsTopic /> Sports</Link>
+                    <Link to="sports" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><SportsTopic /> Sports</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link to="/tech" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><TechnologyTopic /> Tech</Link>
+                    <Link to="tech" prefetch="viewport" className="w-full font-semibold text-2xl inline-flex items-center gap-3"><TechnologyTopic /> Tech</Link>
                 </NavbarItem>
                 <div className="w-full mt-5 inline-flex items-center gap-3">
                     <span className="text-xl">Powered with </span>
