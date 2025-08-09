@@ -211,7 +211,7 @@ export default function Main({ actionData }: Route.ComponentProps) {
         thumbnail_width={ element.data.thumbnail_width }
         title={ element.data.title }
         ups={ element.data.ups }/>
-    }), data);
+    }), [data]);
     return (
         posts
     )
@@ -234,4 +234,7 @@ export async function action({ request }: Route.ActionArgs) {
     }
     const response = await req.json();
     return response.data.children;
+}
+export function HydrateFallback() {
+    return <p>Loading...</p>
 }
