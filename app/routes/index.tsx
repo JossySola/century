@@ -160,6 +160,7 @@ export async function loader({request}: Route.LoaderArgs) {
             headers: {
                 Authorization: `Basic ${encode}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'User-Agent': "centurytimes/2.0",
             },
             body: new URLSearchParams({
                 grant_type: "client_credentials",
@@ -234,7 +235,9 @@ export async function action({ request }: Route.ActionArgs) {
     const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
         method: "GET",
         headers: {
-            "Authorization": `${tokenCookie}`,
+            'Authorization': `Basic ${tokenCookie}`,
+            'Content-Type': 'application/json',
+            'User-Agent': "centurytimes/2.0",
         },
     });
     if (req.status !== 200) {
