@@ -1,13 +1,21 @@
 import type { Route } from "./+types/index";
 import { useEffect, useMemo, useState } from "react";
-import PostCard from "../ui/cards/card-post";
+import T5 from "../ui/cards/t5";
 import {
   getSession,
   commitSession,
 } from "../sessions.server";
 import { data, useActionData, useSubmit } from "react-router";
- 
-interface Thing {
+
+/*
+    t1 Comment
+    t2 Account
+    t3 Link
+    t4 Message
+    t5 Subreddit
+    t6 Award 
+*/
+export interface Thing {
     kind: "t1" | "t2" | "t3" | "t4" | "t5" | "t6";
     data: {
         all_awardings: Array<unknown>,
@@ -197,7 +205,7 @@ export default function Main({ actionData }: Route.ComponentProps) {
     }, [actionResult]);
 
     const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
-        return <PostCard
+        return <T5
         key={ index }
         author={ element.data.author }
         id={ element.data.id }
