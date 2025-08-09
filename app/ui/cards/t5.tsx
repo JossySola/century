@@ -53,7 +53,7 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
         </button>
         <Modal 
         isOpen={isOpen} 
-        placement="top" 
+        placement="center" 
         size="lg" 
         scrollBehavior="inside" 
         backdrop="blur" 
