@@ -47,7 +47,7 @@ export default function App() {
   return (
       <>
         <HeaderMenu />
-        <nav className="mb-5 mt-5">
+        <nav className="sm:block hidden my-5">
           <Search />
           <NavList />
         </nav>
