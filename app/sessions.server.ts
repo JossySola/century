@@ -14,7 +14,7 @@ const { getSession, commitSession, destroySession } =
       cookie: {
         name: "__session",
         httpOnly: true,
-        maxAge: 8400,
+        maxAge: 86400,
         path: "/",
         secure: true,
         secrets: [process.env.SESSION_SECRET!],
