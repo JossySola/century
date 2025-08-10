@@ -37,7 +37,7 @@ export interface Thing {
         author_fullname: string,
         author_is_blocked: boolean,
         author_patreon_flair: boolean,
-        athor_premium: boolean,
+        author_premium: boolean,
         awarders: Array<unknown>,
         banned_at_utc: number | null,
         banned_by: string | null,
