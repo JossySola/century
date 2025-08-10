@@ -35,6 +35,7 @@ export async function loader({request}: Route.LoaderArgs) {
         }
         const res = await req.json();
         session.set("access_token", res.access_token);
+        session.set("access_mode", "userless");
         return data(
             { error: session.get("error") },
             { 
