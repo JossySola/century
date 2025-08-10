@@ -1,7 +1,7 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/gaming";
 import { useEffect, useMemo, useState } from "react";
-import type { Thing } from "./news";
+import type { Thing } from "~/utils/types";
 import { useActionData, useSubmit } from "react-router";
 import T5 from "~/ui/cards/t5";
 
@@ -21,20 +21,20 @@ export default function Main({ actionData }: Route.ComponentProps) {
 
     const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
         return <T5 
-        key={ index }
-        author={ element.data.author }
-        id={ element.data.id }
-        permalink={ element.data.permalink }
-        num_comments={ element.data.num_comments }
-        selftext={ element.data.selftext }
-        subreddit={ element.data.subreddit }
-        subreddit_id={ element.data.subreddit_id }
-        thumbnail={ element.data.thumbnail }
-        thumbnail_height={ element.data.thumbnail_height }
-        thumbnail_width={ element.data.thumbnail_width }
-        title={ element.data.title }
-        ups={ element.data.ups }/>
-    }), [data]);
+            key={ index }
+            author={ element.data.author }
+            id={ element.data.id }
+            permalink={ element.data.permalink }
+            num_comments={ element.data.num_comments ?? 0 }
+            selftext={ element.data.selftext ?? "" }
+            subreddit={ element.data.subreddit ?? "" }
+            subreddit_id={ element.data.subreddit_id }
+            thumbnail={ element.data.thumbnail ?? "" }
+            thumbnail_height={ element.data.thumbnail_height ?? 0 }
+            thumbnail_width={ element.data.thumbnail_width ?? 0 }
+            title={ element.data.title ?? "" }
+            ups={ element.data.ups }/>
+        }), [data]);
     return (
         posts
     )
