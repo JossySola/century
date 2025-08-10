@@ -1,4 +1,4 @@
-import { type RouteConfig, index, route } from '@react-router/dev/routes';
+import { type RouteConfig, index, prefix, route } from '@react-router/dev/routes';
  
 export default [
     index('./routes/news.tsx'),
@@ -6,5 +6,8 @@ export default [
     route('gaming', './routes/gaming.tsx'),
     route('science', './routes/science.tsx'),
     route('sports', './routes/sports.tsx'),
-    route('tech', './routes/tech.tsx')
+    route('tech', './routes/tech.tsx'),
+    ...prefix("api", [
+        route("subreddit/*", "./api/subreddit.tsx"),
+    ]),
 ] satisfies RouteConfig;
