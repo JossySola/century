@@ -5,7 +5,10 @@ import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
 import NavList from "./ui/lists/nav-list";
 import Search from "./ui/inputs/search";
-import { getSession } from "./sessions.server.ts";
+import {
+  getSession,
+  commitSession,
+} from "./sessions.server.ts";
 import { data } from "react-router";
 
 export const links: LinksFunction = () => [
