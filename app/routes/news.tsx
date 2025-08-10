@@ -1,11 +1,8 @@
 import type { Route } from "./+types/news";
 import { useEffect, useMemo, useState } from "react";
 import T5 from "../ui/cards/t5";
-import {
-  getSession,
-  commitSession,
-} from "../sessions.server";
-import { data, useActionData, useSubmit } from "react-router";
+import { getSession } from "../sessions.server";
+import { useActionData, useSubmit } from "react-router";
 import type { Thing } from "~/utils/types";
 
 export default function Main({ actionData }: Route.ComponentProps) {
