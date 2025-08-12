@@ -8,7 +8,7 @@ import Search from "./ui/inputs/search";
 import {
   getSession,
   commitSession,
-} from "./sessions.server.ts";
+} from "./sessions.server";
 import { data } from "react-router";
 
 export const links: LinksFunction = () => [
@@ -24,6 +24,7 @@ export function Layout({
             <head>
               <title>21st Century Times</title>
               <link rel="icon" type="image/svg+xml" href="/century.svg" />
+              <meta charSet="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <meta name="description" content="Inspired by The New York Times, I present 'The 21st Century Times', working with the Reddit API, it features popular Subreddits dedicated to worldwide news, technology, sports, astronomy, science & gaming. The user is also able to search, upvote, downvote and comment on specific Subreddits." />
               <meta property="og:url" content="https://www.centurytimes.jossysola.com/" />
