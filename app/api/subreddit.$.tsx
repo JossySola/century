@@ -1,7 +1,8 @@
 import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/subreddit";
+import type { Route } from "./+types/subreddit.$";
+import decodeEntities from "~/utils/decode-entities";
 
-export async function loader({ request, params }: Route.ActionArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie")
     );
@@ -20,7 +21,7 @@ export async function loader({ request, params }: Route.ActionArgs) {
         console.error(req.status);
         throw new Error("Failed at fetching subreddit's comments");
     }
-    const response = await req.json();
-    return response;
+    const data = await req.json();
     
+    return decodeEntities(data);
 }
