@@ -15,26 +15,30 @@ export default function Main({ actionData }: Route.ComponentProps) {
     }, [submit]);
     useEffect(() => {
         if (actionResult) {
+            console.log(actionResult)
             setData(actionResult);
         }
     }, [actionResult]);
 
     const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
-        return <T5 
-            key={ index }
-            author={ element.data.author }
-            id={ element.data.id }
-            permalink={ element.data.permalink }
-            num_comments={ element.data.num_comments ?? 0 }
-            selftext={ element.data.selftext ?? "" }
-            subreddit={ element.data.subreddit ?? "" }
-            subreddit_id={ element.data.subreddit_id }
-            thumbnail={ element.data.thumbnail ?? "" }
-            thumbnail_height={ element.data.thumbnail_height ?? 0 }
-            thumbnail_width={ element.data.thumbnail_width ?? 0 }
-            title={ element.data.title ?? "" }
-            ups={ element.data.ups }/>
-        }), [data]);
+        if (element.kind === "t3") {
+            return <T5 
+                key={ index }
+                author={ element.data.author }
+                id={ element.data.id }
+                permalink={ element.data.permalink }
+                num_comments={ element.data.num_comments ?? 0 }
+                selftext={ element.data.selftext ?? "" }
+                subreddit={ element.data.subreddit ?? "" }
+                subreddit_id={ element.data.subreddit_id }
+                thumbnail={ element.data.thumbnail ?? "" }
+                thumbnail_height={ element.data.thumbnail_height ?? 0 }
+                thumbnail_width={ element.data.thumbnail_width ?? 0 }
+                title={ element.data.title ?? "" }
+                ups={ element.data.ups }/>
+        }
+    }), [data]);
+    
     return (
         posts
     )
