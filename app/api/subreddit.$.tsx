@@ -8,7 +8,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     );
     const tokenCookie = session.get("access_token");
     
-    const req = await fetch(`https://www.reddit.com${params["*"]}.json`, {
+    const req = await fetch(new URL(`${params["*"]}.json`, "https://www.reddit.com").toString(), {
         method: "GET",
         headers: {
             'Authorization': `Basic ${tokenCookie}`,
