@@ -1,8 +1,10 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react"
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure, User } from "@heroui/react"
 import { Heart, HeartFill, Message } from "../icons"
 import { formatAmount } from "../../utils/format-amount"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Comments from "../drawers/comments";
+import { useFetcher } from "react-router";
+import type { Listing } from "~/utils/types";
 
 export default function T5({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
@@ -19,7 +21,34 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
     ups: number,
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [moreData, setMoreData] = useState<Array<Listing>>([]);
+    const fetcher = useFetcher();
+    const [preview, setPreview] = useState<string | undefined>(undefined);
     // Make a useEffect fetch when isOpen is true, to gather further data from subreddit
+    useEffect(() => {
+        if (isOpen && thumbnail && !preview) {
+            fetcher.load(`/api/subreddit/${permalink}`);
+        }
+    }, [isOpen]);
+    useEffect(() => {
+        if (fetcher.data) {
+            setMoreData(fetcher.data);
+        }
+    }, [fetcher.data]);
+    useEffect(() => {
+        if (moreData && moreData[0] && moreData[0].kind === "Listing") {
+            const children = moreData[0].data.children;
+            if (children && children.length > 0) {
+                if (children[0].kind === "t3" && children[0].data.preview) {
+                    const preview = children[0].data.preview;
+                    if (preview.images.length > 0) {
+                        const url = preview.images[0].source.url;
+                        setPreview(url);
+                    }
+                }
+            }
+        }
+    }, [moreData]);
     return (
         <>
         <button onClick={() => onOpen()} className="cursor-pointer">
@@ -55,7 +84,7 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
         isOpen={isOpen} 
         placement="center" 
         size="lg" 
-        scrollBehavior="inside" 
+        scrollBehavior="outside" 
         backdrop="blur" 
         onOpenChange={onOpenChange}>
             <ModalContent>
@@ -66,11 +95,21 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
                         <h5 className="w-full">{title}</h5>
                     </ModalHeader>
                     <ModalBody>
+                        <div className="inline-flex items-center justify-center">
                         {
-                            thumbnail 
-                            ? <Image src={thumbnail} width={thumbnail_width} />
+                            thumbnail && !preview 
+                            ? <Skeleton className="rounded-xl">
+                                    <Card className="w-[316px] h-[264px]"></Card>
+                                </Skeleton>
+                            : null
+                        }
+                        {
+                            preview 
+                            ? <Image src={preview} />
                             : null 
                         }
+                        </div>
+                        
                         <p className="w-full overflow-clip p-x-3">{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
@@ -79,10 +118,10 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
                             <Message />
                             <span>{ num_comments.toString() }</span>
                         </div>
-                        <Comments num_comments={num_comments} />
+                        <Comments num_comments={num_comments} comments={ moreData[1] ?? [] } />
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onPress={onClose}><span>Close</span></Button>
+                        <Button color="default" onPress={onClose}><span>Close</span></Button>
                     </ModalFooter>
                     </>
                 )}
