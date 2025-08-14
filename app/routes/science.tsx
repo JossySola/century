@@ -3,7 +3,7 @@ import type { Route } from "./+types/science";
 import { useEffect, useMemo, useState } from "react";
 import type { Thing } from "~/utils/types";
 import { useActionData, useSubmit } from "react-router";
-import T5 from "~/ui/cards/t5";
+import T3 from "~/ui/cards/t3";
 
 export default function Main({ actionData }: Route.ComponentProps) {
     const [data, setData] = useState<Array<Thing>>([]);
@@ -22,7 +22,7 @@ export default function Main({ actionData }: Route.ComponentProps) {
 
     const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
         if (element.kind === "t3") {
-            return <T5 
+            return <T3 
                 key={ index }
                 author={ element.data.author }
                 id={ element.data.id }

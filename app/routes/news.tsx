@@ -1,6 +1,6 @@
 import type { Route } from "./+types/news";
 import { useEffect, useMemo, useState } from "react";
-import T5 from "../ui/cards/t5";
+import T3 from "../ui/cards/t3";
 import { getSession } from "../sessions.server";
 import { useActionData, useSubmit } from "react-router";
 import type { Thing } from "~/utils/types";
@@ -21,7 +21,7 @@ export default function Main({ actionData }: Route.ComponentProps) {
 
     const posts = useMemo(() => data && data.map((element: Thing, index: number) => {
         if (element.kind === "t3") {
-            return <T5 
+            return <T3 
                 key={ index }
                 author={ element.data.author }
                 id={ element.data.id }
