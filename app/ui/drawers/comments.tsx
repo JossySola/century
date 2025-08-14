@@ -27,7 +27,7 @@ export default function Comments({ num_comments, comments }: {
             }, 
             {
                 root: scrollableRef.current,
-                threshold: 1,
+                threshold: 0.8,
             }
         );
         if (loadingRef.current) {
