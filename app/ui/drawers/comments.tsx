@@ -22,7 +22,6 @@ export default function Comments({ num_comments, comments }: {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    saveScrollPosition();
                     loadComments();
                 }
             }, 
@@ -47,10 +46,11 @@ export default function Comments({ num_comments, comments }: {
                 restoreScrollPosition();
             })
         }
-    }, [isLoading]);
+    }, [feed, isLoading]);
 
     const loadComments = () => {
         setIsLoading(true);
+        saveScrollPosition();
         setFeed(prev => {
             const count = prev.length + 5;
             return children.slice(0, count);
@@ -78,13 +78,13 @@ export default function Comments({ num_comments, comments }: {
                         <>
                         <DrawerHeader></DrawerHeader>
                         <DrawerBody>
-                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full">
-                                <section className="w-5/6 flex flex-col justify-center items-center gap-5">
+                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-5">
+                                <section className="w-5/6 max-w-[95%] flex flex-col justify-center items-center gap-5">
                                     {
                                         feed
-                                        ? feed.map(comment => {
+                                        ? feed.map((comment, index) => {
                                             if (comment.kind === "t1") {
-                                                return <T1 comment={comment} key={comment.data.id} isOpen={isOpen} />
+                                                return <T1 comment={comment} key={comment.data.id} isOpen={isOpen} index={index} />
                                             }
                                         })
                                         :   <span>No comments yet</span>
