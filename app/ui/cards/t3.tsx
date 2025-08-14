@@ -6,7 +6,7 @@ import Comments from "../drawers/comments";
 import { useFetcher } from "react-router";
 import type { Listing } from "~/utils/types";
 
-export default function T5({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
+export default function T3({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
     subreddit: string,
     id: string,
@@ -26,13 +26,15 @@ export default function T5({ author, subreddit, id, permalink, num_comments, sel
     const [preview, setPreview] = useState<string | undefined>(undefined);
     // Make a useEffect fetch when isOpen is true, to gather further data from subreddit
     useEffect(() => {
-        if (isOpen && thumbnail && !preview) {
-            fetcher.load(`/api/subreddit/${permalink}`);
-        }
-    }, [isOpen]);
+        if (!isOpen) return;
+        if (!thumbnail) return;
+        if (preview) return;
+        fetcher.load(`/api/subreddit/${permalink}`);
+    }, [isOpen, thumbnail, preview, permalink]);
     useEffect(() => {
         if (fetcher.data) {
-            setMoreData(fetcher.data);
+            const data: Array<Listing> = fetcher.data;
+            setMoreData(data);
         }
     }, [fetcher.data]);
     useEffect(() => {
