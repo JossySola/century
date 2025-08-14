@@ -79,7 +79,7 @@ export default function Comments({ num_comments, comments }: {
                         <DrawerHeader></DrawerHeader>
                         <DrawerBody>
                             <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-5">
-                                <section className="w-5/6 max-w-[95%] flex flex-col justify-center items-center gap-5">
+                                <section className="w-5/6 max-w-[95%] flex flex-col-reverse justify-center items-center gap-5">
                                     {
                                         feed
                                         ? feed.map((comment, index) => {
