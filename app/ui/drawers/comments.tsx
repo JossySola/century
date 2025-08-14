@@ -27,7 +27,7 @@ export default function Comments({ num_comments, comments }: {
             }, 
             {
                 root: scrollableRef.current,
-                threshold: 0.8,
+                threshold: 1,
             }
         );
         if (loadingRef.current) {
@@ -78,7 +78,7 @@ export default function Comments({ num_comments, comments }: {
                         <>
                         <DrawerHeader></DrawerHeader>
                         <DrawerBody>
-                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-5">
+                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-x-5 pb-5">
                                 <section className="w-5/6 max-w-[95%] flex flex-col-reverse justify-center items-center gap-5">
                                     {
                                         feed
