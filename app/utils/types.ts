@@ -20,7 +20,7 @@ export interface Listing {
 
 export type Thing = T1 | T2 | T3;
 
-interface T1 {
+export interface T1 {
     kind: "t1";
     data: {
         "subreddit_id": string,
@@ -35,7 +35,7 @@ interface T1 {
         "subreddit": string,
         "author_flair_template_id": string | null,
         "likes": number | null,
-        "replies": string,
+        "replies": Listing,
         "user_reports": [],
         "saved": boolean,
         "id": string,
@@ -97,7 +97,7 @@ interface T1 {
         "ups": number
     };
 };
-interface T2 {
+export interface T2 {
     kind: "t2";
     data: {
         "is_employee": boolean,
@@ -170,7 +170,7 @@ interface T2 {
         "accept_pms": boolean,
     };
 };
-interface T3 {
+export interface T3 {
     kind: "t3";
     data: {
         all_awardings: [],
