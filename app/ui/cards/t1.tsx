@@ -5,7 +5,11 @@ import type { T1 as T1type, T2 } from "~/utils/types";
 import { Heart, Message } from "../icons";
 
 const avatarCache: Record<string, string> = {};
-const T1 = memo(({ comment, isOpen }: { comment: T1type, isOpen: boolean }) => {
+const T1 = memo(({ comment, isOpen, index }: { 
+    comment: T1type, 
+    isOpen: boolean,
+    index: number,
+}) => {
     const [image, setImage] = useState<string>("");
     const fetcher = useFetcher();
     useEffect(() => {
@@ -17,7 +21,8 @@ const T1 = memo(({ comment, isOpen }: { comment: T1type, isOpen: boolean }) => {
             setImage(avatarCache[author]);
             return;
         }
-        fetcher.load(`/api/author/${author}`);
+        const timer = setTimeout(() => fetcher.load(`/api/author/${author}`), index * 500);
+        return () => clearTimeout(timer);
     }, [isOpen, comment.data.author, comment.kind]);
     useEffect(() => {
         if (fetcher.data) {
