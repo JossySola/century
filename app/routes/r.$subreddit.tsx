@@ -46,7 +46,7 @@ export default function Main({ loaderData, params }: Route.ComponentProps) {
     }), [loaderData]);
     return (
         <section className="flex flex-col items-center gap-3 w-full">
-            <h3>{ params.subreddit }</h3>
+            <h3>r/{ params.subreddit }</h3>
             {
                 posts
             }
