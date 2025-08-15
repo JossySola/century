@@ -12,6 +12,7 @@ import {
 import { data } from "react-router";
 import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
+import { Spinner } from "@heroui/react";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -208,17 +209,26 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
+    <main className="flex flex-col items-center gap-3 pb-10">
+      <HeaderMenu />
+      <nav className="sm:block hidden my-5">
+        <Search />
+        <NavList />
+      </nav>
+      <section className="w-full h-full flex flex-col justify-center items-center">
+        <h1>{message}</h1>
+        <p>{details} 😓</p>  
+      </section>
+      <div className="w-full mt-5 flex flex-row justify-center items-center gap-3">
+          <span className="text-xl text-gray-600">Powered with </span>
+          <img src={Logo} width={64} alt="Reddit Wordmark" />
+      </div>
+      <footer className="fixed bottom-0 p-y-5 w-full z-15 backdrop-blur-sm">
+        <p className="font-['Arial'] w-full text-center">Made with ❤️ in Mexico</p>
+      </footer>
     </main>
   )
 }
 export function HydrateFallback() {
-    return <p>Loading...</p>
+    return <Spinner size="lg" color="primary" label="Loading..." />
 }
