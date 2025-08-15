@@ -10,6 +10,7 @@ import {
   commitSession,
 } from "./sessions.server";
 import { data } from "react-router";
+import type { Listing } from "./utils/types";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -22,7 +23,7 @@ export function Layout({
     return (
         <html lang="en">
             <head>
-              <title>21st Century Times</title>
+              <title>The 21st Century Times</title>
               <link rel="icon" type="image/svg+xml" href="/century.svg" />
               <meta charSet="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,53 +52,7 @@ export function Layout({
         </html>
     )
 }
-export async function loader({request}: Route.LoaderArgs) {
-    const session = await getSession(
-        request.headers.get("Cookie"),
-    );
-    const access_token = session.has("access_token");
-
-    if (!access_token) {
-        const client_id = process.env.REDDIT_CLIENT_ID;
-        const client_secret = process.env.REDDIT_CLIENT_SECRET;
-        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-            method: "POST",
-            headers: {
-                Authorization: `Basic ${encode}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': "centurytimes/2.0",
-            },
-            body: new URLSearchParams({
-                grant_type: "client_credentials",
-                scope: "*"
-            })
-        });
-        if (req.status !== 200) {
-            throw new Error("Failed at fetching subreddits");
-        }
-        const res = await req.json();
-        session.set("access_token", res.access_token);
-        session.set("access_mode", "userless");
-        return data(
-            { error: session.get("error") },
-            { 
-                headers: {
-                    "Set-Cookie": await commitSession(session),
-                },
-            },
-        );
-    }
-    return data(
-        { error: session.get("error") },
-        {
-            headers: {
-                "Set-Cookie": await commitSession(session),
-            },
-        },
-    );
-}
-export default function App() {
+export default function App({ actionData }: Route.ComponentProps) {
   return (
       <>
         <HeaderMenu />
@@ -105,9 +60,130 @@ export default function App() {
           <Search />
           <NavList />
         </nav>
-        <Outlet />
+        <Outlet context={actionData} />
       </>
   )
+}
+export async function loader({request}: Route.LoaderArgs) {
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
+  const access_token = session.has("access_token");
+
+  if (!access_token) {
+    const client_id = process.env.REDDIT_CLIENT_ID;
+    const client_secret = process.env.REDDIT_CLIENT_SECRET;
+    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
+    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${encode}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': "centurytimes/2.0",
+        },
+        body: new URLSearchParams({
+          grant_type: "client_credentials",
+          scope: "*"
+        })
+    });
+    if (req.status !== 200) {
+      throw new Error("Failed at getting a token");
+    }
+    const res = await req.json();
+    session.set("access_token", res.access_token);
+    session.set("access_mode", "userless");
+    session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());
+    return data(
+      { error: session.get("error") },
+      { 
+        headers: {
+            "Set-Cookie": await commitSession(session),
+        },
+      },
+    );
+  }
+  const token = session.get("access_token");
+  const expiry = session.get("access_expires_in");
+
+  if (expiry && Date.now() >= parseInt(expiry)) {
+    const client_id = process.env.REDDIT_CLIENT_ID;
+    const client_secret = process.env.REDDIT_CLIENT_SECRET;
+    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
+    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+      method: "POST",
+      headers: {
+          Authorization: `Basic ${encode}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': "centurytimes/2.0",
+      },
+      body: new URLSearchParams({
+          grant_type: `refresh_token&refresh_token=${token}`,
+          scope: "*"
+      })
+    });
+    if (req.status !== 200) {
+      throw new Error("Failed at getting a token");
+    }
+    const res = await req.json();
+    session.set("access_token", res.access_token);
+    session.set("access_mode", "userless");
+    session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());
+    return data(
+      { error: session.get("error") },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+      },
+    );
+  }
+  
+  return data(
+    { error: session.get("error") },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    },
+  );
+}
+export async function action({request}: Route.ActionArgs) {
+  const formData = await request.formData();
+  const query = formData.get("query");
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
+  const access_token = session.get("access_token");
+  if (!query) {
+    throw new Error("No query provided");
+  }
+  if (!access_token) {
+    throw new Error("No token");
+  }
+  const endpoint = new URL("https://oauth.reddit.com/subreddits/search");
+  const params = new URLSearchParams(endpoint.search);
+  params.append("limit", '15');
+  params.append("show", 'all');
+  params.append("show_users", 'true');
+  params.append("sort", 'relevance');
+  params.append("typeahead_active", 'None');
+  params.append("q", `${query.toString()}`);
+  endpoint.search = params.toString();
+  const req = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+    "Authorization": `Bearer ${access_token}`,
+    "User-Agent": "centurytimes/2.0",
+    "Content-Type": "application/json"
+    }
+  })
+  if (req.status !== 200) {
+    console.error(req.statusText);
+    console.error(req.status);
+    throw new Error("Error while searching query");
+  }
+  const response: Listing = await req.json();
+  return response;
 }
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!'
