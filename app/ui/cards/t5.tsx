@@ -19,9 +19,9 @@ export default function T5({
     icon_img: string,
 }) {
     return (
-        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full sm:w-[532px]">
             <Link to={`/${display_name_prefixed}`}>
-                <Card className="w-full sm:w-[532px] p-5">
+                <Card className="p-5">
                     {
                         banner_img 
                         ? <Image
