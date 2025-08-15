@@ -1,9 +1,9 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/_index";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import T3 from "~/ui/cards/t3";
 import type { Listing, Thing } from "~/utils/types";
-import { useActionData, useOutletContext } from "react-router";
+import { useOutletContext } from "react-router";
 import T5 from "~/ui/cards/t5";
 
 export async function loader({ request }: Route.LoaderArgs) {
