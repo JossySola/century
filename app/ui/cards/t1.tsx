@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from "react";
 import { useFetcher } from "react-router";
 import type { T1 as T1type, T2 } from "~/utils/types";
 import { Heart, Message } from "../icons";
+import { motion } from "motion/react";
 
 const avatarCache: Record<string, string> = {};
 const T1 = memo(({ comment, isOpen, index }: { 
@@ -37,23 +38,25 @@ const T1 = memo(({ comment, isOpen, index }: {
         }
     }, [fetcher.data, comment.data.author]);
     return (
-        <Card className="w-full">
-            <CardBody>
-                <div className="grid grid-flow-row grid-rows-[auto_auto_auto] grid-cols-1 gap-3">
-                    <div className="col-span-1 row-start-1 row-span-1 flex flex-row gap-3">
-                        <Avatar size="sm" src={image ?? undefined}/>
-                        <span className="font-semibold">{ comment.data.author }</span>
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+            <Card className="w-full">
+                <CardBody>
+                    <div className="grid grid-flow-row grid-rows-[auto_auto_auto] grid-cols-1 gap-3">
+                        <div className="col-span-1 row-start-1 row-span-1 flex flex-row gap-3">
+                            <Avatar size="sm" src={image ?? undefined}/>
+                            <span className="font-semibold">{ comment.data.author }</span>
+                        </div>
+                        <div className="col-span-1 row-start-2 row-span-1 flex flex-row gap-3">
+                            <p className="font-['Arial']">{ comment.data.body }</p>
+                        </div>
+                        <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
+                            <span className="inline-flex items-center justify-center gap-3"><Heart /> { comment.data.ups }</span>
+                            <span className="inline-flex items-center justify-center gap-3"><Message /> { comment.data.replies ? comment.data.replies.data.children.length : 0 }</span>
+                        </div>
                     </div>
-                    <div className="col-span-1 row-start-2 row-span-1 flex flex-row gap-3">
-                        <p className="font-['Arial']">{ comment.data.body }</p>
-                    </div>
-                    <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
-                        <span className="inline-flex items-center justify-center gap-3"><Heart /> { comment.data.ups }</span>
-                        <span className="inline-flex items-center justify-center gap-3"><Message /> { comment.data.replies ? comment.data.replies.data.children.length : 0 }</span>
-                    </div>
-                </div>
-            </CardBody>
-        </Card>
+                </CardBody>
+            </Card>
+        </motion.div>
     )
 })
 export default T1;

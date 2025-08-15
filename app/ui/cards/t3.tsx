@@ -54,7 +54,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
     }, [moreData]);
     return (
         <>
-        <button onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-[532px]">
+        <motion.button initial={{ scale: 0.5 }} animate={{ scale: 1 }} onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-[532px]">
             <Card className="p-5">
                 <CardHeader className="flex flex-col gap-3 text-center">
                     <User name={author} description={subreddit} />
@@ -82,7 +82,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                     </div>
                 </CardFooter>
             </Card>
-        </button>
+        </motion.button>
         <Modal 
         isOpen={isOpen} 
         placement="center" 
