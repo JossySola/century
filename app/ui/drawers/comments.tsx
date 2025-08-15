@@ -79,7 +79,7 @@ export default function Comments({ num_comments, comments }: {
                         <>
                         <DrawerHeader></DrawerHeader>
                         <DrawerBody>
-                            <div ref={scrollableRef} className="w-full flex flex-col-reverse items-center overflow-y-auto h-full p-x-5 pb-5">
+                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-x-5 pb-5">
                                 {
                                     isLoading && <Spinner size="lg" color="primary" />
                                 }
