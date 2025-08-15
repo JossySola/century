@@ -38,8 +38,8 @@ const T1 = memo(({ comment, isOpen, index }: {
         }
     }, [fetcher.data, comment.data.author]);
     return (
-        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
-            <Card className="w-full">
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full">
+            <Card className="p-5">
                 <CardBody>
                     <div className="grid grid-flow-row grid-rows-[auto_auto_auto] grid-cols-1 gap-3">
                         <div className="col-span-1 row-start-1 row-span-1 flex flex-row gap-3">
