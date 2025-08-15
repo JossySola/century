@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Thing } from "~/utils/types";
 import { useActionData, useSubmit } from "react-router";
 import T3 from "~/ui/cards/t3";
+import { Spinner } from "@heroui/react";
 
 export default function Main({ actionData }: Route.ComponentProps) {
     const [data, setData] = useState<Array<Thing>>([]);
@@ -71,5 +72,5 @@ export async function action({ request }: Route.ActionArgs) {
     return response.data.children;
 }
 export function HydrateFallback() {
-    return <p>Loading...</p>
+    return <Spinner size="lg" color="primary" label="Loading..." />
 }

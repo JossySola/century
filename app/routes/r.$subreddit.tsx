@@ -3,6 +3,7 @@ import type { Route } from "./+types/r.$subreddit";
 import { useMemo } from "react";
 import T3 from "~/ui/cards/t3";
 import type { Listing, Thing } from "~/utils/types";
+import { Spinner } from "@heroui/react";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
     const session = await getSession(
@@ -54,5 +55,5 @@ export default function Main({ loaderData, params }: Route.ComponentProps) {
     )
 }
 export function HydrateFallback() {
-    return <p>Loading...</p>
+    return <Spinner size="lg" color="primary" label="Loading..." />
 }
