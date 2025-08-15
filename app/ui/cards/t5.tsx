@@ -22,20 +22,21 @@ export default function T5({
         <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
             <Link to={`/${display_name_prefixed}`}>
                 <Card className="w-full sm:w-[532px] p-5">
+                    {
+                        banner_img 
+                        ? <Image
+                        removeWrapper
+                        alt="Card background image"
+                        className="z-0 w-full h-full object-cover"
+                        src={banner_img} />
+                        : null
+                    }
                     <CardHeader>
                         <User
                         avatarProps={{ src: icon_img }}
                         name={display_name_prefixed}
                         description={`${formatAmount(subscribers)} members`} />
                     </CardHeader>
-                    {
-                        banner_img && 
-                        <Image
-                        removeWrapper
-                        alt="Card background image"
-                        className="z-0 w-full h-full object-cover"
-                        src={banner_img} />
-                    }
                     <CardBody>
                         <span>{public_description}</span>
                     </CardBody>
