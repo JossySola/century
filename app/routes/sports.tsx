@@ -38,7 +38,12 @@ export default function Main({ actionData }: Route.ComponentProps) {
         }
     }), [data]);
     return (
-        posts
+        <section className="flex flex-col items-center gap-3 w-full">
+            <h3>Sports</h3>
+            {
+                posts
+            }
+        </section>
     )
 }
 
