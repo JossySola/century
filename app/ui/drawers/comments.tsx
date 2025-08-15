@@ -52,7 +52,14 @@ export default function Comments({ num_comments, comments }: {
     const loadComments = () => {
         setIsLoading(true);
         saveScrollPosition();
+        if (children.length && children.length <= 5) {
+            setFeed(children);
+            return;
+        }
         setFeed(prev => {
+            if ((children.length - prev.length) < 5) {
+                return children;
+            }
             const count = prev.length + 5;
             return children.slice(0, count);
         })
