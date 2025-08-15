@@ -17,6 +17,7 @@ const T1 = memo(({ comment, isOpen, index }: {
         if (comment.kind !== "t1") return;
         const author = comment.data.author;
         if (!author) return;
+        if (author === '[deleted]') return;
         if (avatarCache[author]) {
             setImage(avatarCache[author]);
             return;

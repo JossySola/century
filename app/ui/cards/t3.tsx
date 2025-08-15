@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Comments from "../drawers/comments";
 import { useFetcher } from "react-router";
 import type { Listing } from "~/utils/types";
+import { motion } from "motion/react";
 
 export default function T3({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
@@ -53,8 +54,8 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
     }, [moreData]);
     return (
         <>
-        <button onClick={() => onOpen()} className="cursor-pointer">
-            <Card className="w-full max-w-[90vw] md:w-[532px] p-5">
+        <button onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-[532px]">
+            <Card className="p-5">
                 <CardHeader className="flex flex-col gap-3 text-center">
                     <User name={author} description={subreddit} />
                     <h4 className="w-full">{title}</h4>
@@ -98,18 +99,12 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                     </ModalHeader>
                     <ModalBody>
                         <div className="inline-flex items-center justify-center">
-                        {
-                            thumbnail && !preview 
-                            ? <Skeleton className="rounded-xl">
-                                    <Card className="w-[316px] h-[264px]"></Card>
-                                </Skeleton>
-                            : null
-                        }
-                        {
-                            preview 
-                            ? <Image src={preview} />
-                            : null 
-                        }
+                            {
+                                preview && <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}><Image src={preview} alt="cover image" /></motion.div>
+                            }
+                            {
+                                !preview && thumbnail ? <Image src={thumbnail} width={thumbnail_width} alt="cover image" /> : null
+                            }
                         </div>
                         
                         <p className="w-full overflow-clip p-x-3">{selftext}</p>
