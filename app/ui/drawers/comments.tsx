@@ -2,6 +2,7 @@ import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, 
 import type { Listing, Thing } from "~/utils/types";
 import T1 from "../cards/t1";
 import { useEffect, useRef, useState } from "react";
+import { BookOpen } from "../icons";
 
 export default function Comments({ num_comments, comments }: {
     num_comments: number,
@@ -70,7 +71,7 @@ export default function Comments({ num_comments, comments }: {
     
     return (
         <>
-        <Button onPress={onOpen} isDisabled={ num_comments === 0 } size="lg" className="w-full p-2" color="danger"><span className="text-lg">Read comments</span></Button>
+        <Button onPress={onOpen} isDisabled={ num_comments === 0 } size="lg" className="w-full flex flex-row p-2" color="danger"><span className="text-lg">Read comments </span><BookOpen width={20} height={20} /></Button>
         <Drawer isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom" size="lg">
             <DrawerContent>
                 {
