@@ -92,7 +92,7 @@ export default function Comments({ num_comments, comments }: {
                                     }
                                 </section>
                                 {
-                                    comments && comments.data.children.length !== feed.length 
+                                    comments && comments.data.children && comments.data.children.length !== feed.length 
                                     && <div ref={loadingRef} className="flex flex-row justify-center items-center w-full h-fit mb-10">
                                         <Spinner variant="wave" color="primary" size="lg" />
                                     </div>
