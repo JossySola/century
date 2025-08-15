@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@font-face {
+    font-family: KarlaRegular;
+    src: url("/fonts/Karla-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: OldLondon;
+    src: url("/fonts/Olondon_.otf") format("opentype");
+}
+@font-face {
+    font-family: KarlaItalic;
+    src: url("/fonts/Karla-Italic.ttf") format("truetype");
+}
+@font-face {
+    font-family: KarlaBold;
+    src: url("/fonts/Karla-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: ButlerBold;
+    src: url("/fonts/Butler_Bold.otf") format("opentype");
+}
+@font-face {
+    font-family: ButlerExtraBold;
+    src: url("/fonts/Butler_ExtraBold.otf") format("opentype");
+}
+@font-face {
+    font-family: ButlerRegular;
+    src: url("/fonts/Butler_Regular.otf") format("opentype");
+}
+@font-face {
+    font-family: ButlerMedium;
+    src: url("/fonts/Butler_Medium.otf") format("opentype");
+}
+
+@theme {
+    --font-regular: "KarlaRegular";
+    --font-bold: "KarlaBold";
+    --font-italic: "KarlaItalic";
+    --font-london: "OldLondon";
+    --font-butlerbold: "ButlerBold";
+    --font-butlerextrabold: "ButlerExtraBold";
+    --font-butlerreg: "ButlerRegular";
+    --font-butlermed: "ButlerMedium";
+}
+
+.title {
+    font-family: "OldLondon";
+}
+body {
+    font-family: "ButlerMedium", georgia, "times new roman", times, serif;
+}
+a {
+    font-family: Arial, Helvetica, sans-serif;
+}
+span {
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "ButlerBold";
+}
+h2 {
+    font-size: 3rem;
+}
+h3 {
+    font-size: 2.25rem;
+}
+h4 {
+    font-size: 1.875rem;
+}
+h5 {
+    font-size: 1.5rem;
+}
