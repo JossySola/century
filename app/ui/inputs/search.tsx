@@ -7,6 +7,7 @@ export default function Search() {
     const [value, setValue] = useState<string>("");
     return <Form action="/" method="post" className="w-full flex flex-row gap-3 justify-center items-center">
         <Input 
+        autoComplete="off"
         label="Search on Reddit" 
         name="query"
         variant="underlined" 
@@ -19,7 +20,7 @@ export default function Search() {
         }
         classNames={{
             label: "text-sm font-sans",
-            input: "h-full font-['Arial']"
+            input: "h-full font-['Arial'] text-lg"
         }} />
         <Button color="primary" type="submit" size="sm"><span className="text-lg">Go</span></Button>
     </Form>
