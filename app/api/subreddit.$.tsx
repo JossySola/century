@@ -1,6 +1,6 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/subreddit.$";
-import decodeEntities from "~/utils/decode-entities";
+import type { Listing } from "~/utils/types";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
     const session = await getSession(
@@ -19,9 +19,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     if (req.status !== 200) {
         console.error(req.statusText);
         console.error(req.status);
-        throw new Error("Failed at fetching subreddit's comments");
+        return [];
     }
-    const data = await req.json();
+    const data: Array<Listing> = await req.json();
     
-    return decodeEntities(data);
+    return data;
 }
