@@ -17,6 +17,11 @@ export default function Comments({ num_comments, comments }: {
     const scrollPositionRef = useRef(0);
     
     useEffect(() => {
+        if (!comments) return;
+        if (feed.length > 0) return;
+        loadComments();
+    }, [children.length]);    
+    useEffect(() => {
         if (!isOpen) return;
         if (!scrollableRef.current || !loadingRef.current) return;
 
@@ -37,11 +42,6 @@ export default function Comments({ num_comments, comments }: {
         return () => observer.disconnect();
     }, [isOpen, feed.length]);
     useEffect(() => {
-        if (!comments) return;
-        if (feed.length > 0) return;
-        loadComments();
-    }, [children.length]);
-    useEffect(() => {
         if (!isLoading) {
             requestAnimationFrame(() => {
                 restoreScrollPosition();
@@ -52,12 +52,9 @@ export default function Comments({ num_comments, comments }: {
     const loadComments = () => {
         setIsLoading(true);
         saveScrollPosition();
-        if (children.length && children.length <= 5) {
-            setFeed(children);
-            return;
-        }
         setFeed(prev => {
-            if ((children.length - prev.length) < 5) {
+            const diff = children.length - prev.length;
+            if ((children.length && children.length <= 5) || diff < 5) {
                 return children;
             }
             const count = prev.length + 5;
