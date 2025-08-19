@@ -68,9 +68,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                     ?  <CardBody className="h-fit flex flex-col justify-center items-center text-center">
                         {
                             preview 
-                            ? <Image src={preview} alt="cover image" classNames={{
-                                    img: "h-fit"
-                            }} />
+                            ? <Image src={preview} alt="cover image" />
                             : null
                         }
                         {
@@ -115,9 +113,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                         <div className="inline-flex items-center justify-center">
                         {
                             preview 
-                            ? <Image src={preview} alt="cover image" classNames={{
-                                    img: "h-fit"
-                            }} />
+                            ? <Image src={preview} alt="cover image" />
                             : null
                         }
                         {
