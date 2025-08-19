@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Link, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { isRouteErrorResponse, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
