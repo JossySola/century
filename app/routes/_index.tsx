@@ -31,7 +31,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 export default function Index({ loaderData }: Route.ComponentProps) {
     const action: Listing = useOutletContext();
-    const scrollableRef = useRef<HTMLDivElement>(null);
     const scrollPositionRef = useRef(0);
     const loadingRef = useRef(null);
     const [feed , setFeed] = useState<Array<Thing>>([]);
@@ -42,7 +41,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         addToFeed();
     }, []);
     useEffect(() => {
-        if (!scrollableRef.current || !loadingRef.current) return;
+        if (!loadingRef.current) return;
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -50,7 +49,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 }
             }, 
             {
-                root: scrollableRef.current,
+                root: document,
                 threshold: 1,
             }
         );
@@ -58,7 +57,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             observer.observe(loadingRef.current);
         }
         return () => observer.disconnect();
-    }, [feed]);
+    }, [feed.length]);
     useEffect(() => {
         if (!isLoading) {
             requestAnimationFrame(() => {
@@ -72,20 +71,21 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         saveScrollPosition();
         if (loaderData) {
             setFeed(prev => {
+                if (prev.length === loaderData.length) {
+                    return prev;
+                }
+                if (loaderData.length <= 5) {
+                    return loaderData;
+                }
                 const diff = loaderData.length - prev.length;
-                if ((loaderData.length && loaderData.length <= 5) || diff < 5) {
+                if (diff < 5) {
                     return loaderData;
                 };
+
                 const count = prev.length + 5;
                 const newArray = loaderData.slice(0, count);
-                /*
-                if (loaderData.length !== feed.length || (action && action.data && action.data.children).length !== feed.length) {
-                    newArray.push(<div ref={loadingRef} className="flex flex-row justify-center items-center w-full h-fit mb-10">
-                        <Spinner variant="wave" color="primary" size="lg" />
-                    </div>);
-                    return newArray;
-                } 
-                */
+                console.log("LOADERDATA: ", loaderData.length)
+                console.log("FEED: ", newArray.length)
                 return newArray;
             });
             return;
@@ -93,21 +93,20 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         if (action && action.data && action.data.children) {
             setFeed(prev => {
                 const children = action.data.children;
+                if (prev.length === children.length) {
+                    return prev;
+                }
+                if (children.length <= 5) {
+                    return children;
+                }
                 const diff = children.length - prev.length;
-
-                if ((children.length && children.length <= 5) || diff < 5) {
+                if (diff < 5) {
                     return children;
                 };
                 const count = prev.length + 5;
-                const newArray = loaderData.slice(0, count);
-                /*
-                if (loaderData.length !== feed.length || (action && action.data && action.data.children).length !== feed.length) {
-                    newArray.push(<div ref={loadingRef} className="flex flex-row justify-center items-center w-full h-fit mb-10">
-                        <Spinner variant="wave" color="primary" size="lg" />
-                    </div>);
-                    return newArray;
-                }
-                */
+                const newArray = children.slice(0, count);
+                console.log("CHILDREN: ", children.length)
+                console.log("FEED: ", newArray.length)
                 return newArray;
             });
             return;
@@ -116,15 +115,33 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         return;
     }
     const saveScrollPosition = () => {
-        if (scrollableRef.current) {
-            scrollPositionRef.current = scrollableRef.current.scrollTop;
+        const scrollable = document.documentElement ?? document.body;
+        if (scrollable) {
+            scrollPositionRef.current = scrollable.scrollTop;
         }
     };
     const restoreScrollPosition = () => {
-        if (scrollableRef.current) {
-            scrollableRef.current.scrollTop = scrollPositionRef.current;
+        const scrollable = document.documentElement ?? document.body;
+        if (scrollable) {
+            scrollable.scrollTop = scrollPositionRef.current;
         }
     };
+    const renderLoadingDots = () => {
+        if (loaderData) {
+            if (loaderData.length !== feed.length) {
+                return <div ref={loadingRef} className="relative bottom-0 flex flex-row justify-center w-full h-fit p-y-10">
+                    <Spinner variant="wave" color="primary" size="lg" />
+                </div>
+            }
+        } else if (action && action.data) {
+            if (action.data.children && action.data.children.length !== feed.length) {
+                return <div ref={loadingRef} className="relative bottom-0 flex flex-row justify-center w-full h-fit p-y-10">
+                    <Spinner variant="wave" color="primary" size="lg" />
+                </div>
+            }
+        }
+        return null;
+    }
 
     const render = feed.map((element: Thing, index: number) => {
         if (element.kind === "t3") {
@@ -157,8 +174,11 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     });
     
     return (
-        <section ref={scrollableRef} className="flex flex-col items-center gap-5">
+        <section className="flex flex-col items-center gap-5 w-full mb-5">
             { render }
+            {
+                renderLoadingDots()
+            }
         </section>
     )
 }
