@@ -1,10 +1,6 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/_index";
-import { useMemo } from "react";
-import T3 from "~/ui/cards/t3";
-import type { Listing, Thing } from "~/utils/types";
-import { useOutletContext } from "react-router";
-import T5 from "~/ui/cards/t5";
+import useInfiniteScroll from "~/utils/custom-hooks";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
@@ -29,45 +25,12 @@ export async function loader({ request }: Route.LoaderArgs) {
     return response.data.children;
 }
 export default function Index({ loaderData }: Route.ComponentProps) {
-    const action: Listing = useOutletContext();
-    const objectsFromLoader = useMemo(() => loaderData.map((element: Thing, index: number) => {
-        if (element.kind === "t3") {
-            return <T3 
-            key={ index }
-            author={ element.data.author }
-            id={ element.data.id }
-            permalink={ element.data.permalink }
-            num_comments={ element.data.num_comments ?? 0 }
-            selftext={ element.data.selftext ?? "" }
-            subreddit={ element.data.subreddit ?? "" }
-            subreddit_id={ element.data.subreddit_id }
-            thumbnail={ element.data.thumbnail ?? "" }
-            thumbnail_height={ element.data.thumbnail_height ?? 0 }
-            thumbnail_width={ element.data.thumbnail_width ?? 0 }
-            title={ element.data.title ?? "" }
-            ups={ element.data.ups } />
-        }
-    }), [loaderData]);
-    
-    const objectsFromAction = useMemo(() => action?.data.children.map((element: Thing, index: number) => {
-        if (element.kind === "t5") {
-            return <T5 
-            key={index}
-            display_name_prefixed={element.data.display_name_prefixed}
-            subscribers={element.data.subscribers}
-            name={element.data.name}
-            public_description={element.data.public_description}
-            banner_img={element.data.banner_img}
-            icon_img={element.data.icon_img}
-            />
-        }
-    }), [action]);
+    const { render, renderLoadingDots } = useInfiniteScroll(loaderData);
     
     return (
-        <>
-        {
-            objectsFromAction ?? objectsFromLoader
-        }
-        </>
+        <section className="flex flex-col items-center gap-5 w-full mb-5">
+            { render }
+            { renderLoadingDots() }
+        </section>
     )
 }

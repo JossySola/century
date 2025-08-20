@@ -28,9 +28,12 @@ const T1 = memo(({ comment, isOpen, index }: {
     }, [isOpen, comment.data.author, comment.kind]);
     useEffect(() => {
         if (fetcher.data) {
-            const data: T2 = fetcher.data;
+            const data: T2 | string = fetcher.data;
+            if (typeof data === "string") {
+                return;
+            }
             const author = comment.data.author;
-            const url = data.data.snoovatar_img;
+            const url = data.data.snoovatar_img.replace(/&amp;/g, "&");
             if (author && url) {
                 avatarCache[author] = url;
                 setImage(url);

@@ -6,6 +6,7 @@
     t5 Subreddit
     t6 Award 
 */
+export type Thing = T1 | T2 | T3 | T5;
 export interface Listing {
     kind: "Listing";
     data: {
@@ -17,9 +18,6 @@ export interface Listing {
         children: Array<Thing>
     };
 }
-
-export type Thing = T1 | T2 | T3 | T5;
-
 export interface T1 {
     kind: "t1";
     data: {

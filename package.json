@@ -16,30 +16,30 @@
   "dependencies": {
     "@heroui/react": "^2.8.0-beta.15",
     "@heroui/theme": "^2.4.20",
-    "@react-router/dev": "^7.8.0",
-    "@react-router/node": "^7.8.0",
-    "@react-router/serve": "^7.8.0",
-    "@tailwindcss/vite": "^4.1.11",
+    "@react-router/dev": "^7.8.1",
+    "@react-router/node": "^7.8.1",
+    "@react-router/serve": "^7.8.1",
+    "@tailwindcss/vite": "^4.1.12",
     "@vercel/analytics": "^1.5.0",
     "@vercel/react-router": "^1.2.2",
     "dotenv": "^16.6.1",
     "framer-motion": "^12.23.12",
-    "isbot": "^5.1.29",
+    "isbot": "^5.1.30",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "motion": "^12.23.12",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router": "^7.8.0",
+    "react-router": "^7.8.1",
     "sort-by": "^0.0.2",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^4.1.12",
     "uuid": "^10.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20.19.10",
+    "@types/node": "^20.19.11",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@types/uuid": "^10.0.0",
@@ -52,6 +52,6 @@
     "jest": "^29.7.0",
     "prop-types": "^15.8.1",
     "typescript": "^5.9.2",
-    "vite": "^7.1.2"
+    "vite": "^7.1.3"
   }
 }

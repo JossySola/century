@@ -1,6 +1,6 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/author.$name";
-import decodeEntities from "~/utils/decode-entities";
+import type { T2 } from "~/utils/types";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
     const session = await getSession(
@@ -18,8 +18,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     if (req.status !== 200) {
         console.error(req.status);
         console.error(req.statusText);
-        throw new Error("Failed at fetching author's data");
+        return "";
     }
-    const data = await req.json();
-    return decodeEntities(data);
+    const data: T2 = await req.json();
+    return data;
 }

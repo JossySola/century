@@ -44,6 +44,11 @@
     --font-butlerreg: "ButlerRegular";
     --font-butlermed: "ButlerMedium";
 }
+@utility reddit-header {
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #ff4500;
+    font-weight: 600;
+}
 
 .title {
     font-family: "OldLondon";
