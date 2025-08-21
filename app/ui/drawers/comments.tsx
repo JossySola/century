@@ -1,4 +1,4 @@
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Spinner, useDisclosure } from "@heroui/react";
+import { addToast, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Spinner, useDisclosure } from "@heroui/react";
 import type { Listing, Thing } from "~/utils/types";
 import T1 from "../cards/t1";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +16,19 @@ export default function Comments({ num_comments, comments }: {
     const scrollableRef = useRef<HTMLDivElement>(null);
     const scrollPositionRef = useRef(0);
     
+    useEffect(() => {
+        if (!isOpen) return;
+        if (comments && children) {
+            if (num_comments && children.length < num_comments) {
+                addToast({
+                    title: "Some comments may have been deleted",
+                    description: "Some comments may not be displayed because the user or comment has been deleted.",
+                    color: "warning",
+                    size: "lg"
+                })
+            }
+        }
+    }, [isOpen])
     useEffect(() => {
         if (!comments) return;
         if (feed.length > 0) return;
@@ -87,7 +100,7 @@ export default function Comments({ num_comments, comments }: {
                                 {
                                     isLoading && <Spinner size="lg" color="primary" />
                                 }
-                                <section className="w-5/6 max-w-[95%] flex flex-col-reverse justify-center items-center gap-5">
+                                <section className="w-5/6 max-w-[95%] flex flex-col-reverse justify-center items-center gap-2">
                                     {
                                         feed
                                         ? feed.map((comment, index) => {
