@@ -7,7 +7,7 @@ import { useFetcher } from "react-router";
 import type { Listing } from "~/utils/types";
 import { motion } from "motion/react";
 
-export default function T3({ author, subreddit, id, permalink, num_comments, selftext, subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
+export default function T3({ author, subreddit, id, permalink, num_comments, selftext = "", subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
     author: string,
     subreddit: string,
     id: string,
@@ -55,6 +55,34 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
             }
         }
     }, [moreData]);
+
+    const renderBody = () => {
+        if (preview) {
+            return (
+                <CardBody className="h-fit flex flex-col justify-center items-center text-center gap-3">
+                    {
+                        preview 
+                        ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <Image src={preview} alt="cover image" />
+                        </motion.div>
+                        : null
+                    }
+                    {
+                        !preview && thumbnail 
+                        ? <Image src={thumbnail} width={thumbnail_width} alt="cover image" /> 
+                        : null
+                    }
+                    <p className="w-full line-clamp-3 overflow-hidden text-ellipsis">{selftext}</p>
+                </CardBody>
+            )
+        } else {
+            return (
+                <CardBody className="h-fit flex flex-col justify-center items-center text-center gap-3">
+                    <p className="w-full line-clamp-3 overflow-hidden text-ellipsis">{selftext}</p>
+                </CardBody>
+            )            
+        }            
+    }
     return (
         <>
         <motion.button initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-[532px]">
@@ -64,21 +92,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                     <h4 className="w-full">{title}</h4>
                 </CardHeader>
                 {
-                    preview || selftext
-                    ?  <CardBody className="h-fit flex flex-col justify-center items-center text-center">
-                        {
-                            preview 
-                            ? <Image src={preview} alt="cover image" />
-                            : null
-                        }
-                        {
-                            !preview && thumbnail 
-                            ? <Image src={thumbnail} width={thumbnail_width} alt="cover image" /> 
-                            : null
-                        }
-                        <p className="w-full line-clamp-3 overflow-hidden text-ellipsis">{selftext}</p>
-                    </CardBody>
-                    : null
+                    renderBody()
                 }
                 <Divider />
                 <CardFooter className="flex flex-row text-gray-500">
@@ -110,7 +124,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                         <h5 className="w-full">{title}</h5>
                     </ModalHeader>
                     <ModalBody>
-                        <div className="inline-flex items-center justify-center">
+                        <div className="inline-flex items-center justify-center gap-3">
                         {
                             preview 
                             ? <Image src={preview} alt="cover image" />
@@ -123,7 +137,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                         }
                         </div>
                         
-                        <p className="w-full overflow-clip p-x-3">{selftext}</p>
+                        <p className="w-full overflow-clip m-x-10">{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
                             <Heart />
