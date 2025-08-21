@@ -12,7 +12,7 @@ import {
 import { data } from "react-router";
 import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
-import { Spinner } from "@heroui/react";
+import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -44,9 +44,15 @@ export function Layout({
               <Links />
             </head>
             <body className="flex flex-col items-center gap-3 p-3">
-                
+                <HeroUIProvider>
+                  <ToastProvider placement="bottom-center" toastProps={{
+                    classNames: {
+                      title: "font-['Arial']",
+                      description: "font-['Arial']"
+                    }
+                  }} />
                   { children }
-                  
+                </HeroUIProvider>
                 <Analytics />
                 <ScrollRestoration />
                 <Scripts />
