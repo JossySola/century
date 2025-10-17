@@ -13,5 +13,6 @@ export default [
     ...prefix("api", [
         route("subreddit/*", "./api/subreddit.$.tsx"),
         route("author/:name", "./api/author.$name.tsx"),
+        route("upvote/:id/:vote", "./api/upvote.tsx"),
     ]),
 ] satisfies RouteConfig;
