@@ -3,29 +3,16 @@ import type { Route } from "./+types/_index";
 import useInfiniteScroll from "~/utils/custom-hooks";
 import { useEffect } from "react";
 import { addToast } from "@heroui/react";
+import getCategoryContent from "~/utils/get-category-content";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie"),
     );
-    const tokenCookie = session.get("access_token");
-    
-    const req = await fetch("https://www.reddit.com/r/worldnews.json?raw_json=1", {
-        method: "GET",
-        headers: {
-            'Authorization': `Basic ${tokenCookie}`,
-            'Content-Type': 'application/json',
-            'User-Agent': "centurytimes/2.0",
-        },
-    });
-    if (req.status !== 200) {
-        console.error(req.statusText);
-        console.error(req.status)
-        throw new Error("Failed at fetching subreddits");
-    }
-    const response = await req.json();
+    const data = await getCategoryContent("worldnews", session.get("access_token"));
+
     return {
-        data: response.data.children,
+        data,
         url: request.url,
     };
 }
@@ -48,6 +35,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     useEffect(() => {
         const url = new URL(loaderData.url);
         const error = url.searchParams.get("error");
+        console.log(error)
         if (error) {
             addToast({ 
                 title: "Authorization Error", 
