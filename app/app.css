@@ -33,6 +33,11 @@
     font-family: ButlerMedium;
     src: url("/fonts/Butler_Medium.otf") format("opentype");
 }
+@font-face {
+    font-family: Geist;
+    src: url("/fonts/geist-font-1.5.1/fonts/Geist/otf/Geist-Regular.otf") format("opentype"),
+         url("/fonts/geist-font-1.5.1/fonts/Geist/ttf/Geist-Regular.ttf") format("truetype");
+}
 
 @theme {
     --font-regular: "KarlaRegular";
@@ -43,6 +48,7 @@
     --font-butlerextrabold: "ButlerExtraBold";
     --font-butlerreg: "ButlerRegular";
     --font-butlermed: "ButlerMedium";
+    --font-geist: "Geist";
 }
 @utility reddit-header {
     font-family: Arial, Helvetica, sans-serif !important;
