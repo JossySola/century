@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router";
 import type { Listing, Thing } from "./types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Spinner } from "@heroui/react";
 import T3 from "~/ui/cards/t3";
 import T5 from "~/ui/cards/t5";
@@ -11,6 +11,37 @@ export default function useInfiniteScroll(loaderData: any) {
     const loadingRef = useRef(null);
     const [feed , setFeed] = useState<Array<Thing>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const render = useMemo(() => feed.map((element: Thing, index: number) => {
+        if (element.kind === "t3") {
+            return <T3 
+            key={ index }
+            author={ element.data.author }
+            id={ element.data.id }
+            permalink={ element.data.permalink }
+            num_comments={ element.data.num_comments ?? 0 }
+            selftext={ element.data.selftext ?? "" }
+            subreddit={ element.data.subreddit ?? "" }
+            subreddit_id={ element.data.subreddit_id }
+            thumbnail={ element.data.thumbnail ?? "" }
+            thumbnail_height={ element.data.thumbnail_height ?? 0 }
+            thumbnail_width={ element.data.thumbnail_width ?? 0 }
+            title={ element.data.title ?? "" }
+            ups={ element.data.ups }
+            likes={ element.data.likes ?? false } />
+        }
+        if (element.kind === "t5") {
+            return <T5 
+            key={index}
+            display_name_prefixed={element.data.display_name_prefixed}
+            subscribers={element.data.subscribers}
+            name={element.data.name}
+            public_description={element.data.public_description}
+            banner_img={element.data.banner_img}
+            icon_img={element.data.icon_img}
+            />
+        }          
+    }), [feed]);
 
     useEffect(() => {
         if (feed.length > 0) {
@@ -120,36 +151,6 @@ export default function useInfiniteScroll(loaderData: any) {
         }
         return null;
     }
-
-    const render = feed.map((element: Thing, index: number) => {
-        if (element.kind === "t3") {
-            return <T3 
-            key={ index }
-            author={ element.data.author }
-            id={ element.data.id }
-            permalink={ element.data.permalink }
-            num_comments={ element.data.num_comments ?? 0 }
-            selftext={ element.data.selftext ?? "" }
-            subreddit={ element.data.subreddit ?? "" }
-            subreddit_id={ element.data.subreddit_id }
-            thumbnail={ element.data.thumbnail ?? "" }
-            thumbnail_height={ element.data.thumbnail_height ?? 0 }
-            thumbnail_width={ element.data.thumbnail_width ?? 0 }
-            title={ element.data.title ?? "" }
-            ups={ element.data.ups } />
-        }
-        if (element.kind === "t5") {
-            return <T5 
-            key={index}
-            display_name_prefixed={element.data.display_name_prefixed}
-            subscribers={element.data.subscribers}
-            name={element.data.name}
-            public_description={element.data.public_description}
-            banner_img={element.data.banner_img}
-            icon_img={element.data.icon_img}
-            />
-        }          
-    });
 
     return {
         render,
