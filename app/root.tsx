@@ -225,6 +225,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <h1 className="font-['Arial']">{message}</h1>
         <p>An error has occurred 😓</p>  
         <p>Sometimes Reddit gets tired of sending data 😒</p>  
+        <p>Please give it some minutes and try again 🙏</p>
       </section>
       <div className="w-full mt-5 flex flex-row justify-center items-center gap-3 fixed bottom-10">
           <span className="text-xl text-gray-600">Powered with </span>
