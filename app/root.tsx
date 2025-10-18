@@ -18,65 +18,65 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
 ];
 export function Layout({
-    children,
+  children,
 }: { 
-    children: React.ReactNode
+  children: React.ReactNode
 }) {
-    return (
-        <html lang="en">
-            <head>
-              <title>The 21st Century Times</title>
-              <link rel="icon" type="image/svg+xml" href="/century.svg" />
-              <meta charSet="UTF-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <meta name="description" content="Inspired by The New York Times, I present 'The 21st Century Times', working with the Reddit API, it features popular Subreddits dedicated to worldwide news, technology, sports, astronomy, science & gaming. The user is also able to search, upvote, downvote and comment on specific Subreddits." />
-              <meta property="og:url" content="https://www.centurytimes.jossysola.com/" />
-              <meta property="og:type" content="website" />
-              <meta property="og:title" content="The 21st Century Times" />
-              <meta property="og:description" content="Web Application using the Reddit API to display worldwide news and articles about technology, sports, astronomy, science and gaming. Searching subreddits is enabled." />
-              <meta property="og:image" content="https://centurytimes.jossysola.com/banner.png" />
-              <meta name="twitter:card" content="summary_large_image" />
-              <meta property="twitter:domain" content="centurytimes.jossysola.com" />
-              <meta property="twitter:url" content="https://www.centurytimes.jossysola.com/" />
-              <meta name="twitter:title" content="The 21st Century Times" />
-              <meta name="twitter:description" content="Web Application using the Reddit API to display worldwide news and articles about technology, sports, astronomy, science and gaming. Searching subreddits is enabled." />
-              <meta name="twitter:image" content="https://centurytimes.jossysola.com/banner.png"></meta>
-              <Links />
-            </head>
-            <body className="flex flex-col items-center gap-3 p-3">
-                <HeroUIProvider>
-                  <ToastProvider placement="bottom-center" toastProps={{
-                    classNames: {
-                      title: "font-['Arial']",
-                      description: "font-['Arial']"
-                    }
-                  }} />
-                  { children }
-                </HeroUIProvider>
-                <Analytics />
-                <ScrollRestoration />
-                <Scripts />
-            </body>
-        </html>
-    )
+  return (
+    <html lang="en">
+      <head>
+        <title>The 21st Century Times</title>
+        <link rel="icon" type="image/svg+xml" href="/century.svg" />
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Inspired by The New York Times, I present 'The 21st Century Times', working with the Reddit API, it features popular Subreddits dedicated to worldwide news, technology, sports, astronomy, science & gaming. The user is also able to search, upvote, downvote and comment on specific Subreddits." />
+        <meta property="og:url" content="https://www.centurytimes.jossysola.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="The 21st Century Times" />
+        <meta property="og:description" content="Web Application using the Reddit API to display worldwide news and articles about technology, sports, astronomy, science and gaming. Searching subreddits is enabled." />
+        <meta property="og:image" content="https://centurytimes.jossysola.com/banner.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="centurytimes.jossysola.com" />
+        <meta property="twitter:url" content="https://www.centurytimes.jossysola.com/" />
+        <meta name="twitter:title" content="The 21st Century Times" />
+        <meta name="twitter:description" content="Web Application using the Reddit API to display worldwide news and articles about technology, sports, astronomy, science and gaming. Searching subreddits is enabled." />
+        <meta name="twitter:image" content="https://centurytimes.jossysola.com/banner.png"></meta>
+        <Links />
+      </head>
+      <body className="flex flex-col items-center gap-3 p-3">
+        <HeroUIProvider>
+          <ToastProvider placement="bottom-center" toastProps={{
+            classNames: {
+              title: "font-['Arial']",
+              description: "font-['Arial']"
+            }
+          }} />
+          { children }
+        </HeroUIProvider>
+        <Analytics />
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  )
 }
 export default function App({ actionData }: Route.ComponentProps) {
   return (
-      <main className="flex flex-col items-center gap-3 pb-10">
-        <HeaderMenu />
-        <nav className="sm:block hidden my-5">
-          <Search />
-          <NavList />
-        </nav>
-        <Outlet context={actionData} />
-        <div className="w-full mt-5 flex flex-row justify-center items-center gap-3">
-                    <span className="text-xl text-gray-600">Powered with </span>
-                    <img src={Logo} width={64} alt="Reddit Wordmark" />
-                </div>
-        <footer className="fixed bottom-0 p-y-5 w-full z-15 backdrop-blur-sm">
-          <p className="font-['Arial'] w-full text-center">Made with ❤️ in Mexico</p>
-        </footer>
-      </main>
+    <main className="flex flex-col items-center gap-3 pb-10">
+      <HeaderMenu />
+      <nav className="sm:block hidden my-5">
+        <Search />
+        <NavList />
+      </nav>
+      <Outlet context={actionData} />
+      <div className="w-full mt-5 flex flex-row justify-center items-center gap-3">
+        <span className="text-xl text-gray-600">Powered with </span>
+        <img src={Logo} width={64} alt="Reddit Wordmark" />
+      </div>
+      <footer className="fixed bottom-0 p-y-5 w-full z-15 backdrop-blur-sm">
+        <p className="font-['Arial'] w-full text-center">Made with ❤️ in Mexico</p>
+      </footer>
+    </main>
   )
 }
 export async function loader({request}: Route.LoaderArgs) {
@@ -84,7 +84,10 @@ export async function loader({request}: Route.LoaderArgs) {
     request.headers.get("Cookie"),
   );
   const access_token = session.has("access_token");
-
+  const url = new URL(request.url);
+  const state = url.searchParams.get("state");
+  const code = url.searchParams.get("code");
+  // If this is the first visit, set session to userless
   if (!access_token) {
     const client_id = process.env.REDDIT_CLIENT_ID;
     const client_secret = process.env.REDDIT_CLIENT_SECRET;
@@ -117,50 +120,118 @@ export async function loader({request}: Route.LoaderArgs) {
       },
     );
   }
-  const token = session.get("access_token");
-  const expiry = session.get("access_expires_in");
-
-  if (expiry && Date.now() >= parseInt(expiry)) {
+  // If the user has been redirected from Reddit authorization
+  const access_mode = session.get("access_mode");
+  if (code && access_mode !== "authorized" && state === "x") {
     const client_id = process.env.REDDIT_CLIENT_ID;
     const client_secret = process.env.REDDIT_CLIENT_SECRET;
     const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
     const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-      method: "POST",
-      headers: {
+        method: "POST",
+        headers: {
           Authorization: `Basic ${encode}`,
           'Content-Type': 'application/x-www-form-urlencoded',
           'User-Agent': "centurytimes/2.0",
-      },
-      body: new URLSearchParams({
-          grant_type: `refresh_token&refresh_token=${token}`,
-          scope: "*"
-      })
+        },
+        body: new URLSearchParams({
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: "http://localhost:5173",
+        })
     });
     if (req.status !== 200) {
-      throw new Error("Failed at getting a token");
+      throw new Error("Failed at getting a authorized token");
     }
     const res = await req.json();
     session.set("access_token", res.access_token);
-    session.set("access_mode", "userless");
-    session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());
+    session.set("access_mode", "authorized");
+    session.set("access_expires_in", res.expires_in);
+    session.set("refresh_token", res.refresh_token);
     return data(
       { error: session.get("error") },
-      {
+      { 
         headers: {
-          "Set-Cookie": await commitSession(session),
+            "Set-Cookie": await commitSession(session),
         },
       },
-    );
+    );    
   }
-  
-  return data(
-    { error: session.get("error") },
-    {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    },
-  );
+  // If there is an access token and "code" is not present, it checks if the token is expired
+  const expiry = session.get("access_expires_in");
+
+  if (expiry && Date.now() >= parseInt(expiry)) {
+    // If the token has expired
+    if (access_mode === "authorized") {
+      const refresh_token = session.get("refresh_token");
+      if (refresh_token) {
+        // If the access mode is authorized, it uses the refresh token to get a new access token
+        const client_id = process.env.REDDIT_CLIENT_ID;
+        const client_secret = process.env.REDDIT_CLIENT_SECRET;
+        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
+        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+          method: "POST",
+          headers: {
+            Authorization: `Basic ${encode}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': "centurytimes/2.0",
+          },
+          body: new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token,
+          })
+        });
+        if (req.status !== 200) {
+          throw new Error("Failed at getting a refresh token");
+        }
+        const res = await req.json();
+        session.set("access_token", res.access_token);
+        session.set("access_mode", "authorized");
+        session.set("access_expires_in", res.expires_in);
+        session.set("refresh_token", res.refresh_token);        
+        return data(
+          { error: session.get("error") },
+          {
+            headers: {
+              "Set-Cookie": await commitSession(session),
+            },
+          },
+        );
+      }
+    } else {
+      // If the access mode is userless, it gets a new userless token
+      const token = session.get("access_token");
+      const client_id = process.env.REDDIT_CLIENT_ID;
+      const client_secret = process.env.REDDIT_CLIENT_SECRET;
+      const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
+      const req = await fetch("https://www.reddit.com/api/v1/access_token", {
+        method: "POST",
+        headers: {
+            Authorization: `Basic ${encode}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': "centurytimes/2.0",
+        },
+        body: new URLSearchParams({
+            grant_type: `refresh_token&refresh_token=${token}`,
+            scope: "*"
+        })
+      });
+      if (req.status !== 200) {
+        throw new Error("Failed at getting a token");
+      }
+      const res = await req.json();
+      session.set("access_token", res.access_token);
+      session.set("access_mode", "userless");
+      session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());      
+      return data(
+        { error: session.get("error") },
+        {
+          headers: {
+            "Set-Cookie": await commitSession(session),
+          },
+        },
+      );
+    }
+  }
 }
 export async function action({request}: Route.ActionArgs) {
   const formData = await request.formData();
