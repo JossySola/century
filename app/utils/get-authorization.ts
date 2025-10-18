@@ -6,8 +6,8 @@ export default function getAuthorization() {
         client_id,
         response_type: "code",
         state,
-        redirect_uri: "https://centurytimes.jossysola.com",
-        duration: "temporary" as "temporary",
+        redirect_uri: "http://localhost:5173",
+        duration: "permanent",
         scope: "edit identity read submit vote",
     }
     const q = new URLSearchParams(params);
