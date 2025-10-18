@@ -14,11 +14,10 @@ export default function HeartButton({ vote, setVote, id }: {
         if (fetcher.data) {
             if (fetcher.data.endpoint) {
                 window.sessionStorage.setItem("x-century-pending-action", JSON.stringify({
-                    type: "vote",
+                    action: "vote",
                     id,
-                    vote,
+                    payload: vote,
                 }));
-                window.sessionStorage.setItem("x-century-pending-url", JSON.stringify(params));
                 window.location.href = fetcher.data.endpoint;
             } else if (fetcher.data.error) {
                 console.error("Error processing vote:", fetcher.data.error);
