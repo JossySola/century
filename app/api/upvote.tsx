@@ -32,6 +32,7 @@ export async function action({request, params}: Route.ActionArgs): Promise<{resp
                 });
                 throw new Error(`${response.json.errors[0][0]}: ${response.json.errors[0][1]}`);
             }
+            console.error("Failed request from 'vote' function.", response);
             throw new Error("Failed request from 'vote' function.");
         }
         return { response };
