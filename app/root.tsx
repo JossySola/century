@@ -97,7 +97,7 @@ export async function loader({request}: Route.LoaderArgs) {
         headers: {
           Authorization: `Basic ${encode}`,
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.0",
+          'User-Agent': "centurytimes/2.1.0",
         },
         body: new URLSearchParams({
           grant_type: "client_credentials",
@@ -131,7 +131,7 @@ export async function loader({request}: Route.LoaderArgs) {
         headers: {
           Authorization: `Basic ${encode}`,
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.0",
+          'User-Agent': "centurytimes/2.1.0",
         },
         body: new URLSearchParams({
           grant_type: "authorization_code",
@@ -173,7 +173,7 @@ export async function loader({request}: Route.LoaderArgs) {
           headers: {
             Authorization: `Basic ${encode}`,
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.0",
+            'User-Agent': "centurytimes/2.1.0",
           },
           body: new URLSearchParams({
             grant_type: "refresh_token",
@@ -208,7 +208,7 @@ export async function loader({request}: Route.LoaderArgs) {
         headers: {
             Authorization: `Basic ${encode}`,
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.0",
+            'User-Agent': "centurytimes/2.1.0",
         },
         body: new URLSearchParams({
             grant_type: `refresh_token&refresh_token=${token}`,
@@ -259,7 +259,7 @@ export async function action({request}: Route.ActionArgs) {
     method: "GET",
     headers: {
     "Authorization": `Bearer ${access_token}`,
-    "User-Agent": "centurytimes/2.0",
+    "User-Agent": "centurytimes/2.1.0",
     "Content-Type": "application/json"
     }
   })

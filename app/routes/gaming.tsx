@@ -14,7 +14,7 @@ export async function loader({ request }: Route.ActionArgs) {
         headers: {
             'Authorization': `Basic ${tokenCookie}`,
             'Content-Type': 'application/json',
-            'User-Agent': "centurytimes/2.0",
+            'User-Agent': "centurytimes/2.1.0",
         },
     });
     if (req.status !== 200) {

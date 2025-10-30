@@ -4,7 +4,7 @@ export default async function getCategoryContent(category: string, cookie: strin
         headers: {
             'Authorization': `Basic ${cookie}`,
             'Content-Type': 'application/json',
-            'User-Agent': "centurytimes/2.0",
+            'User-Agent': "centurytimes/2.1.0",
         },
     });
     if (req.status !== 200) {
