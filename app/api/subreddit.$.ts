@@ -1,14 +1,16 @@
+'use server'
 import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/author.$name";
-import type { T2 } from "~/utils/types";
+import type { Route } from "./+types/subreddit.$";
+import type { Listing } from "~/utils/types";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie")
     );
     const tokenCookie = session.get("access_token");
-    const req = await fetch(`https://www.reddit.com/user/${params.name}/about.json`, {
-        method: 'GET',
+    
+    const req = await fetch(new URL(`${params["*"]}.json`, "https://www.reddit.com").toString(), {
+        method: "GET",
         headers: {
             'Authorization': `Basic ${tokenCookie}`,
             'Content-Type': 'application/json',
@@ -16,10 +18,11 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         },
     });
     if (req.status !== 200) {
-        console.error(req.status);
         console.error(req.statusText);
-        return "";
+        console.error(req.status);
+        return [];
     }
-    const data: T2 = await req.json();
+    const data: Array<Listing> = await req.json();
+    
     return data;
 }

@@ -1,3 +1,4 @@
+'use server'
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/upvote";
 import getAuthorization from "~/utils/get-authorization";
@@ -11,19 +12,19 @@ export async function action({request, params}: Route.ActionArgs): Promise<{resp
         method: 'POST',
         headers: {
             Authorization: `Bearer ${tokenCookie}`,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            'User-Agent': 'centurytimes/2.1.0',            
         },
         body: new URLSearchParams({
-            dir: params.vote,
+            dir: "1",
             id: params.id,
-            rank: "",
-            "uh / X-Modhash header": ""
+            rank: "2",
         })
     }
     try {
         const req = await fetch("https://oauth.reddit.com/api/vote", payload);
-        const response = await req.json(); 
-        if (!response.ok) {
+        const response = await req.json();
+        if (!req.ok || response.json.errors[0].length > 0) {
             if (response.success === false) throw new Error("Unsuccessful request from 'vote' function.");
             if (response.json && response.json.errors.length > 0) {
                 console.error({
