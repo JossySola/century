@@ -1,3 +1,4 @@
+'use server'
 /*
     t1 Comment
     t2 Account
