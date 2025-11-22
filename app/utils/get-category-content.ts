@@ -1,3 +1,4 @@
+'use server'
 export default async function getCategoryContent(category: string, cookie: string | undefined) {
     const req = await fetch(`https://www.reddit.com/r/${category}.json?raw_json=1`, {
         method: "GET",
