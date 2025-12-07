@@ -1,3 +1,4 @@
+'use server'
 /*
     t1 Comment
     t2 Account
@@ -216,7 +217,7 @@ export interface T3 {
         is_robot_indexable: boolean,
         is_self: boolean,
         is_video: boolean,
-        likes: number | null,
+        likes: boolean | null,
         link_flair_background_color: string,
         link_flair_css_class: string | null,
         link_flair_richtext: [],

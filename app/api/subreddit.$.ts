@@ -1,3 +1,4 @@
+'use server'
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/subreddit.$";
 import type { Listing } from "~/utils/types";
@@ -13,7 +14,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         headers: {
             'Authorization': `Basic ${tokenCookie}`,
             'Content-Type': 'application/json',
-            'User-Agent': 'centurytimes/2.0',
+            'User-Agent': 'centurytimes/2.1.0',
         },
     });
     if (req.status !== 200) {

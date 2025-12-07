@@ -2,8 +2,9 @@ import { Card, CardBody, CardHeader, Image, User } from "@heroui/react";
 import { Link } from "react-router";
 import { formatAmount } from "~/utils/format-amount";
 import { motion } from "motion/react";
+import { memo } from "react";
 
-export default function T5({
+const T5 = memo(function T5({
     display_name_prefixed,
     subscribers,
     name,
@@ -44,4 +45,5 @@ export default function T5({
             </Link>
         </motion.div>
     )
-}
+});
+export default T5;

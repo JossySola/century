@@ -11,7 +11,11 @@ export default [
     route('news', './routes/news.tsx'),
     route('r/:subreddit', "./routes/r.$subreddit.tsx"),
     ...prefix("api", [
-        route("subreddit/*", "./api/subreddit.$.tsx"),
-        route("author/:name", "./api/author.$name.tsx"),
+        route("subreddit/*", "./api/subreddit.$.ts"),
+        route("author/:name", "./api/author.$name.ts"),
+        route("upvote/:id/:vote", "./api/upvote.ts"),
+        route("me", "./api/me.ts"),
+        route("authorize", "./api/authorize.ts"),
+        route("signout", "./api/signout.ts"),
     ]),
 ] satisfies RouteConfig;

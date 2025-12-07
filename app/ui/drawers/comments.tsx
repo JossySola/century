@@ -21,8 +21,7 @@ export default function Comments({ num_comments, comments }: {
         if (comments && children) {
             if (num_comments && children.length < num_comments) {
                 addToast({
-                    title: "Some comments may have been deleted",
-                    description: "Some comments may not be displayed because the user or comment has been deleted.",
+                    title: "Some comments may not be displayed because the user or comment has been deleted.",
                     color: "warning",
                     size: "lg"
                 })

@@ -1,13 +1,14 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure, User } from "@heroui/react"
-import { Heart, HeartFill, Message } from "../icons"
+import { Message } from "../icons"
 import { formatAmount } from "../../utils/format-amount"
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Comments from "../drawers/comments";
 import { useFetcher } from "react-router";
 import type { Listing } from "~/utils/types";
 import { motion } from "motion/react";
+import HeartButton from "../buttons/heart";
 
-export default function T3({ author, subreddit, id, permalink, num_comments, selftext = "", subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups }: {
+const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, selftext = "", subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups, likes }: {
     author: string,
     subreddit: string,
     id: string,
@@ -20,11 +21,22 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
     thumbnail_width: number,
     title: string,
     ups: number,
+    likes: boolean,
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [moreData, setMoreData] = useState<Array<Listing>>([]);
     const fetcher = useFetcher();
     const [preview, setPreview] = useState<string | undefined>(undefined);
+    const [vote, setVote] = useState<string>(() => {
+        if (likes !== null && likes !== undefined) {
+            if (likes === true) {
+                return "1";
+            } else {
+                return "0";
+            }
+        }
+        return "0";
+    });
     // If there is no thumbnail passed in the props or there is a preview set, it returns nothing.
     // Otherwise, it fetches from the endpoint
     useEffect(() => {
@@ -97,11 +109,7 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                 <Divider />
                 <CardFooter className="flex flex-row text-gray-500">
                     <div className="flex flex-row justify-center items-center gap-3">
-                        {
-                            ups > 0
-                            ? <HeartFill />
-                            : <Heart />
-                        }
+                        <HeartButton vote={vote} setVote={setVote} id={subreddit_id} />
                         <span>{formatAmount(ups)}</span>
                         <Message />
                         <span>{ num_comments.toString() }</span>
@@ -137,10 +145,10 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
                         }
                         </div>
                         
-                        <p className="w-full overflow-clip m-x-10">{selftext}</p>
+                        <p className="w-full overflow-clip my-10 font-geist text-center">{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
-                            <Heart />
+                            <HeartButton vote={vote} setVote={setVote} id={subreddit_id} />
                             <span>{formatAmount(ups)}</span>
                             <Message />
                             <span>{ num_comments.toString() }</span>
@@ -156,4 +164,5 @@ export default function T3({ author, subreddit, id, permalink, num_comments, sel
         </Modal>
         </>
     )
-}
+});
+export default T3;
