@@ -4,20 +4,28 @@ import { Link } from "react-router";
 import { GamesTopic, SciencesTopic, SpookyTopic, SportsTopic, TechnologyTopic } from "./icons";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
 import Search from "./inputs/search";
+import RedditSignDropdown from "./dropdown/sign";
 
 export default function HeaderMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen}>
-            <NavbarContent>
-                <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
-            </NavbarContent>
-            <NavbarContent justify="center">
+            <NavbarContent justify="end">
+                <NavbarMenuToggle 
+                aria-label={
+                    isMenuOpen 
+                    ? "Close menu" 
+                    : "Open menu"
+                } 
+                className="sm:hidden" />                
                 <NavbarBrand>
-                    <Link to="/">
-                        <h1 className="title text-[8vw] sm:text-[2.25rem]">The 21st Century Times</h1>
+                    <Link to="/" className="w-full text-center">
+                        <h1 className="title text-[6.5vw] sm:text-[2.25rem]">The 21st Century Times</h1>
                     </Link>
                 </NavbarBrand>
+                <NavbarItem>
+                    <RedditSignDropdown />
+                </NavbarItem>
             </NavbarContent>
             <NavbarMenu className="pt-10 gap-3">
                 <Search />
