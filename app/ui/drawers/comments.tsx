@@ -9,7 +9,7 @@ export default function Comments({ num_comments, comments }: {
     comments?: Listing,
 }) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [feed , setFeed] = useState<Array<Thing>>([]);
+    const [feed, setFeed] = useState<Array<Thing>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const children = comments && comments.data ? comments.data.children : [];
     const loadingRef = useRef(null);
@@ -104,7 +104,12 @@ export default function Comments({ num_comments, comments }: {
                                         feed
                                         ? feed.map((comment, index) => {
                                             if (comment.kind === "t1") {
-                                                return <T1 comment={comment} key={comment.data.id} isOpen={isOpen} index={index} />
+                                                return <T1 
+                                                comment={comment} 
+                                                key={comment.data.id} 
+                                                isOpen={isOpen} 
+                                                index={index} 
+                                                fullname={comment.data.name} />
                                             }
                                         })
                                         :   <span>No comments yet</span>
