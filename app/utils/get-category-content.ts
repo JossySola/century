@@ -1,9 +1,9 @@
 'use server'
 export default async function getCategoryContent(category: string, cookie: string | undefined) {
-    const req = await fetch(`https://www.reddit.com/r/${category}.json?raw_json=1`, {
+    const req = await fetch(`https://oauth.reddit.com/r/${category}`, {
         method: "GET",
         headers: {
-            'Authorization': `Basic ${cookie}`,
+            'Authorization': `Bearer ${cookie}`,
             'Content-Type': 'application/json',
             'User-Agent': "centurytimes/2.1.0",
         },
