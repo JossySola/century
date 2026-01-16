@@ -6,10 +6,11 @@ import { Heart, Message } from "../icons";
 import { motion } from "motion/react";
 
 const avatarCache: Record<string, string> = {};
-const T1 = memo(({ comment, isOpen, index }: { 
+const T1 = memo(({ comment, isOpen, index, fullname }: { 
     comment: T1type, 
     isOpen: boolean,
     index: number,
+    fullname: string,
 }) => {
     const [image, setImage] = useState<string>("");
     const fetcher = useFetcher();
@@ -53,8 +54,8 @@ const T1 = memo(({ comment, isOpen, index }: {
                             <p className="font-['Arial']">{ comment.data.body }</p>
                         </div>
                         <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
-                            <span className="inline-flex items-center justify-center gap-3"><Heart /> { comment.data.ups }</span>
-                            <span className="inline-flex items-center justify-center gap-3"><Message /> { comment.data.replies ? comment.data.replies.data.children.length : 0 }</span>
+                            <span className="inline-flex items-center justify-center gap-3"><Heart /> { comment.data.ups } </span>
+                            <span className="inline-flex items-center justify-center gap-3"><Message /> { comment.data.replies ? comment.data.replies.data.children.length : 0 } </span>
                         </div>
                     </div>
                 </CardBody>

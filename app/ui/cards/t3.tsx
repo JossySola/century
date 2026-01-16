@@ -8,7 +8,22 @@ import type { Listing } from "~/utils/types";
 import { motion } from "motion/react";
 import HeartButton from "../buttons/heart";
 
-const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, selftext = "", subreddit_id, thumbnail, thumbnail_height, thumbnail_width, title, ups, likes }: {
+const T3 = memo(function T3({ 
+    author, 
+    subreddit, 
+    id, 
+    permalink, 
+    num_comments, 
+    selftext = "", 
+    subreddit_id, 
+    thumbnail, 
+    thumbnail_height, 
+    thumbnail_width, 
+    title, 
+    ups, 
+    likes, 
+    fullname 
+}: {
     author: string,
     subreddit: string,
     id: string,
@@ -22,6 +37,7 @@ const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, se
     title: string,
     ups: number,
     likes: boolean,
+    fullname: string,
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [moreData, setMoreData] = useState<Array<Listing>>([]);
@@ -97,7 +113,7 @@ const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, se
     }
     return (
         <>
-        <motion.button initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-[532px]">
+        <motion.button initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-133">
             <Card className="p-5">
                 <CardHeader className="flex flex-col gap-3 text-center">
                     <User name={author} description={subreddit} />
@@ -109,7 +125,7 @@ const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, se
                 <Divider />
                 <CardFooter className="flex flex-row text-gray-500">
                     <div className="flex flex-row justify-center items-center gap-3">
-                        <HeartButton vote={vote} setVote={setVote} id={subreddit_id} />
+                        <HeartButton vote={vote} setVote={setVote} id={fullname} />
                         <span>{formatAmount(ups)}</span>
                         <Message />
                         <span>{ num_comments.toString() }</span>
@@ -148,7 +164,7 @@ const T3 = memo(function T3({ author, subreddit, id, permalink, num_comments, se
                         <p className="w-full overflow-clip my-10 font-geist text-center">{selftext}</p>
                         <Divider />
                         <div className="flex flex-row justify-center items-center gap-3">
-                            <HeartButton vote={vote} setVote={setVote} id={subreddit_id} />
+                            <HeartButton vote={vote} setVote={setVote} id={fullname} />
                             <span>{formatAmount(ups)}</span>
                             <Message />
                             <span>{ num_comments.toString() }</span>

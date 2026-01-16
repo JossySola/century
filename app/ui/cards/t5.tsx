@@ -10,7 +10,8 @@ const T5 = memo(function T5({
     name,
     public_description,
     banner_img,
-    icon_img
+    icon_img,
+    fullname,
 }: {
     display_name_prefixed: string,
     subscribers: number,
@@ -18,9 +19,10 @@ const T5 = memo(function T5({
     public_description: string,
     banner_img: string,
     icon_img: string,
+    fullname: string,
 }) {
     return (
-        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full sm:w-[532px]">
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full sm:w-133">
             <Link to={`/${display_name_prefixed}`}>
                 <Card className="p-5">
                     {
