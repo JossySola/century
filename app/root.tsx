@@ -101,7 +101,7 @@ export async function loader({request}: Route.LoaderArgs) {
         },
         body: new URLSearchParams({
           grant_type: "client_credentials",
-          scope: "*"
+          scope: "vote identity read submit edit"
         })
     });
     if (req.status !== 200) {
@@ -187,7 +187,7 @@ export async function loader({request}: Route.LoaderArgs) {
         session.set("access_token", res.access_token);
         session.set("access_mode", "authorized");
         session.set("access_expires_in", res.expires_in);
-        session.set("refresh_token", res.refresh_token);        
+        session.set("refresh_token", res.refresh_token);  
         return data(
           { error: session.get("error") },
           {
