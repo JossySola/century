@@ -28,7 +28,8 @@ export default function useInfiniteScroll(loaderData: any) {
             thumbnail_width={ element.data.thumbnail_width ?? 0 }
             title={ element.data.title ?? "" }
             ups={ element.data.ups }
-            likes={ element.data.likes ?? false } />
+            likes={ element.data.likes ?? false }
+            fullname={ element.data.name ?? false } />
         }
         if (element.kind === "t5") {
             return <T5 
@@ -39,6 +40,7 @@ export default function useInfiniteScroll(loaderData: any) {
             public_description={element.data.public_description}
             banner_img={element.data.banner_img}
             icon_img={element.data.icon_img}
+            fullname={ element.data.name ?? false }
             />
         }          
     }), [feed]);
@@ -156,4 +158,5 @@ export default function useInfiniteScroll(loaderData: any) {
         render,
         renderLoadingDots,
     }
+    
 }
