@@ -13,11 +13,6 @@ export default function Search() {
         variant="underlined" 
         value={value}
         onValueChange={setValue}
-        endContent={ 
-            <div className="h-full inline-flex justify-center items-center">
-                <img src={Logo} width={32} alt="Reddit bubble icon" />
-            </div>
-        }
         classNames={{
             label: "text-sm font-sans",
             input: "h-full font-['Arial'] text-lg"
