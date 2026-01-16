@@ -27,7 +27,6 @@ export async function clientLoader({
 
     if (pendingAction && !url.searchParams.get("error")) {
         const { action, id, payload } = JSON.parse(pendingAction);
-        window.sessionStorage.removeItem("x-century-pending-action");
         if (action === "vote") {
             const dir = payload === "0" ? "1" : payload;
             const fetcher = await fetch(`/api/upvote/${id}/${dir}`, {
@@ -46,6 +45,7 @@ export async function clientLoader({
                     description: "Your vote was processed successfully.",
                     color: "success", 
                 });
+                window.sessionStorage.removeItem("x-century-pending-action");
             }
         }
     }
@@ -63,7 +63,6 @@ export function HydrateFallback() {
 }
 export default function Index({ loaderData }: Route.ComponentProps) {
     const { render, renderLoadingDots } = useInfiniteScroll(loaderData.data);
-    //https://www.centurytimes.jossysola.com/?state=x&error=access_denied#_ 
     useEffect(() => {
         const url = new URL(loaderData.url);
         const error = url.searchParams.get("error");
@@ -77,8 +76,8 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     }, []);
     return (
         <section className="flex flex-col items-center gap-5 w-full mb-5">
-            { render }
-            { renderLoadingDots() }
+            { render ?? null }
+            { renderLoadingDots() ?? null }
         </section>
     )
 }
