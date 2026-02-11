@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "auto": "bash automate",
-    "test": "jest",
+    "test": "vitest",
+    "browser": "test:browser",
     "dev": "react-router dev",
     "build": "react-router build",
     "start": "react-router-serve build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:browser": "vitest --config=vitest.browser.config.ts"
   },
   "dependencies": {
     "@heroui/react": "^2.8.8",
@@ -23,12 +25,12 @@
     "@vercel/analytics": "^1.6.1",
     "@vercel/react-router": "^1.2.5",
     "dotenv": "^17.2.4",
-    "framer-motion": "^12.33.0",
+    "framer-motion": "^12.34.0",
     "geist": "^1.7.0",
     "isbot": "^5.1.34",
     "localforage": "^1.10.0",
     "match-sorter": "^8.2.0",
-    "motion": "^12.33.0",
+    "motion": "^12.34.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "^7.13.0",
@@ -38,20 +40,24 @@
     "vite-tsconfig-paths": "^6.1.0"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
-    "@types/jest": "^30.0.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^25.2.2",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.3",
+    "@vitest/browser-playwright": "^4.0.18",
     "eslint": "^10.0.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.0",
     "file-loader": "^6.2.0",
-    "jest": "^30.2.0",
+    "happy-dom": "^20.6.1",
+    "msw": "^2.12.10",
     "prop-types": "^15.8.1",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18",
+    "vitest-browser-react": "^2.0.5"
   }
 }
