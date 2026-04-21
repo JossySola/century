@@ -7,6 +7,7 @@ export async function action({request, params}: Route.ActionArgs): Promise<{resp
     const session = await getSession(
         request.headers.get("Cookie")
     );
+    console.log(params.id)
     const tokenCookie = session.get("access_token");
     const payload = {
         method: 'POST',
@@ -24,7 +25,7 @@ export async function action({request, params}: Route.ActionArgs): Promise<{resp
     try {
         const req = await fetch("https://oauth.reddit.com/api/vote", payload);
         const response = await req.json();
-        if (!req.ok || response.json.errors[0].length > 0) {
+        if (!req.ok || (response?.errors && response.errors.length > 0)) {
             if (response.success === false) throw new Error("Unsuccessful request from 'vote' function.");
             if (response.json && response.json.errors.length > 0) {
                 console.error({
