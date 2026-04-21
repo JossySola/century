@@ -4,16 +4,15 @@
   "version": "2.1.0",
   "type": "module",
   "scripts": {
-    "auto": "bash automate",
     "test": "vitest",
-    "browser": "test:browser",
+    "test-chromium": "vitest --browser=chromium",
+    "test-firefox": "vitest --browser=firefox",
     "dev": "react-router dev",
     "build": "react-router build",
     "start": "react-router-serve build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "test:browser": "vitest --config=vitest.browser.config.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@heroui/react": "^2.8.8",
@@ -36,8 +35,7 @@
     "react-router": "^7.14.1",
     "sort-by": "^0.0.2",
     "tailwindcss": "^4.2.2",
-    "uuid": "^13.0.0",
-    "vite-tsconfig-paths": "^6.1.1"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -57,6 +55,7 @@
     "prop-types": "^15.8.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.2",
+    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.4",
     "vitest-browser-react": "^2.2.0"
   }
