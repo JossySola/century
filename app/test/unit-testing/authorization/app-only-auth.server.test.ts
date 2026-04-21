@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import { server } from "~/test/mocks/node";
-import getUserlessAuthorization from "~/utils/authorizations/get-userless-auth";
+import getUserlessAuthorization from "~/utils/authorization/get-userless-auth";
 
 vi.stubEnv("REDDIT_CLIENT_ID", "REDDIT_123");
 vi.stubEnv("REDDIT_CLIENT_SECRET", "REDDIT_abc123");
