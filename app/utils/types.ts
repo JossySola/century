@@ -448,3 +448,9 @@ export interface T5 {
         allow_predictions_tournament: boolean,
     };
 };
+export type OnlyAppAuthResponse = {
+    "access_token": string;
+    "token_type": "bearer";
+    "expires_in": Date;
+    "scope": string;
+}
