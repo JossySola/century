@@ -1,3 +1,4 @@
+import type { SuccessfulAuth } from "../types";
 
 export default async function refreshToken(expiration_date: string, refresh_token: string) {
     try {
@@ -20,7 +21,7 @@ export default async function refreshToken(expiration_date: string, refresh_toke
         if (!request.ok || request.status !== 200) {
             throw new Error(`Error at refreshToken API endpoint: ${request.statusText}`);
         }
-        const response = await request.json();
+        const response: SuccessfulAuth = await request.json();
         return response;
     } catch (error: any) {
         console.error(error);
