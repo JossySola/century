@@ -454,3 +454,14 @@ export type OnlyAppAuthResponse = {
     "expires_in": Date;
     "scope": string;
 }
+export type TokenResponse = {
+    error?: "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request";
+    code?: string; 
+}
+export type SuccessfulAuth = {
+    "access_token": string;
+    "token_type": "bearer";
+    "expires_in": Date;
+    "scope": string;
+    "refresh_token"?: string;
+}
