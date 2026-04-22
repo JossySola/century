@@ -13,10 +13,11 @@ describe("Application Only OAuth", () => {
     test("requests access token to API endpoint", async () => {
         const response = await getUserlessAuthorization();
         expect(response).toEqual({
-            "access_token": "acessToken123",
+            "access_token": "accessToken123",
             "token_type": "bearer",
             "expires_in": 36000,
             "scope": "read",
+            "refresh_token": "refreshToken123"
         });
     });
     test("throws error if request fails", async () => {
