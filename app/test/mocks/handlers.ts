@@ -10,6 +10,9 @@ export const handlers = [
             "refresh_token": "refreshToken123"
         });
     }),
+    http.post('https://www.reddit.com/api/v1/revoke_token', () => {
+        return new HttpResponse(null, { status: 204 });
+    }),
     http.get('https://oauth.reddit.com/subreddits/search?limit=15&show=all&show_users=true&sort=relevance&typeahead_active=None&q=test', () => {
         return HttpResponse.json({
             listing: "Listing",
