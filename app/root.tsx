@@ -10,7 +10,7 @@ import { data } from "react-router";
 import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
 import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
-import getUserlessAuthorization from "./utils/authorization/get-userless-auth";
+import getAppOnlyOAuthorization from "./utils/authorization/get-app-only-oauth";
 import tokenRetrieval from "./utils/authorization/token-retrieval";
 import refreshToken from "./utils/authorization/refresh-token";
 import { headers } from "happy-dom/lib/PropertySymbol";
@@ -92,7 +92,7 @@ export async function loader({request}: Route.LoaderArgs) {
 
   if (!session.has("access_token")) {
     // User is not authenticated, probably because it's their first visit
-    const userless_auth = await getUserlessAuthorization();
+    const userless_auth = await getAppOnlyOAuthorization();
     if (userless_auth) {
       session.set("access_token", userless_auth.access_token);
       session.set("access_expires_in", userless_auth.expires_in.toDateString());
