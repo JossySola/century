@@ -5,14 +5,16 @@ import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
 import NavList from "./ui/lists/nav-list";
 import Search from "./ui/inputs/search";
-import {
-  getSession,
-  commitSession,
-} from "./sessions.server";
+import { getSession, commitSession } from "./sessions.server";
 import { data } from "react-router";
 import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
 import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
+import getUserlessAuthorization from "./utils/authorization/get-userless-auth";
+import tokenRetrieval from "./utils/authorization/token-retrieval";
+import refreshToken from "./utils/authorization/refresh-token";
+import { headers } from "happy-dom/lib/PropertySymbol";
+import search from "./utils/querying/search";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -60,7 +62,7 @@ export function Layout({
     </html>
   )
 }
-export default function App({ actionData }: Route.ComponentProps) {
+export default function App({actionData}: Route.ComponentProps) {
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
@@ -83,192 +85,82 @@ export async function loader({request}: Route.LoaderArgs) {
   const session = await getSession(
     request.headers.get("Cookie"),
   );
-  const access_token = session.has("access_token");
   const url = new URL(request.url);
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
-  // If this is the first visit, set session to userless
-  if (!access_token) {
-    const client_id = process.env.REDDIT_CLIENT_ID;
-    const client_secret = process.env.REDDIT_CLIENT_SECRET;
-    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${encode}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-          grant_type: "client_credentials",
-          scope: "vote identity read submit edit"
-        })
-    });
-    if (req.status !== 200) {
-      throw new Error("Failed at getting a token");
-    }
-    const res = await req.json();
-    session.set("access_token", res.access_token);
-    session.set("access_mode", "userless");
-    session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());
-    return data(
-      { error: session.get("error") },
-      { 
-        headers: {
-            "Set-Cookie": await commitSession(session),
-        },
-      },
-    );
-  }
-  // If the user has been redirected from Reddit authorization
-  const access_mode = session.get("access_mode");
-  if (code && access_mode !== "authorized" && state === "x") {
-    const client_id = process.env.REDDIT_CLIENT_ID;
-    const client_secret = process.env.REDDIT_CLIENT_SECRET;
-    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${encode}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-          grant_type: "authorization_code",
-          code,
-          redirect_uri: "http://localhost:5173",
-        })
-    });
-    if (req.status !== 200) {
-      throw new Error("Failed at getting a authorized token");
-    }
-    const res = await req.json();
-    session.set("access_token", res.access_token);
-    session.set("access_mode", "authorized");
-    session.set("access_expires_in", res.expires_in);
-    session.set("refresh_token", res.refresh_token);
-    return data(
-      { error: session.get("error") },
-      { 
-        headers: {
-            "Set-Cookie": await commitSession(session),
-        },
-      },
-    );    
-  }
-  // If there is an access token and "code" is not present, it checks if the token is expired
-  const expiry = session.get("access_expires_in");
+  const error = url.searchParams.get("error") as "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request" | undefined;
 
-  if (expiry && Date.now() >= parseInt(expiry)) {
-    // If the token has expired
-    if (access_mode === "authorized") {
-      const refresh_token = session.get("refresh_token");
-      if (refresh_token) {
-        // If the access mode is authorized, it uses the refresh token to get a new access token
-        const client_id = process.env.REDDIT_CLIENT_ID;
-        const client_secret = process.env.REDDIT_CLIENT_SECRET;
-        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-          method: "POST",
-          headers: {
-            Authorization: `Basic ${encode}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.1.0",
-          },
-          body: new URLSearchParams({
-            grant_type: "refresh_token",
-            refresh_token,
-          })
-        });
-        if (req.status !== 200) {
-          throw new Error("Failed at getting a refresh token");
-        }
-        const res = await req.json();
-        session.set("access_token", res.access_token);
-        session.set("access_mode", "authorized");
-        session.set("access_expires_in", res.expires_in);
-        session.set("refresh_token", res.refresh_token);  
-        return data(
-          { error: session.get("error") },
-          {
-            headers: {
-              "Set-Cookie": await commitSession(session),
-            },
-          },
-        );
-      }
-    } else {
-      // If the access mode is userless, it gets a new userless token
-      const token = session.get("access_token");
-      const client_id = process.env.REDDIT_CLIENT_ID;
-      const client_secret = process.env.REDDIT_CLIENT_SECRET;
-      const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-      const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-            Authorization: `Basic ${encode}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-            grant_type: `refresh_token&refresh_token=${token}`,
-            scope: "*"
-        })
-      });
-      if (req.status !== 200) {
-        throw new Error("Failed at getting a token");
-      }
-      const res = await req.json();
-      session.set("access_token", res.access_token);
-      session.set("access_mode", "userless");
-      session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());      
+  if (!session.has("access_token")) {
+    // User is not authenticated, probably because it's their first visit
+    const userless_auth = await getUserlessAuthorization();
+    if (userless_auth) {
+      session.set("access_token", userless_auth.access_token);
+      session.set("access_expires_in", userless_auth.expires_in.toDateString());
       return data(
-        { error: session.get("error") },
-        {
+        { 
           headers: {
-            "Set-Cookie": await commitSession(session),
+            'Set-Cookie': await commitSession(session),
           },
         },
       );
     }
+    return data(
+      { error: "Error signing userless" },
+    )
+  } else if (code && state === session.get("century_state")) {
+    // User has been redirected after app authorization
+    const auth = await tokenRetrieval({ error, code });
+    if (auth) {
+      session.set("access_token", auth.access_token);
+      session.set("access_expires_in", auth.expires_in.toDateString());
+      return data(
+        {
+          headers: {
+            'Set-Cookie': await commitSession(session),
+          },
+        },
+      );
+    }
+    return data(
+      { error: "Error signing in" },
+    )
+  } else if (error) {
+    // User has been redirected after rejecting app authorization
+    return data({
+      error
+    });
+  } else {
+    // User comebacks and may have an expired token
+    const expires_in = session.get("access_expires_in");
+    const refresh_token = session.get("refresh_token");
+    if (session.has("access_token") && expires_in &&  refresh_token) {
+      const refresh = await refreshToken(expires_in, refresh_token);
+      if (refresh) {
+        session.set("access_token", refresh.access_token);
+        session.set("access_expires_in", refresh.expires_in.toDateString());
+        return data({
+          headers: {
+            'Set-Cookie': await commitSession(session),
+          },
+        });
+      }
+      return data(
+        { error: "Failed to refresh the session" },
+      )
+    }
+    return data(
+      { error: "Failed starting the session refresh process" },
+    )
   }
 }
 export async function action({request}: Route.ActionArgs) {
   const formData = await request.formData();
-  const query = formData.get("query");
+  const query = formData.get("query")?.toString();
   const session = await getSession(
     request.headers.get("Cookie"),
   );
   const access_token = session.get("access_token");
-  if (!query) {
-    throw new Error("No query provided");
-  }
-  if (!access_token) {
-    throw new Error("No token");
-  }
-  const endpoint = new URL("https://oauth.reddit.com/subreddits/search");
-  const params = new URLSearchParams(endpoint.search);
-  params.append("limit", '15');
-  params.append("show", 'all');
-  params.append("show_users", 'true');
-  params.append("sort", 'relevance');
-  params.append("typeahead_active", 'None');
-  params.append("q", `${query.toString()}`);
-  endpoint.search = params.toString();
-  const req = await fetch(endpoint, {
-    method: "GET",
-    headers: {
-    "Authorization": `Bearer ${access_token}`,
-    "User-Agent": "centurytimes/2.1.0",
-    "Content-Type": "application/json"
-    }
-  })
-  if (req.status !== 200) {
-    console.error(req.statusText);
-    console.error(req.status);
-    throw new Error("Error while searching query");
-  }
-  const response: Listing = await req.json();
+  const response = await search(query, access_token);
   return response;
 }
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
