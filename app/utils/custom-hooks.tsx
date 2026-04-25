@@ -90,14 +90,14 @@ export default function useInfiniteScroll(loaderData: any) {
                 if (prev.length === children.length) {
                     return prev;
                 }
-                if (children.length <= 5) {
+                if (children.length <= 1) {
                     return children;
                 }
                 const diff = children.length - prev.length;
-                if (diff < 5) {
+                if (diff < 1) {
                     return children;
                 };
-                const count = prev.length + 5;
+                const count = prev.length + 1;
                 const newArray = children.slice(0, count);
                 return newArray;
             });
@@ -108,7 +108,7 @@ export default function useInfiniteScroll(loaderData: any) {
                 if (prev.length === loaderData.length) {
                     return prev;
                 }
-                if (loaderData.length <= 5) {
+                if (loaderData.length <= 1) {
                     return loaderData;
                 }
                 const diff = loaderData.length - prev.length;
@@ -116,7 +116,7 @@ export default function useInfiniteScroll(loaderData: any) {
                     return loaderData;
                 };
 
-                const count = prev.length + 5;
+                const count = prev.length + 1;
                 const newArray = loaderData.slice(0, count);
                 return newArray;
             });
@@ -153,10 +153,8 @@ export default function useInfiniteScroll(loaderData: any) {
         }
         return null;
     }
-
     return {
         render,
         renderLoadingDots,
     }
-    
 }
