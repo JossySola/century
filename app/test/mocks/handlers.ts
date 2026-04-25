@@ -18,4 +18,9 @@ export const handlers = [
             listing: "Listing",
         });
     }),
+    http.get('https://www.reddit.com/r/test.json', () => {
+        return HttpResponse.json({
+            listing: "",
+        })
+    }),
 ]
