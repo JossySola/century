@@ -8,6 +8,11 @@ export const handlers = [
             "expires_in": 36000,
             "scope": "read",
             "refresh_token": "refreshToken123"
-        })
+        });
+    }),
+    http.get('https://oauth.reddit.com/subreddits/search?limit=15&show=all&show_users=true&sort=relevance&typeahead_active=None&q=test', () => {
+        return HttpResponse.json({
+            listing: "Listing",
+        });
     }),
 ]
