@@ -1,7 +1,6 @@
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import { server } from "~/test/mocks/node";
 import tokenRetrieval from "~/utils/authorization/token-retrieval";
-import type { Route } from "../../../+types/root";
 import { http, HttpResponse } from "msw";
 
 vi.stubEnv("REDDIT_CLIENT_ID", "REDDIT_123");
