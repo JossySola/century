@@ -1,9 +1,9 @@
 import type { Listing } from "../types";
 
-export default async function search(query: string, access_token: string) {
+export default async function search(query: string | undefined, access_token: string | undefined) {
     try {
         if (!query) throw new Error("Query is empty");
-        
+        if (!access_token) throw new Error("");
         const endpoint = new URL('https://oauth.reddit.com/subreddits/search');
         const params = new URLSearchParams(endpoint.search);
         params.append("limit", '15');
