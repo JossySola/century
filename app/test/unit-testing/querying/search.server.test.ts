@@ -16,6 +16,9 @@ describe("Search", () => {
     test("throws error when the query is empty", async () => {
         await expect(search("", "access-token-123")).rejects.toThrow();
     });
+    test("throws when an access token is not provided", async () => {
+        await expect(search("test", undefined)).rejects.toThrow();
+    });
     test("throws error when fetch fails", async () => {
         server.use(
             http.get('https://oauth.reddit.com/subreddits/search', ({ request }) => {
