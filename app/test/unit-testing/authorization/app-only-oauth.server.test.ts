@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import { server } from "~/test/mocks/node";
-import getUserlessAuthorization from "~/utils/authorization/get-userless-auth";
+import getAppOnlyOAuthorization from "~/utils/authorization/get-app-only-oauth";
 
 vi.stubEnv("REDDIT_CLIENT_ID", "REDDIT_123");
 vi.stubEnv("REDDIT_CLIENT_SECRET", "REDDIT_abc123");
@@ -11,7 +11,7 @@ describe("Application Only OAuth", () => {
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
     test("requests access token to API endpoint", async () => {
-        const response = await getUserlessAuthorization();
+        const response = await getAppOnlyOAuthorization();
         expect(response).toEqual({
             "access_token": "accessToken123",
             "token_type": "bearer",
@@ -26,6 +26,6 @@ describe("Application Only OAuth", () => {
                 return new HttpResponse(null, { status: 500 })
             })
         );
-        await expect(getUserlessAuthorization()).rejects.toThrow();
+        await expect(getAppOnlyOAuthorization()).rejects.toThrow();
     });
 });

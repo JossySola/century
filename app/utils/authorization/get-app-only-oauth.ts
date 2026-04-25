@@ -1,6 +1,6 @@
 import type { OnlyAppAuthResponse } from "../types";
 
-export default async function getUserlessAuthorization() {
+export default async function getAppOnlyOAuthorization() {
     try {
         const client_id = process.env.REDDIT_CLIENT_ID;
         const client_secret = process.env.REDDIT_CLIENT_SECRET;
