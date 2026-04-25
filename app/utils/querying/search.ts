@@ -5,14 +5,15 @@ export default async function search(query: string | undefined, access_token: st
         if (!query) throw new Error("Query is empty");
         if (!access_token) throw new Error("");
         const endpoint = new URL('https://oauth.reddit.com/subreddits/search');
-        const params = new URLSearchParams(endpoint.search);
-        params.append("limit", '15');
-        params.append("show", 'all');
-        params.append("show_users", 'true');
-        params.append("sort", 'relevance');
-        params.append("typeahead_active", 'None');
-        params.append("q", `${query.toString()}`);
-        endpoint.search = params.toString();
+
+        endpoint.search = new URLSearchParams({
+        limit: '15',
+        show: 'all',
+        show_users: 'true',
+        sort: 'relevance',
+        typeahead_active: 'None',
+        q: query,
+        }).toString();
 
         const request = await fetch(endpoint, {
             method: 'GET',
