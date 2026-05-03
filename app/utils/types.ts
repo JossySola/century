@@ -451,8 +451,9 @@ export interface T5 {
 export type OnlyAppAuthResponse = {
     "access_token": string;
     "token_type": "bearer";
-    "expires_in": Date;
+    "expires_in": number;
     "scope": string;
+    "error"?: string;
 }
 export type TokenResponse = {
     error?: "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request";
@@ -461,7 +462,12 @@ export type TokenResponse = {
 export type SuccessfulAuth = {
     "access_token": string;
     "token_type": "bearer";
-    "expires_in": Date;
+    "expires_in": number;
     "scope": string;
     "refresh_token"?: string;
+}
+export type UseInfiniteScrollProps = {
+    onLoadMore: () => void;
+    hasMore: boolean;
+    isLoading: boolean;
 }
