@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure, User } from "@heroui/react"
 import { Message } from "../icons"
-import { formatAmount } from "../../utils/format-amount"
+import { formatAmount } from "../../utils/formatting/format-amount"
 import { memo, useEffect, useState } from "react";
 import Comments from "../drawers/comments";
 import { useFetcher } from "react-router";

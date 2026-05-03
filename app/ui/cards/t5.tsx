@@ -1,6 +1,6 @@
 import { Card, CardBody, CardHeader, Image, User } from "@heroui/react";
 import { Link } from "react-router";
-import { formatAmount } from "~/utils/format-amount";
+import { formatAmount } from "~/utils/formatting/format-amount";
 import { motion } from "motion/react";
 import { memo } from "react";
 
