@@ -1,5 +1,5 @@
 import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/r.$subreddit";
+import type { Route } from "./+types/subreddit";
 import type { Listing } from "~/utils/types";
 import { Spinner } from "@heroui/react";
 import useInfiniteScroll from "~/utils/custom-hooks";

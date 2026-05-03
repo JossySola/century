@@ -1,6 +1,6 @@
 'use server'
 import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/subreddit.$";
+import type { Route } from "./+types/subreddit";
 import type { Listing } from "~/utils/types";
 
 export async function loader({ request, params }: Route.LoaderArgs) {

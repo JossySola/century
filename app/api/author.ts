@@ -1,6 +1,6 @@
 'use server'
 import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/author.$name";
+import type { Route } from "./+types/author";
 import type { T2 } from "~/utils/types";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
