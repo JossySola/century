@@ -7,13 +7,11 @@ import NavList from "./ui/lists/nav-list";
 import Search from "./ui/inputs/search";
 import { getSession, commitSession } from "./sessions.server";
 import { data } from "react-router";
-import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
 import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
 import getAppOnlyOAuthorization from "./utils/authorization/get-app-only-oauth";
 import tokenRetrieval from "./utils/authorization/token-retrieval";
 import refreshToken from "./utils/authorization/refresh-token";
-import { headers } from "happy-dom/lib/PropertySymbol";
 import search from "./utils/querying/search";
 
 export const links: LinksFunction = () => [
@@ -89,17 +87,17 @@ export async function loader({request}: Route.LoaderArgs) {
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
   const error = url.searchParams.get("error") as "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request" | undefined;
-
   if (!session.has("access_token")) {
     // User is not authenticated, probably because it's their first visit
     const userless_auth = await getAppOnlyOAuthorization();
-    if (userless_auth) {
+    if (!userless_auth.error) {
       session.set("access_token", userless_auth.access_token);
-      session.set("access_expires_in", userless_auth.expires_in.toDateString());
+      session.set("access_expires_in", userless_auth.expires_in.toString());
       return data(
-        { 
+        { error: session.get("error") },
+        {
           headers: {
-            'Set-Cookie': await commitSession(session),
+            "Set-Cookie": await commitSession(session),
           },
         },
       );
@@ -112,11 +110,12 @@ export async function loader({request}: Route.LoaderArgs) {
     const auth = await tokenRetrieval({ error, code });
     if (auth) {
       session.set("access_token", auth.access_token);
-      session.set("access_expires_in", auth.expires_in.toDateString());
+      session.set("access_expires_in", auth.expires_in.toString());
       return data(
+        { error: session.get("error") },
         {
           headers: {
-            'Set-Cookie': await commitSession(session),
+            "Set-Cookie": await commitSession(session),
           },
         },
       );
@@ -130,14 +129,14 @@ export async function loader({request}: Route.LoaderArgs) {
       error
     });
   } else {
-    // User comebacks and may have an expired token
+    // User comeback and may have an expired token
     const expires_in = session.get("access_expires_in");
     const refresh_token = session.get("refresh_token");
     if (session.has("access_token") && expires_in &&  refresh_token) {
       const refresh = await refreshToken(expires_in, refresh_token);
       if (refresh) {
         session.set("access_token", refresh.access_token);
-        session.set("access_expires_in", refresh.expires_in.toDateString());
+        session.set("access_expires_in", refresh.expires_in.toString());
         return data({
           headers: {
             'Set-Cookie': await commitSession(session),
@@ -149,8 +148,13 @@ export async function loader({request}: Route.LoaderArgs) {
       )
     }
     return data(
-      { error: "Failed starting the session refresh process" },
-    )
+      { error: session.get("error") },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+      },
+    );
   }
 }
 export async function action({request}: Route.ActionArgs) {
@@ -164,19 +168,6 @@ export async function action({request}: Route.ActionArgs) {
   return response;
 }
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = 'Oops!'
-  let details = 'An unexpected error occurred.'
-  let stack: string | undefined
-
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error'
-    details =
-      error.status === 404 ? 'The requested page could not be found.' : error.statusText || details
-  } else if (error && error instanceof Error) {
-    details = error.message
-    stack = error.stack
-  }
-
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
@@ -185,10 +176,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <NavList />
       </nav>
       <section className="font-['Arial'] w-full h-[50vh] flex flex-col justify-center items-center text-2xl text-center gap-3">
-        <h1 className="font-['Arial']">{message}</h1>
         <p>An error has occurred 😓</p>  
-        <p>Sometimes Reddit gets tired of sending data 😒</p>  
-        <p>Please give it some minutes and try again 🙏</p>
+        <p>{`${(error as any).message}`}</p>
       </section>
       <div className="w-full mt-5 flex flex-row justify-center items-center gap-3 fixed bottom-10">
           <span className="text-xl text-gray-600">Powered with </span>
