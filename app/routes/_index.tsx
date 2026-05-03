@@ -3,20 +3,14 @@ import type { Route } from "./+types/_index";
 import useInfiniteScroll from "~/utils/custom-hooks";
 import { useEffect } from "react";
 import { addToast, Spinner } from "@heroui/react";
-import getCategoryContent from "~/utils/get-category-content";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie"),
     );
-    const data = await getCategoryContent("worldnews", session.get("access_token"));
 
-    return {
-        data,
-        url: request.url,
-    };
 }
-
+/*
 export async function clientLoader({
     serverLoader,
     params,
@@ -54,6 +48,7 @@ export async function clientLoader({
     }
 }
 clientLoader.hydrate = true as const;
+*/
 export function HydrateFallback() {
     return (
         <section className="flex flex-col items-center gap-5 w-full mb-5">
@@ -62,7 +57,7 @@ export function HydrateFallback() {
     )
 }
 export default function Index({ loaderData }: Route.ComponentProps) {
-    const { render, renderLoadingDots } = useInfiniteScroll(loaderData.data);
+    /*
     useEffect(() => {
         const url = new URL(loaderData.url);
         const error = url.searchParams.get("error");
@@ -74,10 +69,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             });
         }
     }, []);
+    */
     return (
         <section className="flex flex-col items-center gap-5 w-full mb-5">
-            { render ?? null }
-            { renderLoadingDots() ?? null }
         </section>
     )
 }
