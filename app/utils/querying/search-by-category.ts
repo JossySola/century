@@ -1,6 +1,6 @@
 export default async function searchByCategory(category: string, access_token: string) {
     try {
-        const request = await fetch(`https://www.reddit.com/r/${category}.json?raw_json=1`, {
+        const request = await fetch(`https://oauth.reddit.com/r/${category}.json?raw_json=1`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${access_token}`,

@@ -18,9 +18,9 @@ export const handlers = [
             listing: "Listing",
         });
     }),
-    http.get('https://www.reddit.com/r/test.json', () => {
+    http.get('https://oauth.reddit.com/r/test.json', () => {
         return HttpResponse.json({
             listing: "",
-        })
+        });
     }),
 ]
