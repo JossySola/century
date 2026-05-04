@@ -23,4 +23,13 @@ export const handlers = [
             listing: "",
         });
     }),
+    http.get('https://oauth.reddit.com/api/v1/me', () => {
+        return HttpResponse.json({
+            name: 'user_name',
+            icon_img: 'user_img',
+            subreddit: {
+                display_name: "user_displayName"
+            }
+        })
+    }),
 ]
