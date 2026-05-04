@@ -15,7 +15,7 @@ describe("Search By Category", () => {
     });
     test("throws error if fetch fails", async () => {
         server.use(
-            http.get("https://www.reddit.com/r/test.json", () => {
+            http.get("https://oauth.reddit.com/r/test.json", () => {
                 return new HttpResponse(null, { status: 500 });
             })
         );
