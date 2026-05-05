@@ -471,3 +471,38 @@ export type UseInfiniteScrollProps = {
     hasMore: boolean;
     isLoading: boolean;
 }
+export type IdentityResponse = {
+    features: {
+        modmail_harassment_filter: boolean;
+        mod_service_mute_writes: boolean;
+        promoted_trend_blanks: boolean;
+        show_amp_link: boolean;
+        top_content_email_digest_v2: object;
+        is_email_permission_required: boolean;
+        mod_awards: boolean;
+        mweb_xpromo_revamp_v3: object;
+        mweb_xpromo_revamp_v2: object;
+        awards_on_streams: boolean;
+        mweb_xpromo_modal_listing_click_daily_dismissible_ios: boolean;
+        chat_subreddit: boolean;
+        modlog_copyright_removal: boolean;
+        do_not_track: boolean;
+        images_in_comments: boolean;
+        mod_service_mute_reads: boolean;
+        chat_user_settings: boolean;
+        use_pref_account_deployment: boolean;
+        mweb_xpromo_interstitial_comments_ios: boolean;
+        mweb_xpromo_modal_listing_click_daily_dismissible_android: boolean;
+        premium_subscriptions_table: boolean;
+        mweb_xpromo_interstitial_comments_android: boolean;
+        crowd_control_for_post: boolean;
+        swap_steps_two_and_three_recalibration: object;
+        mweb_footer_upsell: object;
+        mweb_sharing_web_share_api: object;
+        chat_group_rollout: boolean;
+        resized_styles_images: boolean;
+        noreferrer_to_noopener: boolean;
+        feed_ad_load_3: object;
+        expensive_coins_package: boolean;
+    }
+}
