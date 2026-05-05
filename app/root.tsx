@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
@@ -90,6 +90,7 @@ export async function loader({request}: Route.LoaderArgs) {
   if (!session.has("access_token")) {
     // User is not authenticated, probably because it's their first visit
     const userless_auth = await getAppOnlyOAuthorization();
+    if (userless_auth instanceof Error) return data({ error: session.get("error") }, {})
     if (!userless_auth.error) {
       session.set("access_token", userless_auth.access_token);
       session.set("access_expires_in", userless_auth.expires_in.toString());
@@ -108,6 +109,7 @@ export async function loader({request}: Route.LoaderArgs) {
   } else if (code && state === session.get("century_state")) {
     // User has been redirected after app authorization
     const auth = await tokenRetrieval({ error, code });
+    if (auth instanceof Error) return data({ error: session.get("error") }, {})
     if (auth) {
       session.set("access_token", auth.access_token);
       session.set("access_expires_in", auth.expires_in.toString());
@@ -134,6 +136,7 @@ export async function loader({request}: Route.LoaderArgs) {
     const refresh_token = session.get("refresh_token");
     if (session.has("access_token") && expires_in &&  refresh_token) {
       const refresh = await refreshToken(expires_in, refresh_token);
+      if (refresh instanceof Error) return data({ error: session.get("error") }, {})
       if (refresh) {
         session.set("access_token", refresh.access_token);
         session.set("access_expires_in", refresh.expires_in.toString());
