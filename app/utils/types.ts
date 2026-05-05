@@ -459,7 +459,7 @@ export type TokenResponse = {
     error?: "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request";
     code?: string; 
 }
-export type SuccessfulAuth = {
+export type SuccessfulAuthResponse = {
     "access_token": string;
     "token_type": "bearer";
     "expires_in": number;
