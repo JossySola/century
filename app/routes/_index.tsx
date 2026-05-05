@@ -1,14 +1,26 @@
-import { getSession } from "~/sessions.server";
+import { commitSession, getSession } from "~/sessions.server";
 import type { Route } from "./+types/_index";
 import useInfiniteScroll from "~/utils/custom-hooks";
 import { useEffect } from "react";
 import { addToast, Spinner } from "@heroui/react";
+import searchByCategory from "~/utils/querying/search-by-category";
+import getMe from "~/utils/querying/get-me";
+import RedditSignDropdown from "~/ui/dropdown/sign";
+import getUserOAuth from "~/utils/authorization/get-user-oauth";
+import { redirect } from "react-router";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie"),
     );
-
+    const access_token = session.get("access_token");
+    if (!access_token) return {};
+    const subreddits = await searchByCategory("worldnews", access_token);
+    const me = await getMe(access_token);
+    return {
+        subreddits: subreddits ?? null,
+        me: me ?? null,
+    };
 }
 /*
 export async function clientLoader({
@@ -49,14 +61,21 @@ export async function clientLoader({
 }
 clientLoader.hydrate = true as const;
 */
-export function HydrateFallback() {
-    return (
-        <section className="flex flex-col items-center gap-5 w-full mb-5">
-            <Spinner variant="wave" color="primary" size="lg" />
-        </section>
-    )
+export async function action({ request }: Route.ActionArgs) {
+    const session = await getSession(
+        request.headers.get("Cookie"),
+    );
+    const state = crypto.randomUUID();
+    session.set("century_state", state);
+    const URL = await getUserOAuth(state);
+    return redirect(URL.toString(), {
+        headers: {
+            "Set-Cookie": await commitSession(session),
+        }
+    });
 }
 export default function Index({ loaderData }: Route.ComponentProps) {
+    console.log(loaderData)
     /*
     useEffect(() => {
         const url = new URL(loaderData.url);
@@ -71,7 +90,17 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     }, []);
     */
     return (
+        <main className="flex flex-col items-center gap-5 w-full mb-5">
+            <div className="absolute top-7 right-[8vw] z-10" aria-label="Sign into Reddit">
+                
+            </div>
+        </main>
+    )
+}
+export function HydrateFallback() {
+    return (
         <section className="flex flex-col items-center gap-5 w-full mb-5">
+            <Spinner variant="wave" color="primary" size="lg" />
         </section>
     )
 }
