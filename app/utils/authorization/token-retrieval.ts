@@ -1,6 +1,6 @@
-import type { SuccessfulAuth, TokenResponse } from "../types";
+import type { SuccessfulAuthResponse, TokenResponse } from "../types";
 
-export default async function tokenRetrieval({ error, code }: TokenResponse) {
+export default async function tokenRetrieval({ error, code }: TokenResponse): Promise<SuccessfulAuthResponse | Error> {
     try {
         if (error) throw new Error(`${error}`);
         if (code) {
@@ -22,9 +22,10 @@ export default async function tokenRetrieval({ error, code }: TokenResponse) {
                 }),
             });
             if (!req.ok || req.status !== 200) throw new Error("Error at Reddit endpoint");
-            const response: SuccessfulAuth = await req.json();
+            const response: SuccessfulAuthResponse = await req.json();
             return response;
         }
+        throw new Error("Missing code");
     } catch (error: any) {
         console.error(error);
         throw new Error(`Error at tokenRetrieval: ${error.message}`)

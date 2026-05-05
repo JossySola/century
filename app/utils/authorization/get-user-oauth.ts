@@ -1,4 +1,4 @@
-export default async function getUserOAuth(state: string) {
+export default async function getUserOAuth(state: string): Promise<URL | Error> {
     try {
         if (!state) throw new Error("Empty state");
         const client_id = process.env.REDDIT_CLIENT_ID;

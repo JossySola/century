@@ -1,6 +1,6 @@
-import type { SuccessfulAuth } from "../types";
+import type { SuccessfulAuthResponse } from "../types";
 
-export default async function refreshToken(expiration_date: string, refresh_token: string) {
+export default async function refreshToken(expiration_date: string, refresh_token: string): Promise<SuccessfulAuthResponse | Error> {
     try {
         if (Date.now() <= parseInt(expiration_date)) throw new Error('The token has not expired.');
         const client_id = process.env.REDDIT_CLIENT_ID;
@@ -21,7 +21,7 @@ export default async function refreshToken(expiration_date: string, refresh_toke
         if (!request.ok || request.status !== 200) {
             throw new Error(`Error at refreshToken API endpoint: ${request.statusText}`);
         }
-        const response: SuccessfulAuth = await request.json();
+        const response: SuccessfulAuthResponse = await request.json();
         return response;
     } catch (error: any) {
         console.error(error);
