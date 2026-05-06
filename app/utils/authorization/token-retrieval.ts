@@ -10,17 +10,19 @@ export default async function tokenRetrieval({ error, code }: TokenResponse): Pr
             const req = await fetch("https://www.reddit.com/api/v1/access_token", {
                 method: 'POST',
                 headers: {
-                    Authorization: `Basic ${encode}`,
-                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${encode}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
                 },
                 body: new URLSearchParams({
                     grant_type: 'authorization_code',
                     code,
                     redirect_uri: 'http://localhost:5173',
-                }),
+                }).toString(),
             });
-            if (!req.ok || req.status !== 200) throw new Error("Error at Reddit endpoint");
+            console.error("STATUS: ", req.status);
+            console.error("TEXT: ", req.statusText);
+            if (!req.ok) throw new Error("Error at Reddit endpoint");
             const response: SuccessfulAuthResponse = await req.json();
             return response;
         }
