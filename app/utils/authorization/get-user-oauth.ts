@@ -8,7 +8,7 @@ export default async function getUserOAuth(state: string): Promise<URL | Error> 
             client_id,
             response_type: "code",
             state,
-            redirect_uri: "http://localhost:3000",
+            redirect_uri: "http://localhost:5173",
             duration: "permanent",
             scope: "edit identity read submit vote"
         }).toString();
