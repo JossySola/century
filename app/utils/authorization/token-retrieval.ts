@@ -6,13 +6,12 @@ export default async function tokenRetrieval({ error, code }: TokenResponse): Pr
         if (code) {
             const client_id = process.env.REDDIT_CLIENT_ID;
             const client_secret = process.env.REDDIT_CLIENT_SECRET;
-            
             const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
             const req = await fetch("https://www.reddit.com/api/v1/access_token", {
                 method: 'POST',
                 headers: {
                     Authorization: `Basic ${encode}`,
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                     'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
                 },
                 body: new URLSearchParams({
