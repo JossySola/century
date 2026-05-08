@@ -8,11 +8,12 @@ import Search from "./ui/inputs/search";
 import { getSession, commitSession } from "./sessions.server";
 import { data } from "react-router";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
-import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
+import { addToast, HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
 import getAppOnlyOAuthorization from "./utils/authorization/get-app-only-oauth";
 import tokenRetrieval from "./utils/authorization/token-retrieval";
 import refreshToken from "./utils/authorization/refresh-token";
 import search from "./utils/querying/search";
+import { useEffect } from "react";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
@@ -60,7 +61,28 @@ export function Layout({
     </html>
   )
 };
-export default function App({actionData}: Route.ComponentProps) {
+export default function App({actionData, loaderData}: Route.ComponentProps) {
+  useEffect(() => {
+    if (loaderData) {
+      type loaderConnection = {
+        message?: string;
+        error?: string;
+      }
+      const connectionData: loaderConnection = loaderData;
+      if (connectionData.message) {
+        addToast({
+          description: connectionData.message,
+          color: "success",
+        });
+      }
+      if (connectionData.error) {
+        addToast({
+          description: connectionData.error,
+          color: "danger",
+        });
+      }
+    }
+  }, [loaderData]);
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
@@ -97,14 +119,16 @@ export async function loader({request}: Route.LoaderArgs) {
     if (stateFromParams === stateFromCookies) {
       console.log("✅ State sent and State received are the same!")
       if (code) {
-        console.log("✅ Code exists!, starting token retrieval...")
+        console.log("⏳ Code exists!, starting token retrieval...")
         const token = await tokenRetrieval({error, code});
         if (token instanceof Error) return data({ error: "Token could not be retrieved" }, { status: 500, statusText: "Internal Server Error" });
         session.set("access_token", token.access_token);
         session.set("access_expires_in", token.expires_in.toString());
         console.log("✅ Settings up cookies and exiting.")
         return data(
-          {},
+          {
+            message: "You successfully signed in with Reddit!"
+          },
           {
             headers: {
               "Set-Cookie": await commitSession(session),
@@ -119,7 +143,7 @@ export async function loader({request}: Route.LoaderArgs) {
         // If an access token is already present, return
         if (session.has("access_token")) {
           console.log("✅ Access token exists, exiting.")
-          return data({}, { status: 200 })
+          return data({ error: "Failed Reddit Authorization. Backing up with userless permissions." }, { status: 200 })
         };
         // If the error message includes "access_denied", it means the user chose not to grant the app permissions
         if (error.includes("access_denied")) console.log("⚠️ User denied authorization, exiting...");
@@ -141,17 +165,17 @@ export async function loader({request}: Route.LoaderArgs) {
         );
       }
       console.log("✅ State exists but not other valid param, exiting.")
-      return data({}, {status: 200});
+      return data({ message: "Reddit connected!" }, {status: 200});
     } else {
       console.log("🚨 States are not the same. Preventing XSF and exiting.")
-      return data({}, { status: 401 });
+      return data({ error: "Reddit may not be connected" }, { status: 401 });
     }
   } else {
     console.log("⏳ State does not exist on params...")
     console.log("⏳ Checking if access token exists...")
     if (session.has("access_token")) {
       console.log("✅ Access token exists...")
-      console.log("✅ Checking if access token is expired...")
+      console.log("⏳ Checking if access token is expired...")
       const refresh_token = session.get("refresh_token");
       if (refresh_token) {
         console.log("✅ Refresh token exists...")
@@ -165,7 +189,9 @@ export async function loader({request}: Route.LoaderArgs) {
           session.set("access_expires_in", response.expires_in.toString());
           console.log("✅ Setting up cookies and exiting.")
           return data(
-            {},
+            {
+              message: "Reddit connection refreshed!"
+            },
             {
               headers: {
                 "Set-Cookie": await commitSession(session),
@@ -175,10 +201,10 @@ export async function loader({request}: Route.LoaderArgs) {
           );
         }
         console.log("✅ Token hasn't expired. Exiting.")
-        return data({}, {status: 200});
+        return data({ message: "Reddit connected!" }, {status: 200});
       } else {
         console.log("✅ Refresh token does not exist because the app may be using the App Only OAuth flow. Exiting.")
-        return data({}, {status: 200});
+        return data({ message: "Reddit connected!" }, {status: 200});
       }
     }
     console.log("⏳ Starting App Only OAuthorization flow")
@@ -188,7 +214,9 @@ export async function loader({request}: Route.LoaderArgs) {
     session.set("access_expires_in", authorize.expires_in.toString());
     console.log("✅ Setting up cookies and exiting.")
     return data(
-      {},
+      {
+        message: "Reddit connected!"
+      },
       {
         headers: {
           "Set-Cookie": await commitSession(session),
