@@ -59,7 +59,7 @@ export function Layout({
       </body>
     </html>
   )
-}
+};
 export default function App({actionData}: Route.ComponentProps) {
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
@@ -78,80 +78,117 @@ export default function App({actionData}: Route.ComponentProps) {
       </footer>
     </main>
   )
-}
+};
 export async function loader({request}: Route.LoaderArgs) {
   const session = await getSession(
     request.headers.get("Cookie"),
   );
   const url = new URL(request.url);
-  const state = url.searchParams.get("state");
+  const stateFromParams = url.searchParams.get("state");
+  const stateFromCookies = session.get("century_state");
   const code = url.searchParams.get("code");
   const error = url.searchParams.get("error") as "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request" | undefined;
-  if (!session.has("access_token")) {
-    // User is not authenticated, probably because it's their first visit
-    const userless_auth = await getAppOnlyOAuthorization();
-    if (userless_auth instanceof Error) return data({ error: session.get("error") }, {})
-    if (!userless_auth.error) {
-      session.set("access_token", userless_auth.access_token);
-      session.set("access_expires_in", userless_auth.expires_in.toString());
-      return data(
-        { error: session.get("error") },
-        {
-          headers: {
-            "Set-Cookie": await commitSession(session),
+
+  console.log("⏳ Starting...")
+  console.log("⏳ Checking 'state' in params...")
+  if (stateFromParams) {
+    console.log("✅ State exists!")
+    console.log("⏳ Checking if state from params and state from cookies are the same...")
+    if (stateFromParams === stateFromCookies) {
+      console.log("✅ State sent and State received are the same!")
+      if (code) {
+        console.log("✅ Code exists!, starting token retrieval...")
+        const token = await tokenRetrieval({error, code});
+        if (token instanceof Error) return data({ error: "Token could not be retrieved" }, { status: 500, statusText: "Internal Server Error" });
+        session.set("access_token", token.access_token);
+        session.set("access_expires_in", token.expires_in.toString());
+        console.log("✅ Settings up cookies and exiting.")
+        return data(
+          {},
+          {
+            headers: {
+              "Set-Cookie": await commitSession(session),
+            },
+            status: 200
           },
-        },
-      );
-    }
-    return data(
-      { error: "Error signing userless" },
-    )
-  } else if (code && state === session.get("century_state")) {
-    // User has been redirected after app authorization
-    const auth = await tokenRetrieval({ error, code });
-    if (auth instanceof Error) return data({ error: session.get("error") }, {})
-    if (auth) {
-      session.set("access_token", auth.access_token);
-      session.set("access_expires_in", auth.expires_in.toString());
-      return data(
-        { error: session.get("error") },
-        {
-          headers: {
-            "Set-Cookie": await commitSession(session),
-          },
-        },
-      );
-    }
-    return data(
-      { error: "Error signing in" },
-    )
-  } else if (error) {
-    // User has been redirected after rejecting app authorization
-    return data({
-      error
-    });
-  } else {
-    // User comeback and may have an expired token
-    const expires_in = session.get("access_expires_in");
-    const refresh_token = session.get("refresh_token");
-    if (session.has("access_token") && expires_in &&  refresh_token) {
-      const refresh = await refreshToken(expires_in, refresh_token);
-      if (refresh instanceof Error) return data({ error: session.get("error") }, {})
-      if (refresh) {
-        session.set("access_token", refresh.access_token);
-        session.set("access_expires_in", refresh.expires_in.toString());
-        return data({
-          headers: {
-            'Set-Cookie': await commitSession(session),
-          },
-        });
+        );
       }
-      return data(
-        { error: "Failed to refresh the session" },
-      )
+      if (error) {
+        console.log("🚨 Error exists...")
+        // "error" is included in the URL's params
+        // If an access token is already present, return
+        if (session.has("access_token")) {
+          console.log("✅ Access token exists, exiting.")
+          return data({}, { status: 200 })
+        };
+        // If the error message includes "access_denied", it means the user chose not to grant the app permissions
+        if (error.includes("access_denied")) console.log("⚠️ User denied authorization, exiting...");
+        // If there is no access token, and the authorization failed
+        // make a fallback with App Only OAuth flow
+        console.log("⏳ Starting App Only OAuthorization flow")
+        const authorize = await getAppOnlyOAuthorization();
+        if (authorize instanceof Error || authorize.error) return data({ error: "Failed at App Only Authorization" }, { status: 400, statusText: "Bad Request" });
+        session.set("access_token", authorize.access_token);
+        session.set("access_expires_in", authorize.expires_in.toString());
+        console.log("✅ Setting up cookies and exiting.")
+        return data(
+          { error: "Failed Reddit Authorization. Backing up with userless permissions."},
+          {
+            headers: {
+              "Set-Cookie": await commitSession(session),
+            },
+          },
+        );
+      }
+      console.log("✅ State exists but not other valid param, exiting.")
+      return data({}, {status: 200});
+    } else {
+      console.log("🚨 States are not the same. Preventing XSF and exiting.")
+      return data({}, { status: 401 });
     }
+  } else {
+    console.log("⏳ State does not exist on params...")
+    console.log("⏳ Checking if access token exists...")
+    if (session.has("access_token")) {
+      console.log("✅ Access token exists...")
+      console.log("✅ Checking if access token is expired...")
+      const refresh_token = session.get("refresh_token");
+      if (refresh_token) {
+        console.log("✅ Refresh token exists...")
+        const expire_date = session.get("access_expires_in");
+        if (expire_date && Number.parseInt(expire_date) < Date.now()) {
+          console.log("⚠️ Token has expired...")
+          console.log("⏳ Refreshing token...")
+          const response = await refreshToken(expire_date, refresh_token);
+          if (response instanceof Error) return data({ error: "Token could not be refreshed" }, { status: 500, statusText: "Internal Server Error" });
+          session.set("access_token", response.access_token);
+          session.set("access_expires_in", response.expires_in.toString());
+          console.log("✅ Setting up cookies and exiting.")
+          return data(
+            {},
+            {
+              headers: {
+                "Set-Cookie": await commitSession(session),
+              },
+              status: 200
+            },
+          );
+        }
+        console.log("✅ Token hasn't expired. Exiting.")
+        return data({}, {status: 200});
+      } else {
+        console.log("✅ Refresh token does not exist because the app may be using the App Only OAuth flow. Exiting.")
+        return data({}, {status: 200});
+      }
+    }
+    console.log("⏳ Starting App Only OAuthorization flow")
+    const authorize = await getAppOnlyOAuthorization();
+    if (authorize instanceof Error || authorize.error) return data({ error: "Failed at App Only Authorization" }, { status: 400, statusText: "Bad Request" });
+    session.set("access_token", authorize.access_token);
+    session.set("access_expires_in", authorize.expires_in.toString());
+    console.log("✅ Setting up cookies and exiting.")
     return data(
-      { error: session.get("error") },
+      {},
       {
         headers: {
           "Set-Cookie": await commitSession(session),
@@ -159,7 +196,7 @@ export async function loader({request}: Route.LoaderArgs) {
       },
     );
   }
-}
+};
 export async function action({request}: Route.ActionArgs) {
   const formData = await request.formData();
   const query = formData.get("query")?.toString();
@@ -169,7 +206,7 @@ export async function action({request}: Route.ActionArgs) {
   const access_token = session.get("access_token");
   const response = await search(query, access_token);
   return response;
-}
+};
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
@@ -191,7 +228,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       </footer>
     </main>
   )
-}
+};
 export function HydrateFallback() {
     return <Spinner size="lg" color="primary" label="Loading..." />
-}
+};
