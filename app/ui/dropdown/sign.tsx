@@ -1,6 +1,6 @@
 import { Avatar, Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@heroui/react";
 import { Logout } from "../icons";
-import { Form, Link, redirect } from "react-router";
+import { Form, Link } from "react-router";
 
 export default function RedditSignDropdown({
     name,
