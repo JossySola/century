@@ -1,7 +1,7 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "../api/+types/signout";
 import revokeToken from "~/utils/authorization/revoke-token";
-import { useFetcher } from "react-router";
+import { redirect, useFetcher } from "react-router";
 import { Button } from "@heroui/react";
 import { Logout } from "~/ui/icons";
 
@@ -12,17 +12,15 @@ export async function action({ request }: Route.ActionArgs) {
     const token = session.get("access_token");
     if (!token) return false;
     const req = await revokeToken(token);
-    console.log(req)
     if (req instanceof Error) return false;
-    return true;
+    return redirect("/");
 }
-export default function SignOut({ actionData }: Route.ComponentProps) {
+export default function SignOut() {
     const fetcher = useFetcher();
-    console.log(actionData)
     return (
-        <section>
-            <fetcher.Form method="post" className="flex flex-col gap-5 m-5">
-                <p className="font-[Geist] text-2xl">Click the button below to sign out of Reddit</p>
+        <section className="w-screen flex flex-row justify-center items-center">
+            <fetcher.Form method="post" className="flex flex-col gap-5 m-5 w-96 text-center">
+                <p className="font-[Geist] text-2xl">Click the button below to sign out of Reddit in this app</p>
                 <Button
                 type="submit"
                 isDisabled={fetcher.state !== "idle" ? true : false}
