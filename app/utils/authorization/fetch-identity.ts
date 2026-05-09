@@ -1,3 +1,4 @@
+'use server'
 import { getSession } from "~/sessions.server";
 import type { IdentityResponse } from "../types";
 import getMe from "../querying/get-me";

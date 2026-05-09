@@ -1,3 +1,4 @@
+'use server'
 import type { SuccessfulAuthResponse, TokenResponse } from "../types";
 
 export default async function tokenRetrieval({ error, code }: TokenResponse): Promise<SuccessfulAuthResponse | Error> {

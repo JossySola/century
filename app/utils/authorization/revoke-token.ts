@@ -1,3 +1,4 @@
+'use server'
 export default async function revokeToken(token: string): Promise<boolean | Error>{
     try {
         if (!token) throw new Error("Token is missing")

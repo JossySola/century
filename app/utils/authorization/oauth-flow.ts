@@ -1,3 +1,4 @@
+'use server'
 import { getSession } from "~/sessions.server";
 import getAppOnlyOAuthorization from "./get-app-only-oauth";
 import refreshToken from "./refresh-token";

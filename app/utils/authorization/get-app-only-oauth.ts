@@ -1,3 +1,4 @@
+'use server'
 import type { OnlyAppAuthResponse } from "../types";
 
 export default async function getAppOnlyOAuthorization(): Promise<OnlyAppAuthResponse | Error> {

@@ -1,3 +1,4 @@
+'use server'
 export default async function getUserOAuth(state: string): Promise<URL | Error> {
     try {
         if (!state) throw new Error("Empty state");

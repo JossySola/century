@@ -1,3 +1,4 @@
+'use server'
 import type { SuccessfulAuthResponse } from "../types";
 
 export default async function refreshToken(expiration_date: string, refresh_token: string): Promise<SuccessfulAuthResponse | Error> {
