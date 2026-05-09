@@ -15,7 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@heroui/react": "^2.8.8",
+    "@heroui/react": "^2.8.10",
     "@heroui/theme": "^2.4.26",
     "@react-router/dev": "^7.15.0",
     "@react-router/node": "^7.15.0",
