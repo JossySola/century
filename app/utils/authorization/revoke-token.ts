@@ -1,4 +1,4 @@
-export default async function revokeToken(token: string): Promise<void | Error>{
+export default async function revokeToken(token: string): Promise<boolean | Error>{
     try {
         if (!token) throw new Error("Token is missing")
         const client_id = process.env.REDDIT_CLIENT_ID;
@@ -17,6 +17,7 @@ export default async function revokeToken(token: string): Promise<void | Error>{
             })
         });
         if (!request.ok) throw new Error("Error at fetch");
+        return true;
     } catch (error: any) {
         console.error(error);
         throw new Error("Error at revokeToken: ", error.message);       
