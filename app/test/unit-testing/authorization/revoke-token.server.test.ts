@@ -1,7 +1,6 @@
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import { server } from "~/test/mocks/node";
 import revokeToken from "~/utils/authorization/revoke-token";
-import * as zod from "zod/v4";
 import { http, HttpResponse } from "msw";
 
 vi.stubEnv("REDDIT_CLIENT_ID", "REDDIT_123");
@@ -11,10 +10,9 @@ describe("Manually Revoke Token", () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    test("returns void after revoking token", async () => {
+    test("returns true after revoking token", async () => {
         const result = await revokeToken("toke_to_revoke");
-        const isVoid = zod.void().safeParse(result);
-        expect(isVoid.success).toBe(true);
+        expect(result).toBe(true);
     });
     test("throws error if token is missing", async () => {
         await expect(revokeToken("")).rejects.toThrow();
