@@ -1,4 +1,4 @@
-import { getSession } from "~/sessions.server";
+import { destroySession, getSession } from "~/sessions.server";
 import type { Route } from "../api/+types/signout";
 import revokeToken from "~/utils/authorization/revoke-token";
 import { redirect, useFetcher } from "react-router";
@@ -10,10 +10,14 @@ export async function action({ request }: Route.ActionArgs) {
         request.headers.get("Cookie"),
     );
     const token = session.get("access_token");
-    if (!token) return false;
-    const req = await revokeToken(token);
-    if (req instanceof Error) return false;
-    return redirect("/");
+    if (token) {
+        await revokeToken(token);
+    }
+    return redirect("/", {
+        headers: {
+            "Set-Cookie": await destroySession(session),
+        },
+    });
 }
 export default function SignOut() {
     const fetcher = useFetcher();
