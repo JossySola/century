@@ -1,13 +1,15 @@
 'use server'
 import { getSession } from "~/sessions.server";
+import type { Session } from "react-router";
 import getAppOnlyOAuthorization from "./get-app-only-oauth";
 import refreshToken from "./refresh-token";
 import tokenRetrieval from "./token-retrieval";
 
 export default async function oAuthFlow(
-    request: Request
+    request: Request,
+    sessionArg: Session
 ): Promise<{ message?: string, error?: string }> {
-const session = await getSession(
+const session = sessionArg ?? await getSession(
     request.headers.get("Cookie"),
   );
   const url = new URL(request.url);
@@ -40,7 +42,7 @@ const session = await getSession(
         // If an access token is already present, return
         if (session.has("access_token")) {
           console.log("✅ Access token exists, exiting.")
-          return { error: "Failed Reddit Authorization. Backing up with userless permissions." };
+          return { error: "You need to authorize this site in order to sign in and use some Reddit functionalities" };
         };
         // If the error message includes "access_denied", it means the user chose not to grant the app permissions
         if (error.includes("access_denied")) console.log("⚠️ User denied authorization, exiting...");

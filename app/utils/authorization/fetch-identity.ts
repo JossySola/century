@@ -1,5 +1,6 @@
 'use server'
 import { getSession } from "~/sessions.server";
+import type { Session } from "react-router";
 import type { IdentityResponse } from "../types";
 import getMe from "../querying/get-me";
 
@@ -12,8 +13,8 @@ type IdentityType = {
     gold_creddits: number | undefined,
     subscribers: number | undefined,
 }
-export default async function fetchIdentity(request: Request): Promise<IdentityType | null> {
-    const session = await getSession(
+export default async function fetchIdentity(request: Request, sessionArg: Session): Promise<IdentityType | null> {
+    const session = sessionArg ?? await getSession(
         request.headers.get("Cookie"),
     );
     const access_token = session.get("access_token");
