@@ -46,11 +46,11 @@ export function Layout({
       </head>
       <body className="flex flex-col items-center gap-3 p-3">
         <HeroUIProvider>
-          <ToastProvider placement="bottom-center" toastProps={{
+          <ToastProvider placement="bottom-center" maxVisibleToasts={1} toastProps={{
             classNames: {
               title: "font-['Arial']",
               description: "font-['Arial']"
-            }
+            },
           }} />
           { children }
         </HeroUIProvider>
@@ -73,12 +73,14 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
         addToast({
           description: connectionData.message,
           color: "success",
+          shouldShowTimeoutProgress: true,
         });
       }
       if (connectionData.error) {
         addToast({
           description: connectionData.error,
           color: "danger",
+          shouldShowTimeoutProgress: true,
         });
       }
     }
@@ -115,8 +117,8 @@ export async function loader({request}: Route.LoaderArgs) {
   const session = await getSession(
     request.headers.get("Cookie"),
   );
-  const responseOAuth = await oAuthFlow(request);
-  const responseIdentity = await fetchIdentity(request);
+  const responseOAuth = await oAuthFlow(request, session);
+  const responseIdentity = await fetchIdentity(request, session);
   return data(
     {
       message: responseOAuth.message,
