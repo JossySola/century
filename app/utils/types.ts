@@ -466,11 +466,6 @@ export type SuccessfulAuthResponse = {
     "scope": string;
     "refresh_token"?: string;
 }
-export type UseInfiniteScrollProps = {
-    onLoadMore: () => void;
-    hasMore: boolean;
-    isLoading: boolean;
-}
 export type IdentityResponse = {
     is_employee?: boolean,
     seen_layout_switch?: boolean,
