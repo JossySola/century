@@ -1,5 +1,5 @@
 import { Card, CardBody, CardFooter, CardHeader, Chip, Divider, Image, User } from "@heroui/react";
-import { Heart, HeartFill, Message } from "../icons";
+import { Heart, Message } from "../icons";
 import { formatAmount } from "~/utils/formatting/format-amount";
 
 export default function Preview(
@@ -75,11 +75,7 @@ export default function Preview(
             <Divider />
             <CardFooter className="flex flex-row justify-center items-center gap-5">
                 <div className="flex flex-row justify-center items-center gap-2">
-                    {
-                        likes 
-                        ? <HeartFill />
-                        : <Heart />
-                    }
+                    <Heart />
                     <span>{formatAmount(ups)}</span>
                 </div>
                 
