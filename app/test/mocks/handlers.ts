@@ -32,4 +32,7 @@ export const handlers = [
             }
         })
     }),
+    http.post('https://oauth.reddit.com/api/vote', () => {
+        return new HttpResponse(null, { status: 200 });
+    })
 ]
