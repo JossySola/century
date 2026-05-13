@@ -1,5 +1,4 @@
-
-export default async function upvoteAction(access_token: string, id: string, dir: "1" | "0" | "-1") {
+export default async function upvoteAction(access_token: string, id: string, dir: "1" | "0" | "-1"): Promise<boolean | Error> {
     try {
         if (!access_token || !id || !dir) throw new Error("Argument missing");
         const request = await fetch("https://oauth.reddit.com/api/vote", {
@@ -14,8 +13,13 @@ export default async function upvoteAction(access_token: string, id: string, dir
                 dir,
             })
         });
-        console.log(request)
-        if (!request.ok) throw new Error("Reddit endpoint fetch failed");
+        if (!request.ok) {
+            if (request.status === 401) {
+                throw new Error("Unauthorized");
+            } else {
+                throw new Error("Reddit endpoint fetch failed");
+            }
+        };
         return true;
     } catch (error: any) {
         console.error(error);
