@@ -46,7 +46,7 @@ export function Layout({
       </head>
       <body className="flex flex-col items-center gap-3 p-3">
         <HeroUIProvider>
-          <ToastProvider placement="bottom-center" maxVisibleToasts={1} toastProps={{
+          <ToastProvider placement="bottom-center" maxVisibleToasts={3} toastProps={{
             classNames: {
               title: "font-['Arial']",
               description: "font-['Arial']"
