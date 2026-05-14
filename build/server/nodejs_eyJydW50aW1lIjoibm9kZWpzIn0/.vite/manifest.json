@@ -1,6 +1,6 @@
 {
   "D:/projects/century/app/app.css": {
-    "file": "assets/app-BqWhL5zo.css",
+    "file": "assets/app-BR4Fubgf.css",
     "src": "D:/projects/century/app/app.css"
   },
   "virtual:react-router/server-build": {
@@ -9,7 +9,7 @@
     "src": "virtual:react-router/server-build",
     "isEntry": true,
     "assets": [
-      "assets/app-BqWhL5zo.css"
+      "assets/app-BR4Fubgf.css"
     ]
   }
 }
