@@ -10,6 +10,8 @@ export default function Upvote({ likes, votes, id }: {
   votes: number;
   id: string;
 }) {
+  // Using fetcher in order to use access token from Cookies, as it is
+  // needed to access the Session Server-side
   const fetcher = useFetcher();
   const [optimisticVote, addOptimisticVote] = useOptimistic(
     { liked: likes ?? false, votes },
