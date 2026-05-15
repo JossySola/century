@@ -1,7 +1,6 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/gaming";
 import { Spinner } from "@heroui/react";
-import useInfiniteScroll from "~/utils/custom-hooks";
 
 export async function loader({ request }: Route.ActionArgs) {
     const session = await getSession(
@@ -26,13 +25,10 @@ export async function loader({ request }: Route.ActionArgs) {
     return response.data.children;
 }
 export default function Main({ loaderData }: Route.ComponentProps) {
-    const { render, renderLoadingDots } = useInfiniteScroll(loaderData);
     
     return (
         <section className="flex flex-col items-center gap-3 w-full">
             <h3 className="reddit-header my-5">Gaming</h3>
-            { render }
-            { renderLoadingDots() }
         </section>
     )
 }

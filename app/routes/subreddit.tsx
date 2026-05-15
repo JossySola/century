@@ -2,7 +2,6 @@ import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/subreddit";
 import type { Listing } from "~/utils/types";
 import { Spinner } from "@heroui/react";
-import useInfiniteScroll from "~/utils/custom-hooks";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
     const session = await getSession(
@@ -26,13 +25,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     return response.data.children;
 }
 export default function Main({ loaderData, params }: Route.ComponentProps) {
-    const { render, renderLoadingDots } = useInfiniteScroll(loaderData);
 
     return (
         <section className="flex flex-col items-center gap-3 w-full">
             <h3 className="reddit-header my-5">r/{ params.subreddit }</h3>
-            { render }
-            { renderLoadingDots() }
         </section>
     )
 }

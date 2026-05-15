@@ -45,7 +45,6 @@ export async function action({ request }: Route.ActionArgs) {
                 return { error: "Unable to register vote" };
             }
         }
-        
     }
     return null;
 }
