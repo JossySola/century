@@ -1,66 +1,108 @@
-import { Avatar, Card, CardBody } from "@heroui/react";
-import { memo, useEffect, useState } from "react";
-import { useFetcher } from "react-router";
-import type { T1 as T1type, T2 } from "~/utils/types";
+import { Avatar, Button, Card, CardBody } from "@heroui/react";
+import { useMemo } from "react";
+import type { Listing, T1 } from "~/utils/types";
 import { Heart, Message } from "../icons";
 import { motion } from "motion/react";
+import { PlusCircle } from "@geist-ui/icons";
+import type { T1 as CommentKind } from "~/utils/types";
 
-const avatarCache: Record<string, string> = {};
-const T1 = memo(({ comment, isOpen, index, fullname }: { 
-    comment: T1type, 
-    isOpen: boolean,
-    index: number,
-    fullname: string,
-}) => {
-    const [image, setImage] = useState<string>("");
-    const fetcher = useFetcher();
-    useEffect(() => {
-        if (!isOpen) return;
-        if (comment.kind !== "t1") return;
-        const author = comment.data.author;
-        if (!author) return;
-        if (author === '[deleted]') return;
-        if (avatarCache[author]) {
-            setImage(avatarCache[author]);
-            return;
-        }
-        const timer = setTimeout(() => fetcher.load(`/api/author/${author}`), index * 500);
-        return () => clearTimeout(timer);
-    }, [isOpen, comment.data.author, comment.kind]);
-    useEffect(() => {
-        if (fetcher.data) {
-            const data: T2 | string = fetcher.data;
-            if (typeof data === "string") {
+function renderRedditHtml(bodyHtml: string) {
+    if (typeof window === "undefined") {
+        return { __html: "" };
+    }
+
+    const parser = new DOMParser();
+    const decoded = parser.parseFromString(bodyHtml, "text/html").documentElement.textContent ?? "";
+    const doc = parser.parseFromString(decoded, "text/html");
+
+    doc.querySelectorAll("script,style,iframe,object,embed,link,meta").forEach((node) => node.remove());
+
+    doc.querySelectorAll<HTMLElement>("*").forEach((el) => {
+        [...el.attributes].forEach((attr) => {
+            const name = attr.name.toLowerCase();
+            if (name.startsWith("on")) {
+                el.removeAttribute(attr.name);
                 return;
             }
-            const author = comment.data.author;
-            const url = data.data.snoovatar_img.replace(/&amp;/g, "&");
-            if (author && url) {
-                avatarCache[author] = url;
-                setImage(url);
+
+            if (name === "href" || name === "src") {
+                const value = attr.value.trim().toLowerCase();
+                const isSafe = value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/");
+                if (!isSafe) {
+                    el.removeAttribute(attr.name);
+                }
             }
-        }
-    }, [fetcher.data, comment.data.author]);
+        });
+    });
+
+    return { __html: doc.body.innerHTML };
+}
+
+export default function T1 ({
+    author,
+    author_fullname,
+    body,
+    body_html,
+    created_utc,
+    depth,
+    downs,
+    likes,
+    is_submitter,
+    link_id,
+    name,
+    replies,
+    send_replies,
+    subreddit_id,
+    ups,
+    addRepliesToStack,
+}: {
+    author: string,
+    author_fullname: string,
+    body: string,
+    body_html: string,
+    created_utc: number,
+    depth: number,
+    downs: number,
+    likes: number | null,
+    is_submitter: boolean,
+    link_id: string,
+    name: string,
+    replies: "" | Listing,
+    send_replies: boolean,
+    subreddit_id: string,
+    ups: number,
+    addRepliesToStack: (replies: Listing) => void,
+}) {
+    const safeBodyHtml = useMemo(() => renderRedditHtml(body_html), [body_html]);
+
     return (
         <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full m-3">
             <Card className="p-5">
                 <CardBody>
                     <div className="grid grid-flow-row grid-rows-[auto_auto_auto] grid-cols-1 gap-3">
                         <div className="col-span-1 row-start-1 row-span-1 flex flex-row gap-3">
-                            <Avatar size="sm" src={image ?? undefined}/>
-                            <span className="font-semibold">{ comment.data.author }</span>
+                            <Avatar size="sm" src={undefined} />
+                            <span className="font-semibold">{author}</span>
                         </div>
                         <div className="col-span-1 row-start-2 row-span-1 flex flex-row gap-3">
-                            <p className="font-['Arial']">{ comment.data.body }</p>
+                            <div
+                                className="font-['Arial'] [&_a]:underline [&_a]:break-all"
+                                dangerouslySetInnerHTML={safeBodyHtml}
+                            />
                         </div>
                         <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
-                            <span className="inline-flex items-center justify-center gap-3"><Heart /> { comment.data.ups } </span>
-                            <span className="inline-flex items-center justify-center gap-3"><Message /> { comment.data.replies ? comment.data.replies.data.children.length : 0 } </span>
+                            <span className="inline-flex items-center justify-center gap-3"><Heart /> {ups}</span>
+                            <span className="inline-flex items-center justify-center gap-3">
+                                <Message /> 
+                                { replies ? replies.data.children.length : 0 } 
+                                { replies && <Button isIconOnly variant="flat" onPress={() => {
+                                    addRepliesToStack(replies)
+                                }}><PlusCircle /></Button> }
+                            </span>
                         </div>
                     </div>
                 </CardBody>
             </Card>
         </motion.div>
-    )
-})
-export default T1;
+    );
+};
