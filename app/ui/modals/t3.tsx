@@ -7,6 +7,7 @@ import { ExternalLink } from "@geist-ui/icons";
 import { Message } from "../icons";
 import { formatAmount } from "~/utils/formatting/format-amount";
 import Upvote from "../buttons/upvote";
+import Comments from "../drawers/comments";
 
 const T3 = memo(function T3(
     { 
@@ -63,7 +64,7 @@ const T3 = memo(function T3(
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const image = preview ? preview.images[0].source.url.replace(/&amp;/g, "&") : "";
-    
+
     return (
         <>
             <motion.button initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} onClick={() => onOpen()} className="cursor-pointer w-full max-w-[90vw] md:w-133">
@@ -112,7 +113,7 @@ const T3 = memo(function T3(
                                     <span>{formatAmount(num_comments)}</span>
                                 </div>
                             </section>
-
+                            <Comments permalink={permalink} num_comments={num_comments} />
                         </ModalBody>
                         <ModalFooter>
                             <Button color="default" onPress={onClose}><span>Close</span></Button>
