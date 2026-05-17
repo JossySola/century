@@ -12,6 +12,7 @@ export default [
     route('signout', './routes/signout.tsx'),
     route('r/:subreddit', "./routes/subreddit.tsx"),
     ...prefix("api", [
+        route("r/*", "./api/comments.ts"),
         route("subreddit/*", "./api/subreddit.ts"),
         route("author/:name", "./api/author.ts"),
         route("upvote/:id/:vote", "./api/upvote.ts"),
