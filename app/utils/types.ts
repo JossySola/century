@@ -16,7 +16,7 @@ export interface Listing {
         dist: number,
         geo_filter: string,
         modhash: string,
-        children: Array<Thing>
+        children: Array<Thing | More>
     };
 }
 export interface T1 {
@@ -448,6 +448,17 @@ export interface T5 {
         allow_predictions_tournament: boolean,
     };
 };
+export interface More {
+    kind: "more";
+    data: {
+        count: number,
+        depth: number,
+        id: string,
+        name: string,
+        parent_id: string,
+        children: Array<string>,
+    };
+}
 export type OnlyAppAuthResponse = {
     "access_token": string;
     "token_type": "bearer";
