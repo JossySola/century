@@ -122,7 +122,7 @@ export default function T1 ({
                                     <Button 
                                     isIconOnly 
                                     variant="flat"
-                                    color={ repliesAreVisible ? "secondary" : "default" }
+                                    color={ repliesAreVisible ? "primary" : "default" }
                                     onPress={() => setRepliesAreVisible(prev => !prev)}>
                                         { repliesAreVisible ? <MinusCircle /> : <PlusCircle /> }
                                     </Button> }
