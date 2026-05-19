@@ -28,7 +28,6 @@ export async function action({ request, params }: Route.ActionArgs) {
         });
         if (!req.ok) throw new Error(`${req.statusText}`);
         const data = await req.json();
-        console.log(data)
         return {
             data,
         }
