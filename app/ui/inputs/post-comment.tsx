@@ -15,12 +15,13 @@ export default function PostComment({
     const [value, setValue] = useState("");
     useEffect(() => {
         if (fetcher.data) {
-            handleNewComment(fetcher.data.data);
             if (fetcher.data.error) {
                 addToast({
                     description: fetcher.data.error,
                     color: "danger",
                 })
+            } else {
+                handleNewComment({ kind: "t1", data: fetcher.data.data });
             }
         }
     }, [fetcher.data]);
