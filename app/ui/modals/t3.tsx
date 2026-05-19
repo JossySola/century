@@ -100,7 +100,7 @@ const T3 = memo(function T3(
                         </ModalHeader>
                         <ModalBody>
                             { image 
-                            ? <Image src={image} alt="Preview image of article" />
+                            ? <Image src={image} alt="Preview image of article" radius="none"/>
                             : null
                             }
                             <p className="font-[Geist]">{selftext}</p>
@@ -113,7 +113,7 @@ const T3 = memo(function T3(
                                     <span>{formatAmount(num_comments)}</span>
                                 </div>
                             </section>
-                            <Comments permalink={permalink} num_comments={num_comments} />
+                            <Comments permalink={permalink} num_comments={num_comments} id={name} />
                         </ModalBody>
                         <ModalFooter>
                             <Button color="default" onPress={onClose}><span>Close</span></Button>
