@@ -14,10 +14,10 @@ export default [
     ...prefix("api", [
         route("r/*", "./api/comments.ts"),
         route("comment/:id", "./api/comment.ts"),
-        route("vote/:id/:vote", "./api/vote.ts"),
+        route("vote/:id", "./api/vote.ts"),
         route("del/:id", "./api/del.ts"),
         route("editusertext/:id", "./api/editusertext.ts"),
-        route("save/:id/:category", "./api/save.ts"),
+        route("save/:id", "./api/save.ts"),
         route("unsave/:id", "./api/unsave.ts"),
         route("saved_categories", "./api/saved_categories.ts"),
     ]),
