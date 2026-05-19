@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, CardBody } from "@heroui/react";
 import { useCallback, useMemo, useState } from "react";
 import type { Listing, T1 } from "~/utils/types";
-import { Heart, Message } from "../icons";
+import { Message } from "../icons";
 import { motion } from "motion/react";
 import { MinusCircle, PlusCircle } from "@geist-ui/icons";
 import Upvote from "../buttons/upvote";
