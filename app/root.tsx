@@ -69,13 +69,13 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
         error?: string;
       }
       const connectionData: loaderConnection = loaderData;
-      if (connectionData.message) {
+      /*if (connectionData.message) {
         addToast({
           description: connectionData.message,
           color: "success",
           shouldShowTimeoutProgress: true,
         });
-      }
+      }*/
       if (connectionData.error) {
         addToast({
           description: connectionData.error,
