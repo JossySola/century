@@ -8,7 +8,7 @@ export default async function searchByCategory(category: string, access_token: s
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             }
         });
-        if (!request.ok) throw new Error("Error while fetching");
+        if (!request.ok) throw new Error(`Error while fetching. ${request.statusText}`);
         return await request.json();
     } catch (error: any) {
         console.error('Failed at searchByCategory: ', error.message);
