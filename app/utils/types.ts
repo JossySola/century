@@ -33,7 +33,7 @@ export interface T1 {
         "total_awards_received": number,
         "subreddit": string,
         "author_flair_template_id": string | null,
-        "likes": number | null,
+        "likes": boolean | null,
         "replies": Listing,
         "user_reports": [],
         "saved": boolean,
