@@ -1,10 +1,10 @@
 import { Avatar, Button, Card, CardBody } from "@heroui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Listing, T1 } from "~/utils/types";
 import { Heart, Message } from "../icons";
 import { motion } from "motion/react";
-import { PlusCircle } from "@geist-ui/icons";
-import type { T1 as CommentKind } from "~/utils/types";
+import { MinusCircle, PlusCircle } from "@geist-ui/icons";
+import Upvote from "../buttons/upvote";
 
 function renderRedditHtml(bodyHtml: string) {
     if (typeof window === "undefined") {
@@ -54,7 +54,6 @@ export default function T1 ({
     send_replies,
     subreddit_id,
     ups,
-    addRepliesToStack,
 }: {
     author: string,
     author_fullname: string,
@@ -63,7 +62,7 @@ export default function T1 ({
     created_utc: number,
     depth: number,
     downs: number,
-    likes: number | null,
+    likes: boolean | null,
     is_submitter: boolean,
     link_id: string,
     name: string,
@@ -71,12 +70,36 @@ export default function T1 ({
     send_replies: boolean,
     subreddit_id: string,
     ups: number,
-    addRepliesToStack: (replies: Listing) => void,
 }) {
+    const [repliesAreVisible, setRepliesAreVisible] = useState(false);
+    const replyBlock = useCallback(function () {
+        if (replies && replies.kind === "Listing") {
+            return replies.data.children.map(reply => {
+                if (reply.kind === "t1") {
+                    return <T1 
+                    key={reply.data.id}
+                    author={reply.data.author}
+                    author_fullname={reply.data.author_fullname}
+                    body={reply.data.body}
+                    body_html={reply.data.body_html}
+                    created_utc={reply.data.created_utc}
+                    depth={reply.data.depth}
+                    downs={reply.data.downs}
+                    likes={reply.data.likes}
+                    is_submitter={reply.data.is_submitter}
+                    link_id={reply.data.link_id}
+                    name={reply.data.name}
+                    replies={reply.data.replies}
+                    send_replies={reply.data.send_replies}
+                    subreddit_id={reply.data.subreddit_id}
+                    ups={reply.data.ups} />
+                }
+            });
+        }
+    }, [replies]);
     const safeBodyHtml = useMemo(() => renderRedditHtml(body_html), [body_html]);
-
     return (
-        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full m-3">
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="w-full">
             <Card className="p-5">
                 <CardBody>
                     <div className="grid grid-flow-row grid-rows-[auto_auto_auto] grid-cols-1 gap-3">
@@ -91,17 +114,27 @@ export default function T1 ({
                             />
                         </div>
                         <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
-                            <span className="inline-flex items-center justify-center gap-3"><Heart /> {ups}</span>
+                            <span className="inline-flex items-center justify-center gap-3"><Upvote likes={likes} votes={ups} id={name} /></span>
                             <span className="inline-flex items-center justify-center gap-3">
                                 <Message /> 
                                 { replies ? replies.data.children.length : 0 } 
-                                { replies && <Button isIconOnly variant="flat" onPress={() => {
-                                    addRepliesToStack(replies)
-                                }}><PlusCircle /></Button> }
+                                { replies && 
+                                    <Button 
+                                    isIconOnly 
+                                    variant="flat"
+                                    color={ repliesAreVisible ? "secondary" : "default" }
+                                    onPress={() => setRepliesAreVisible(prev => !prev)}>
+                                        { repliesAreVisible ? <MinusCircle /> : <PlusCircle /> }
+                                    </Button> }
                             </span>
                         </div>
                     </div>
                 </CardBody>
+                <section className="flex flex-col justify-end-safe gap-3 w-[95%]">
+                    {
+                        repliesAreVisible && replyBlock()
+                    }
+                </section>
             </Card>
         </motion.div>
     );
