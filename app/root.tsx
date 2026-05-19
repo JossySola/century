@@ -153,9 +153,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <Search />
         <NavList />
       </nav>
-      <section className="font-['Arial'] w-full h-[50vh] flex flex-col justify-center items-center text-2xl text-center gap-3">
-        <p>An error has occurred 😓</p>  
-        <p>{`${(error as any).message}`}</p>
+      <section className="font-['Arial'] w-110 h-[50vh] flex flex-col justify-center items-center text-2xl text-center gap-3">
+        <h3>An error has occurred 😓</h3>  
+        <p>Something happened while connecting with Reddit. Please try again after some minutes.</p>
       </section>
       <div className="w-full mt-5 flex flex-row justify-center items-center gap-3 fixed bottom-10">
           <span className="text-xl text-gray-600">Powered with </span>
