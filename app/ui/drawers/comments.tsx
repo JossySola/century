@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { BookOpen } from "../icons";
 import { useFetcher } from "react-router";
 
-export default function Comments({ permalink, num_comments }: {
+export default function Comments({ permalink, num_comments, id }: {
     permalink: string,
     num_comments: number,
+    id: string,
 }) {
     const fetcher = useFetcher();
     const [comments, setComments] = useState<Array<CommentKind>>([]);
