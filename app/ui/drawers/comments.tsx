@@ -1,7 +1,7 @@
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Spinner, useDisclosure } from "@heroui/react";
 import type { T1 as CommentKind } from "~/utils/types";
 import T1 from "../cards/t1";
-import { startTransition, useEffect, useOptimistic, useState } from "react";
+import { useEffect, useState } from "react";
 import { BookOpen } from "../icons";
 import { useFetcher } from "react-router";
 import PostComment from "../inputs/post-comment";
@@ -15,6 +15,7 @@ export default function Comments({ permalink, num_comments, id }: {
     const [comments, setComments] = useState<Array<CommentKind>>([]);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     useEffect(() => {
+        // If the post is supposed to have comments, fetch the comments via API endpoint
         if (num_comments > 0) {
             fetcher.load(`api${permalink}`);
         }
