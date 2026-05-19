@@ -1,8 +1,9 @@
 import { useFetcher } from "react-router";
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useEffect, useOptimistic } from "react";
 import { Heart, HeartFill } from "../icons";
 import { formatAmount } from "~/utils/formatting/format-amount";
 import { motion } from "motion/react";
+import { addToast } from "@heroui/react";
 
 export default function Upvote({ likes, votes, id }: {
   likes: boolean | null;
@@ -14,15 +15,23 @@ export default function Upvote({ likes, votes, id }: {
   const [optimisticVote, addOptimisticVote] = useOptimistic(likes ?? false, (currentValue, _) => {
     return !currentValue;
   });
+  useEffect(() => {
+    if (fetcher.data) {
+      if (fetcher.data.error) {
+        addToast({
+          description: fetcher.data.error,
+          color: "danger",
+        })
+      }
+    }
+  }, [fetcher]);
   const handleClick = () => {
     startTransition(() => {
       addOptimisticVote(null);
     });
   }
   return (
-    <fetcher.Form method="post" className="inline-flex">
-      <input type="hidden" value="upvote" name="action" />
-      <input type="hidden" value={id} name="id" />
+    <fetcher.Form method="post" action={`/api/vote/${id}`} className="inline-flex">
       <input type="hidden" value={optimisticVote ? "1" : "0"} name="dir" />
       <button
         onClick={handleClick}
