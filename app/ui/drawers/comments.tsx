@@ -1,9 +1,10 @@
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Spinner, useDisclosure } from "@heroui/react";
 import type { T1 as CommentKind } from "~/utils/types";
 import T1 from "../cards/t1";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { BookOpen } from "../icons";
 import { useFetcher } from "react-router";
+import PostComment from "../inputs/post-comment";
 
 export default function Comments({ permalink, num_comments, id }: {
     permalink: string,
@@ -25,6 +26,7 @@ export default function Comments({ permalink, num_comments, id }: {
             }
         }
     }, [fetcher.data]);
+    const handleNewComment = (comment: CommentKind) => setComments(prev => [comment, ...prev]);
     return (
         <>
             <Button onPress={onOpen} isDisabled={ num_comments === 0 } size="lg" className="w-full flex flex-row p-2" color="danger">
@@ -64,8 +66,9 @@ export default function Comments({ permalink, num_comments, id }: {
                                         : null
                                     }
                                 </DrawerBody>
-                                <DrawerFooter>
-                                    <Button onPress={onClose}><span>Close</span></Button>
+                                <DrawerFooter className="flex flex-col">
+                                    <PostComment id={id} handleNewComment={handleNewComment} />
+                                    <Button onPress={onClose} className="w-fit"><span>Close</span></Button>
                                 </DrawerFooter>
                             </>
                         )
