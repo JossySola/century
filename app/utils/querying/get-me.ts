@@ -1,4 +1,3 @@
-
 export default async function getMe(access_token: string) {
     try {
         if (!access_token) throw new Error("Empty argument");
@@ -9,7 +8,17 @@ export default async function getMe(access_token: string) {
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             },
         });
-        if (!request.ok) throw new Error("Failed at Reddit endpoint");
+        if (!request.ok) {
+            return {
+                name: undefined,
+                icon_img: undefined,
+                name_prefixed: undefined,
+                icon_color: undefined,
+                total_karma: undefined,
+                gold_creddits: undefined,
+                subscribers: undefined,
+            }
+        };
         const response = await request.json();
         return response;
     } catch (error: any) {
