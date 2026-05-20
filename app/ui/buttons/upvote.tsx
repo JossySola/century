@@ -1,9 +1,10 @@
 import { useFetcher } from "react-router";
 import { startTransition, useEffect, useOptimistic } from "react";
-import { Heart, HeartFill } from "../icons";
 import { formatAmount } from "~/utils/formatting/format-amount";
 import { motion } from "motion/react";
 import { addToast } from "@heroui/react";
+import Heart from '@react-spectrum/s2/icons/Heart';
+import HeartFilled from '@react-spectrum/s2/icons/HeartFilled';
 
 export default function Upvote({ likes, votes, id }: {
   likes: boolean | null;
@@ -38,13 +39,13 @@ export default function Upvote({ likes, votes, id }: {
         type="submit"
         disabled={optimisticVote !== optimisticVote ? true : false}
         aria-label={optimisticVote ? "Remove upvote" : "Upvote"}
-        className="flex flex-row justify-center items-center gap-2 cursor-pointer"
+        className="flex flex-row justify-center items-center gap-1 cursor-pointer"
       >
         {optimisticVote
         ? <motion.div whileTap={{
           scale: 2.5,
           transition: { duration: 0.3 },
-          }}><HeartFill color="oklch(57.7% 0.245 27.325)"/></motion.div> 
+          }}><HeartFilled UNSAFE_style={{"--iconPrimary": "oklch(57.7% 0.245 27.325)"} as React.CSSProperties}/></motion.div> 
         : <Heart />}
         <span>{formatAmount(votes)}</span>
       </button>
