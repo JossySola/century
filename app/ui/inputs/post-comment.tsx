@@ -1,8 +1,8 @@
 import { addToast, Button, Input } from "@heroui/react";
-import { Send } from "../icons";
 import { useFetcher } from "react-router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { T1 } from "~/utils/types";
+import Publish from '@react-spectrum/s2/icons/Publish';
 
 export default function PostComment({
     id,
@@ -11,7 +11,7 @@ export default function PostComment({
     id: string,
     handleNewComment: (comment: T1) => void,
 }) {
-    const fetcher = useFetcher();
+    const fetcher = useFetcher<{ error?: string; comment?: T1 }>();
     const [value, setValue] = useState("");
     useEffect(() => {
         if (fetcher.data) {
@@ -20,11 +20,12 @@ export default function PostComment({
                     description: fetcher.data.error,
                     color: "danger",
                 })
-            } else {
-                handleNewComment({ kind: "t1", data: fetcher.data.data });
+            } else if (fetcher.data.comment) {
+                handleNewComment(fetcher.data.comment);
+                setValue("");
             }
         }
-    }, [fetcher.data]);
+    }, [fetcher.data, handleNewComment]);
     return (
         <fetcher.Form
             method="post"
@@ -48,7 +49,7 @@ export default function PostComment({
                 isDisabled={fetcher.state !== "idle"}
                 isIconOnly
             >
-                <Send />
+                <Publish UNSAFE_style={{"--iconPrimary": "#fff"} as React.CSSProperties} />
             </Button>
         </fetcher.Form>
     );
