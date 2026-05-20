@@ -8,7 +8,18 @@ export default async function searchByCategory(category: string, access_token: s
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             }
         });
-        if (!request.ok) throw new Error(`Error while fetching. ${request.statusText}`);
+        if (!request.ok) {
+            const attempt = await fetch(`https://www.reddit.com/r/${category}.json?raw_json=1`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
+                }
+            });
+            if (!attempt.ok) throw new Error("Failed to fetch from public endpoint as a second attempt.");
+            const response = await attempt.json();
+            return response;
+        }
         return await request.json();
     } catch (error: any) {
         console.error('Failed at searchByCategory: ', error.message);
