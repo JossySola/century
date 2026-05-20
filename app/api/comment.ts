@@ -28,9 +28,11 @@ export async function action({ request, params }: Route.ActionArgs) {
         });
         if (!req.ok) throw new Error(`${req.statusText}`);
         const data = await req.json();
-        return {
-            data,
+        const errors = data?.json?.errors ?? [];
+        if (errors.length > 0) {
+            return { error: "Reddit rejected the comment", details: errors };
         }
+        return { comment: { kind: "t1", data } };
     } catch (error: any) {
         console.error(`Failed at /api/comment: ${error.message}`);
         if (error.message.includes("Unauthorized")) {
