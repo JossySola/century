@@ -1,10 +1,10 @@
 import { Avatar, Button, Card, CardBody } from "@heroui/react";
 import { useCallback, useMemo, useState } from "react";
 import type { Listing, T1 } from "~/utils/types";
-import { Message } from "../icons";
 import { motion } from "motion/react";
 import { MinusCircle, PlusCircle } from "@geist-ui/icons";
 import Upvote from "../buttons/upvote";
+import Comment from '@react-spectrum/s2/icons/Comment';
 
 function renderRedditHtml(bodyHtml: string) {
     if (typeof window === "undefined") {
@@ -114,9 +114,11 @@ export default function T1 ({
                             />
                         </div>
                         <div className="col-span-1 row-start-3 row-span-1 flex flex-row gap-3">
-                            <span className="inline-flex items-center justify-center gap-3"><Upvote likes={likes} votes={ups} id={name} /></span>
-                            <span className="inline-flex items-center justify-center gap-3">
-                                <Message /> 
+                            <span className="inline-flex items-center justify-center">
+                                <Upvote likes={likes} votes={ups} id={name} />
+                            </span>
+                            <span className="inline-flex items-center justify-center gap-2">
+                                <Comment /> 
                                 { replies ? replies.data.children.length : 0 } 
                                 { replies && 
                                     <Button 
