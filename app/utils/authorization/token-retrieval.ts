@@ -1,4 +1,5 @@
 'use server'
+import { redirect } from "react-router";
 import type { SuccessfulAuthResponse, TokenResponse } from "../types";
 
 export default async function tokenRetrieval({ error, code }: TokenResponse): Promise<SuccessfulAuthResponse | Error> {
@@ -29,7 +30,9 @@ export default async function tokenRetrieval({ error, code }: TokenResponse): Pr
         }
         throw new Error("Missing code");
     } catch (error: any) {
-        console.error(error);
+        console.error(error.message);
         throw new Error(`Error at tokenRetrieval: ${error.message}`)
+    } finally {
+        redirect('/');
     }
 }
