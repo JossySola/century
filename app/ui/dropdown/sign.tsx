@@ -1,6 +1,7 @@
 import { Avatar, Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@heroui/react";
 import { Logout } from "../icons";
 import { Form, Link } from "react-router";
+import SignOut from "../buttons/signout";
 
 export default function RedditSignDropdown({
     name,
@@ -48,12 +49,7 @@ export default function RedditSignDropdown({
                             <p className="text-gray-600">Gold Creddits: {gold_creddits}</p>
                         </DropdownItem>
                         <DropdownItem key="sign-out" className="data-[hover=true]:bg-transparent">
-                            <Link
-                            className="bg-[#FF4500] text-white hover:bg-[#e03d02] active:bg-[#B32D00] focus:ring-[#FF4500] font-medium rounded-2xl p-2 flex flex-row gap-2 w-fit justify-center items-center"
-                            to="/signout">
-                                Sign out
-                                <Logout />
-                            </Link>
+                            <SignOut />
                         </DropdownItem>
                     </>
                     : <DropdownItem key="sign-in" className="data-[hover=true]:bg-transparent">
