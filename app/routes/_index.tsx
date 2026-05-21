@@ -1,9 +1,9 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/_index";
-import { Spinner } from "@heroui/react";
 import searchByCategory from "~/utils/querying/search-by-category";
 import type { T3 as t3Type } from "~/utils/types";
 import T3 from "~/ui/modals/t3";
+import T3Skeleton from "~/ui/skeletons/t3-skeleton";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
@@ -30,7 +30,8 @@ export default function Index({ loaderData, actionData }: Route.ComponentProps) 
     return (
         <main className="flex flex-col items-center gap-5 w-full mb-5">
             {
-                children && children.map(t3 => (
+                children 
+                ? children.map(t3 => (
                     <T3
                     key={t3.data.id}
                     title={t3.data.title}
@@ -51,15 +52,12 @@ export default function Index({ loaderData, actionData }: Route.ComponentProps) 
                     preview={t3.data.preview} 
                     />
                 ))
+                : <T3Skeleton />
             }
         </main>
     )
 }
 
 export function HydrateFallback() {
-    return (
-        <section className="flex flex-col items-center gap-5 w-full mb-5">
-            <Spinner variant="wave" color="primary" size="lg" />
-        </section>
-    )
+    return <T3Skeleton />
 }
