@@ -9,8 +9,6 @@ export default [
     route('sports', './routes/sports.tsx'),
     route('tech', './routes/tech.tsx'),
     route('news', './routes/news.tsx'),
-    route('signout', './routes/signout.tsx'),
-    route('r/:subreddit', "./routes/subreddit.tsx"),
     ...prefix("api", [
         route("r/*", "./api/comments.ts"),
         route("comment/:id", "./api/comment.ts"),
@@ -20,5 +18,6 @@ export default [
         route("save/:id", "./api/save.ts"),
         route("unsave/:id", "./api/unsave.ts"),
         route("saved_categories", "./api/saved_categories.ts"),
+        route("signout", "./api/signout.ts"),
     ]),
 ] satisfies RouteConfig;
