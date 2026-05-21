@@ -1,6 +1,7 @@
 import { Skeleton } from "@heroui/react";
+import { memo } from "react";
 
-export default function CommentSkeleton() {
+const CommentSkeleton = memo(function () {
     return (
         <div className="w-full p-5 flex flex-col gap-3">
             <div className="max-w-75 w-full flex items-center gap-3">
@@ -18,4 +19,5 @@ export default function CommentSkeleton() {
             </div>
         </div>
     )
-}
+});
+export default CommentSkeleton;
