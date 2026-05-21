@@ -16,7 +16,7 @@ export async function action({ request, params }: Route.ActionArgs) {
             method: 'POST',
             headers: {
                 'Authorization': `Basic ${access_token}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             },
             body: new URLSearchParams({
