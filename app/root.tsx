@@ -1,4 +1,4 @@
-import { Links, Outlet, redirect, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { Links, Outlet, redirect, Scripts, ScrollRestoration, useNavigate, type LinksFunction } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
@@ -62,6 +62,7 @@ export function Layout({
   )
 };
 export default function App({actionData, loaderData}: Route.ComponentProps) {
+  const navigate = useNavigate();
   useEffect(() => {
     if (loaderData) {
       type loaderConnection = {
@@ -83,7 +84,7 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
           shouldShowTimeoutProgress: true,
         });
       } else if (connectionData.message === "redirect") {
-        throw redirect("/");
+        navigate("/");
       }
     }
   }, [loaderData]);
