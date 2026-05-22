@@ -1,5 +1,4 @@
 'use server'
-import { redirect } from "react-router";
 import type { SuccessfulAuthResponse, TokenResponse } from "../types";
 
 export default async function tokenRetrieval({ error, code }: TokenResponse): Promise<SuccessfulAuthResponse | Error> {
@@ -22,8 +21,6 @@ export default async function tokenRetrieval({ error, code }: TokenResponse): Pr
                     redirect_uri: 'http://localhost:5173',
                 }).toString(),
             });
-            console.error("STATUS: ", req.status);
-            console.error("TEXT: ", req.statusText);
             if (!req.ok) throw new Error("Error at Reddit endpoint");
             const response: SuccessfulAuthResponse = await req.json();
             return response;
@@ -32,7 +29,5 @@ export default async function tokenRetrieval({ error, code }: TokenResponse): Pr
     } catch (error: any) {
         console.error(error.message);
         throw new Error(`Error at tokenRetrieval: ${error.message}`)
-    } finally {
-        redirect('/');
     }
 }

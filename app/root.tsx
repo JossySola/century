@@ -82,6 +82,8 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
           color: "danger",
           shouldShowTimeoutProgress: true,
         });
+      } else if (connectionData.message === "redirect") {
+        throw redirect("/");
       }
     }
   }, [loaderData]);
@@ -121,8 +123,8 @@ export async function loader({request}: Route.LoaderArgs) {
   const responseIdentity = await fetchIdentity(request, session);
   return data(
     {
-      message: responseOAuth.message,
-      error: responseOAuth.error,
+      message: responseOAuth instanceof Response ? "redirect" : responseOAuth.message,
+      error: responseOAuth instanceof Response ? "" : responseOAuth.error,
       identity: responseIdentity,
     },
     {
