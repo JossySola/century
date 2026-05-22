@@ -15,7 +15,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         const req = await fetch(`https://oauth.reddit.com${endpoint}.json`, {
             method: 'GET',
             headers: {
-                'Authorization': `Basic ${access_token}`,
+                'Authorization': `Bearer ${access_token}`,
                 'Content-Type': 'application/json',
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             }

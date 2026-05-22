@@ -9,10 +9,13 @@ export async function action({ request }: Route.ActionArgs) {
         );
         const token = session.get("access_token");
         if (!token) throw new Error("Access token missing");
+        const client_id = process.env.REDDIT_CLIENT_ID;
+        const client_secret = process.env.REDDIT_CLIENT_SECRET;
+        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
         const req = await fetch("https://www.reddit.com/api/v1/revoke_token", {
             method: 'POST',
             headers: {
-                'Authorization': `Basic ${token}`,
+                'Authorization': `Basic ${encode}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             },
@@ -22,7 +25,7 @@ export async function action({ request }: Route.ActionArgs) {
             }),
         });
         if (!req.ok) throw new Error(`${req.statusText}`);
-        redirect("/");
+        return redirect("/");
     } catch (error: any) {
         console.error(error.message);
         throw new Error(`Failed at /signout: ${error.message}`);

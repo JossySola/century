@@ -11,7 +11,7 @@ export async function action({ request }: Route.ActionArgs) {
         const req = await fetch("https://oauth.reddit.com/api/saved_categories", {
             method: 'GET',
             headers: {
-                'Authorization': `Basic ${access_token}`,
+                'Authorization': `Bearer ${access_token}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'User-Agent': 'web:centurytimes:v2.1.0 (by /u/jossysola)',
             },
