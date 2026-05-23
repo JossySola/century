@@ -8,7 +8,7 @@ import Search from "./inputs/search";
 export default function HeaderMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen} className="z-12">
+        <Navbar onMenuOpenChange={setIsMenuOpen} className="w-full z-12">
             <NavbarContent justify="end">
                 <NavbarMenuToggle 
                 aria-label={

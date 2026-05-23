@@ -91,7 +91,7 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
-      <div className="absolute top-7 right-[8vw] z-10" aria-label="Sign into Reddit">
+      <div className="absolute top-16 right-3 md:top-7 md:right-[8vw] z-13" aria-label="Sign into Reddit">
         <RedditSignDropdown
         name={loaderData.identity?.name} 
         display_name={loaderData.identity?.name_prefixed} 
