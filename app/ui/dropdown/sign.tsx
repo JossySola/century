@@ -1,6 +1,5 @@
 import { Avatar, Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@heroui/react";
-import { Logout } from "../icons";
-import { Form, Link } from "react-router";
+import { Form } from "react-router";
 import SignOut from "../buttons/signout";
 
 export default function RedditSignDropdown({
@@ -22,7 +21,7 @@ export default function RedditSignDropdown({
                     placement="bottom-right" 
                     size="sm"
                     shape="circle">
-                        <Avatar as="button" className="w-8 h-8" src="Reddit_Icon_FullColor.webp" />
+                        <Avatar as="button" className="w-8 h-8" src="/Reddit_Icon_FullColor.webp" />
                     </Badge>
                 </div>
             </DropdownTrigger>
