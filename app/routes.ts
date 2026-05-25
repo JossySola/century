@@ -9,6 +9,8 @@ export default [
     route('sports', './routes/sports.tsx'),
     route('tech', './routes/tech.tsx'),
     route('news', './routes/news.tsx'),
+    route('search', './routes/search.tsx'),
+    route('r/:subreddit', './routes/subreddit.tsx'),
     ...prefix("api", [
         route("r/*", "./api/comments.ts"),
         route("comment/:id", "./api/comment.ts"),
