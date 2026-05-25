@@ -17,16 +17,8 @@ export async function loader({ request }: Route.LoaderArgs) {
     };
 }
 
-export async function action({ request }: Route.ActionArgs) {
-    const session = await getSession(
-        request.headers.get("Cookie"),
-    );
-    const access_token = session.get("access_token");
-}
-
 export default function Index({ loaderData, actionData }: Route.ComponentProps) {
-    const children: Array<t3Type> = loaderData.subreddits?.data?.children ?? []; 
-
+    const children: Array<t3Type> = loaderData.subreddits?.data?.children ?? [];
     return (
         <main className="flex flex-col items-center gap-5 w-full mb-5">
             {
