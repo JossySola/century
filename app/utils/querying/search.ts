@@ -1,6 +1,6 @@
 import type { Listing } from "../types";
 
-export default async function search(query: string | undefined, access_token: string | undefined) {
+export default async function search(query: string | undefined, access_token: string | undefined): Promise<Listing | Error> {
     try {
         if (!query) throw new Error("Query is empty");
         if (!access_token) throw new Error("");
