@@ -19,7 +19,7 @@ export async function loader({
 }
 export default function Search({ loaderData }: Route.ComponentProps) {
     return (
-        <>
+        <main className="flex flex-col items-center gap-5 w-full mb-5">
         {
             loaderData 
             ?  (loaderData as Listing).data.children.map(thing => {
@@ -38,6 +38,6 @@ export default function Search({ loaderData }: Route.ComponentProps) {
             })
             : <h3>No results</h3>
         }
-        </>
+        </main>
     )
 }
