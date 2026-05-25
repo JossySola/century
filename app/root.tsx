@@ -18,6 +18,42 @@ import getUserOAuth from "./utils/authorization/get-user-oauth";
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
 ];
+export async function loader({
+  request
+}: Route.LoaderArgs) {
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
+  const responseOAuth = await oAuthFlow(request, session);
+  const responseIdentity = await fetchIdentity(request, session);
+  return data(
+    {
+      message: responseOAuth instanceof Response ? "redirect" : responseOAuth.message,
+      error: responseOAuth instanceof Response ? "" : responseOAuth.error,
+      identity: responseIdentity,
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      }
+    }
+  )
+};
+export async function action({
+  request
+}: Route.ActionArgs) {
+  const session = await getSession(
+      request.headers.get("Cookie"),
+  );
+  const state = crypto.randomUUID();
+  session.set("century_state", state);
+  const URL = await getUserOAuth(state);
+  return redirect(URL.toString(), {
+      headers: {
+          "Set-Cookie": await commitSession(session),
+      }
+  });
+};
 export function Layout({
   children,
 }: { 
@@ -70,13 +106,6 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
         error?: string;
       }
       const connectionData: loaderConnection = loaderData;
-      /*if (connectionData.message) {
-        addToast({
-          description: connectionData.message,
-          color: "success",
-          shouldShowTimeoutProgress: true,
-        });
-      }*/
       if (connectionData.error) {
         addToast({
           description: connectionData.error,
@@ -115,38 +144,6 @@ export default function App({actionData, loaderData}: Route.ComponentProps) {
       </footer>
     </main>
   )
-};
-export async function loader({request}: Route.LoaderArgs) {
-  const session = await getSession(
-    request.headers.get("Cookie"),
-  );
-  const responseOAuth = await oAuthFlow(request, session);
-  const responseIdentity = await fetchIdentity(request, session);
-  return data(
-    {
-      message: responseOAuth instanceof Response ? "redirect" : responseOAuth.message,
-      error: responseOAuth instanceof Response ? "" : responseOAuth.error,
-      identity: responseIdentity,
-    },
-    {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      }
-    }
-  )
-};
-export async function action({request}: Route.ActionArgs) {
-    const session = await getSession(
-        request.headers.get("Cookie"),
-    );
-    const state = crypto.randomUUID();
-    session.set("century_state", state);
-    const URL = await getUserOAuth(state);
-    return redirect(URL.toString(), {
-        headers: {
-            "Set-Cookie": await commitSession(session),
-        }
-    });
 };
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
