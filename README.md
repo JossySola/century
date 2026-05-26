@@ -77,7 +77,6 @@ century/
 │   ├── routes.ts                     # Route definitions/mapping
 │   └── sessions.server.ts            # Cookie session storage config
 ├── public/                           # Static assets served directly
-├── v1.0.2/                           # Legacy/archived previous version
 ├── .env                              # Environment variables
 ├── package.json                      # Dependencies and scripts
 ├── react-router.config.ts            # React Router framework config
