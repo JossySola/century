@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { addToast } from "@heroui/react";
 import type { Listing } from "~/utils/types";
 import T3 from "~/ui/modals/t3";
+import T3Skeleton from "~/ui/skeletons/t3-skeleton";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
@@ -20,6 +21,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Subreddit({ loaderData }: Route.ComponentProps) {
+    if (!loaderData) {
+        return (
+            <main className="flex flex-col items-center gap-5 w-full mb-5">
+                <T3Skeleton />
+            </main>
+        );
+    }
     useEffect(() => {
         if (loaderData && loaderData.error) {
             addToast({

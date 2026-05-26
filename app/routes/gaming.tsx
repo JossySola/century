@@ -16,7 +16,15 @@ export async function loader({ request }: Route.ActionArgs) {
     };
 }
 export default function Main({ loaderData }: Route.ComponentProps) {
-    const children: Array<T3Type> = loaderData.subreddits?.data?.children ?? []; 
+    const subreddits = loaderData.subreddits;
+    const children: Array<T3Type> = subreddits?.data?.children ?? [];
+    if (!subreddits) {
+        return (
+            <main className="flex flex-col items-center gap-5 w-full mb-5">
+                <T3Skeleton />
+            </main>
+        );
+    }
 
     return (
         <main className="flex flex-col items-center gap-5 w-full mb-5">
