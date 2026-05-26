@@ -1,9 +1,9 @@
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, useDisclosure } from "@heroui/react";
 import type { T1 as CommentKind } from "~/utils/types";
 import T1 from "../cards/t1";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Chat from '@react-spectrum/s2/icons/Chat';
-import { Await, useFetcher } from "react-router";
+import { useFetcher } from "react-router";
 import PostComment from "../inputs/post-comment";
 import CommentSkeleton from "../skeletons/comment-skeleton";
 
@@ -24,11 +24,11 @@ export default function Comments({ permalink, num_comments, id }: {
     useEffect(() => {
         // If the post is supposed to have comments, fetch the comments via API endpoint
         if (num_comments > 0) {
-            fetcher.load(`api${permalink}`);
+            fetcher.load(`/api${permalink}`);
         }
     }, [permalink, num_comments]);
     useEffect(() => {
-        if (fetcher.data) {
+        if (Array.isArray(fetcher.data)) {
             if (fetcher.data[1] && fetcher.data[1].kind === "Listing") {
                 const loaded: Array<CommentKind> = fetcher.data[1].data.children.filter(isT1);
                 setComments(loaded);
