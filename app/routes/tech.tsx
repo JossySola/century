@@ -9,8 +9,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie"),
     );
-    const access_token = session.get("access_token");
-    if (!access_token) return {};
+    const access_token = session.get("access_token") ?? "";
     const subreddits = await searchByCategory("technology", access_token);
     return {
         subreddits: subreddits ?? null,
@@ -22,7 +21,7 @@ export default function Main({ loaderData, actionData }: Route.ComponentProps) {
     return (
         <main className="flex flex-col items-center gap-5 w-full mb-5">
             {
-                children 
+                children.length > 0
                 ? children.map(t3 => (
                     <T3
                     key={t3.data.id}
@@ -44,7 +43,7 @@ export default function Main({ loaderData, actionData }: Route.ComponentProps) {
                     preview={t3.data.preview} 
                     />
                 ))
-                : <T3Skeleton />
+                : <p className="font-['Arial'] text-gray-600">No posts available right now.</p>
             }
         </main>
     )
