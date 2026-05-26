@@ -1,5 +1,5 @@
 import { Button, Chip, Divider, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@heroui/react";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Preview from "../cards/preview";
 import { Link } from "react-router";
@@ -64,6 +64,22 @@ const T3 = memo(function T3(
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const image = preview ? preview.images[0].source.url.replace(/&amp;/g, "&") : "";
+    const [localLikes, setLocalLikes] = useState<boolean | null>(likes);
+    const [localUps, setLocalUps] = useState(ups);
+
+    useEffect(() => {
+        setLocalLikes(likes);
+        setLocalUps(ups);
+    }, [likes, ups, id]);
+
+    const handleVoteChange = (liked: boolean) => {
+        setLocalUps((current) => {
+            const previousLiked = Boolean(localLikes);
+            if (previousLiked === liked) return current;
+            return current + (liked ? 1 : -1);
+        });
+        setLocalLikes(liked);
+    };
 
     return (
         <>
@@ -72,13 +88,13 @@ const T3 = memo(function T3(
                 title={title}
                 subreddit_name_prefixed={subreddit_name_prefixed}
                 name={name}
-                ups={ups}
+                ups={localUps}
                 num_comments={num_comments}
                 link_flair_text={link_flair_text}
                 subreddit_id={subreddit_id}
                 id={id}
                 author={author}
-                likes={likes}
+                likes={localLikes}
                 selftext_html={selftext_html}
                 selftext={selftext}
                 preview={preview} />
@@ -106,7 +122,7 @@ const T3 = memo(function T3(
                             <p className="font-[Geist]">{selftext}</p>
                             <Divider />
                             <section className="flex flex-row justify-center items-center gap-6">
-                                <Upvote likes={likes} votes={ups} id={name} />
+                                <Upvote likes={localLikes} votes={localUps} id={name} onVoteChange={handleVoteChange} />
                                 
                                 <div className="flex flex-row justify-center items-center gap-2">
                                     <Message />

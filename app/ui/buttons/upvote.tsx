@@ -1,54 +1,85 @@
 import { useFetcher } from "react-router";
-import { startTransition, useEffect, useOptimistic } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatAmount } from "~/utils/formatting/format-amount";
 import { motion } from "motion/react";
 import { addToast } from "@heroui/react";
 import Heart from '@react-spectrum/s2/icons/Heart';
 import HeartFilled from '@react-spectrum/s2/icons/HeartFilled';
 
-export default function Upvote({ likes, votes, id }: {
+export default function Upvote({ likes, votes, id, onVoteChange }: {
   likes: boolean | null;
   votes: number;
   id: string;
+  onVoteChange?: (liked: boolean) => void;
 }) {
-  // useFetcher provides pending state and does not add into the browser's navigation
   const fetcher = useFetcher();
-  const [optimisticVote, addOptimisticVote] = useOptimistic(likes ?? false, (currentValue, _) => {
-    return !currentValue;
-  });
+  const [committedLiked, setCommittedLiked] = useState(Boolean(likes));
+  const [pendingLiked, setPendingLiked] = useState<boolean | null>(null);
+  const optimisticLiked = pendingLiked ?? committedLiked;
+
   useEffect(() => {
-    if (fetcher.data) {
-      if (fetcher.data.error) {
+    if (pendingLiked === null) {
+      setCommittedLiked(Boolean(likes));
+    }
+  }, [likes, pendingLiked]);
+
+  useEffect(() => {
+    if (fetcher.state !== "idle" || pendingLiked === null) return;
+
+    if (fetcher.data?.error) {
         addToast({
           description: fetcher.data.error,
           color: "danger",
-        })
-      }
+        });
+        return;
     }
-  }, [fetcher]);
-  const handleClick = () => {
-    startTransition(() => {
-      addOptimisticVote(null);
+
+    setCommittedLiked(pendingLiked);
+    onVoteChange?.(pendingLiked);
+  }, [fetcher.state, fetcher.data, pendingLiked, onVoteChange]);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && pendingLiked !== null) {
+      setPendingLiked(null);
+    }
+  }, [fetcher.state, pendingLiked]);
+
+  const optimisticVotes = useMemo(() => {
+    if (pendingLiked === null) return votes;
+    if (pendingLiked === committedLiked) return votes;
+    return votes + (pendingLiked ? 1 : -1);
+  }, [votes, pendingLiked, committedLiked]);
+
+  const handleSubmit = () => {
+    if (fetcher.state !== "idle") return;
+    const nextLiked = !optimisticLiked;
+    setPendingLiked(nextLiked);
+
+    const formData = new FormData();
+    formData.set("dir", nextLiked ? "1" : "0");
+    fetcher.submit(formData, {
+      method: "post",
+      action: `/api/vote/${id}`,
     });
-  }
+  };
+
   return (
-    <fetcher.Form method="post" action={`/api/vote/${id}`} className="inline-flex">
-      <input type="hidden" value={optimisticVote ? "1" : "0"} name="dir" />
+    <div className="inline-flex">
       <button
-        onClick={handleClick}
-        type="submit"
-        disabled={optimisticVote !== optimisticVote ? true : false}
-        aria-label={optimisticVote ? "Remove upvote" : "Upvote"}
+        onClick={handleSubmit}
+        type="button"
+        disabled={fetcher.state !== "idle"}
+        aria-label={optimisticLiked ? "Remove upvote" : "Upvote"}
         className="flex flex-row justify-center items-center gap-1 cursor-pointer"
       >
-        {optimisticVote
+        {optimisticLiked
         ? <motion.div whileTap={{
           scale: 2.5,
           transition: { duration: 0.3 },
           }}><HeartFilled UNSAFE_style={{"--iconPrimary": "oklch(57.7% 0.245 27.325)"} as React.CSSProperties}/></motion.div> 
         : <Heart />}
-        <span>{formatAmount(votes)}</span>
+        <span>{formatAmount(optimisticVotes)}</span>
       </button>
-    </fetcher.Form>
+    </div>
   );
 }
