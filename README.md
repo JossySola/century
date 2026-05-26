@@ -114,12 +114,14 @@ npm run test       # Run tests
 - The app uses Reddit OAuth for user-authenticated actions.
 - App-Only OAuth Flow is used as fallback for public/feed data.
 - Signing out revokes Reddit tokens and destroys local session cookie.
+
 *For more information, read this [documentation](https://github.com/reddit-archive/reddit/wiki/oauth2)*
 
 ### Testing
 Tests are located under:
 - `app/test/unit-testing/*`
 - `app/test/mocks/*`
+
 Run:
 ```bash
 npm run test
