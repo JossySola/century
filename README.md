@@ -1,7 +1,7 @@
 # The 21st Century Times
 
 Inspired by *The New York Times*, **The 21st Century Times** is a Reddit-powered news web app that surfaces popular posts from categories like world news, technology, sports, space, science, and gaming.  
-Users can browse posts, open detailed modals, read comments, and interact with Reddit (upvote, comment, save/unsave) when signed in.
+Users can browse posts, open detailed modals, read comments, and interact with Reddit (upvote and comment) when signed in.
 
 ## Features
 
