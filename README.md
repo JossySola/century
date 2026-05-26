@@ -10,7 +10,7 @@ Users can browse posts, open detailed modals, read comments, and interact with R
 - Search for subreddits
 - Post modal with preview, metadata, comments drawer, and actions
 - Reddit OAuth integration (app-only + user auth flows)
-- Voting, commenting, saving, and unsaving
+- Voting and commenting
 - Optimistic UI updates for voting
 - Skeleton loading states for posts and comments
 - Unit tests for core auth/query/action utilities
