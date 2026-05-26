@@ -1,4 +1,4 @@
-import { useFetcher } from "react-router";
+import { useFetcher, useRouteLoaderData } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { formatAmount } from "~/utils/formatting/format-amount";
 import { motion } from "motion/react";
@@ -13,6 +13,8 @@ export default function Upvote({ likes, votes, id, onVoteChange }: {
   onVoteChange?: (liked: boolean) => void;
 }) {
   const fetcher = useFetcher();
+  const rootLoaderData = useRouteLoaderData("root") as { identity?: { name?: string } } | undefined;
+  const isSignedIn = Boolean(rootLoaderData?.identity?.name);
   const [committedLiked, setCommittedLiked] = useState(Boolean(likes));
   const [pendingLiked, setPendingLiked] = useState<boolean | null>(null);
   const optimisticLiked = pendingLiked ?? committedLiked;
@@ -52,6 +54,14 @@ export default function Upvote({ likes, votes, id, onVoteChange }: {
 
   const handleSubmit = () => {
     if (fetcher.state !== "idle") return;
+    if (!isSignedIn) {
+      addToast({
+        description: "You must sign in first in order to upvote.",
+        color: "danger",
+      });
+      return;
+    }
+
     const nextLiked = !optimisticLiked;
     setPendingLiked(nextLiked);
 

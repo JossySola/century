@@ -1,5 +1,5 @@
 import { addToast, Button, Input } from "@heroui/react";
-import { useFetcher } from "react-router";
+import { useFetcher, useRouteLoaderData } from "react-router";
 import React, { useEffect, useState } from "react";
 import type { T1 } from "~/utils/types";
 import Publish from '@react-spectrum/s2/icons/Publish';
@@ -12,6 +12,8 @@ export default function PostComment({
     handleNewComment: (comment: T1) => void,
 }) {
     const fetcher = useFetcher<{ error?: string; comment?: T1 }>();
+    const rootLoaderData = useRouteLoaderData("root") as { identity?: { name?: string } } | undefined;
+    const isSignedIn = Boolean(rootLoaderData?.identity?.name);
     const [value, setValue] = useState("");
     useEffect(() => {
         if (fetcher.data) {
@@ -31,6 +33,14 @@ export default function PostComment({
             method="post"
             action={`/api/comment/${id}`}
             className="w-full flex flex-row items-center gap-2 font-[Geist]"
+            onSubmit={(event) => {
+                if (isSignedIn) return;
+                event.preventDefault();
+                addToast({
+                    description: "You must sign in first in order to comment.",
+                    color: "danger",
+                });
+            }}
         >
             <Input
                 name="text"
