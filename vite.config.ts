@@ -9,4 +9,7 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
+  ssr: {
+    noExternal: ["@react-spectrum/s2"],
+  },
 });

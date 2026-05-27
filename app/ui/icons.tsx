@@ -233,3 +233,39 @@ export function EducationTopic() {
         </svg>
     )
 }
+export function Logout ({ height = 16, width = 16, color = "currentColor" }) {
+    return (
+        <svg 
+        data-testid="geist-icon" 
+        height={ height } 
+        strokeLinejoin="round" 
+        viewBox="0 0 16 16" 
+        width={ width } 
+        style={{ color }}>
+            <path 
+            fillRule="evenodd" 
+            clipRule="evenodd" 
+            d="M2.5 13.5H6.75V15H2C1.44772 15 1 14.5523 1 14V2C1 1.44771 1.44772 1 2 1H6.75V2.5L2.5 2.5L2.5 13.5ZM12.4393 7.24999L10.4697 5.28031L9.93934 4.74998L11 3.68932L11.5303 4.21965L14.6036 7.29288C14.9941 7.6834 14.9941 8.31657 14.6036 8.70709L11.5303 11.7803L11 12.3106L9.93934 11.25L10.4697 10.7197L12.4393 8.74999L5.75 8.74999H5V7.24999H5.75L12.4393 7.24999Z" 
+            fill="currentColor">
+            </path>
+        </svg>
+    )
+}
+
+export function Send () {
+    return (
+        <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        height="25" 
+        viewBox="0 0 18 18" 
+        width="25"
+        style={{
+            fill: "white"
+        }}>
+            <title>S Send 18 N</title>
+            <rect id="Canvas" fill="#ff13dc" opacity="0" width="18" height="18" /><path className="fill" d="M16.5955,2.5565.9,7.239a.25.25,0,0,0-.0405.4635L4.82,9.679Z" />
+            <path className="fill" d="M6.5445,10.516l5.9685,3a.5.5,0,0,0,.67121-.22243l.00029-.00057L17.818,3.182Z" />
+            <path className="fill" d="M5.04,11.625v3.8195a.3565.3565,0,0,0,.587.272l2.68-2.258Z" />
+        </svg>
+    )
+}

@@ -1,84 +1,62 @@
 import { getSession } from "~/sessions.server";
 import type { Route } from "./+types/_index";
-import useInfiniteScroll from "~/utils/custom-hooks";
-import { useEffect } from "react";
-import { addToast, Spinner } from "@heroui/react";
-import getCategoryContent from "~/utils/get-category-content";
+import searchByCategory from "~/utils/querying/search-by-category";
+import type { T3 as t3Type } from "~/utils/types";
+import T3 from "~/ui/modals/t3";
+import T3Skeleton from "~/ui/skeletons/t3-skeleton";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(
         request.headers.get("Cookie"),
     );
-    const data = await getCategoryContent("worldnews", session.get("access_token"));
-
+    const access_token = session.get("access_token") ?? "";
+    const subreddits = await searchByCategory("worldnews", access_token);
     return {
-        data,
-        url: request.url,
+        subreddits: subreddits ?? null,
     };
 }
 
-export async function clientLoader({
-    serverLoader,
-    params,
-}: Route.ClientLoaderArgs) {
-    const serverData = await serverLoader();
-    const url = new URL(serverData.url);
-    const pendingAction = window.sessionStorage.getItem("x-century-pending-action");
-
-    if (pendingAction && !url.searchParams.get("error")) {
-        const { action, id, payload } = JSON.parse(pendingAction);
-        window.sessionStorage.removeItem("x-century-pending-action");
-        if (action === "vote") {
-            const dir = payload === "0" ? "1" : payload;
-            const fetcher = await fetch(`/api/upvote/${id}/${dir}`, {
-                method: "POST",
-            });
-            const fetcherData = await fetcher.json();
-            if (fetcherData.error) {
-                addToast({ 
-                    title: "Error", 
-                    description: "There was an error processing your vote.",
-                    color: "danger", 
-                });
-            } else {
-                addToast({ 
-                    title: "Success", 
-                    description: "Your vote was processed successfully.",
-                    color: "success", 
-                });
+export default function Index({ loaderData, actionData }: Route.ComponentProps) {
+    const subreddits = loaderData.subreddits;
+    const children: Array<t3Type> = subreddits?.data?.children ?? [];
+    if (!subreddits) {
+        return (
+            <main className="flex flex-col items-center gap-5 w-full mb-5">
+                <T3Skeleton />
+            </main>
+        );
+    }
+    return (
+        <main className="flex flex-col items-center gap-5 w-full mb-5">
+            {
+                children.length > 0
+                ? children.map(t3 => (
+                    <T3
+                    key={t3.data.id}
+                    title={t3.data.title}
+                    subreddit={t3.data.subreddit}
+                    subreddit_name_prefixed={t3.data.subreddit_name_prefixed}
+                    name={t3.data.name}
+                    ups={t3.data.ups}
+                    link_flair_text={t3.data.link_flair_text}
+                    subreddit_id={t3.data.subreddit_id}
+                    id={t3.data.id}
+                    author={t3.data.author}
+                    permalink={t3.data.permalink}
+                    url={t3.data.url}
+                    likes={t3.data.likes}
+                    selftext={t3.data.selftext}
+                    num_comments={t3.data.num_comments}
+                    selftext_html={t3.data.selftext_html}
+                    preview={t3.data.preview} 
+                    />
+                ))
+                : <p className="font-['Arial'] text-gray-600">No posts available right now.</p>
             }
-        }
-    }
-    return {
-        ...serverData,
-    }
+        </main>
+    )
 }
-clientLoader.hydrate = true as const;
+
 export function HydrateFallback() {
-    return (
-        <section className="flex flex-col items-center gap-5 w-full mb-5">
-            <Spinner variant="wave" color="primary" size="lg" />
-        </section>
-    )
-}
-export default function Index({ loaderData }: Route.ComponentProps) {
-    const { render, renderLoadingDots } = useInfiniteScroll(loaderData.data);
-    //https://www.centurytimes.jossysola.com/?state=x&error=access_denied#_ 
-    useEffect(() => {
-        const url = new URL(loaderData.url);
-        const error = url.searchParams.get("error");
-        if (error && error.includes("access_denied")) {
-            addToast({ 
-                title: "Authorization Error", 
-                description: "You need to authorize the app to upvote and comment.",
-                color: "danger", 
-            });
-        }
-    }, []);
-    return (
-        <section className="flex flex-col items-center gap-5 w-full mb-5">
-            { render }
-            { renderLoadingDots() }
-        </section>
-    )
+    return <T3Skeleton />
 }

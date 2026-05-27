@@ -5,6 +5,7 @@ type SessionData = {
   access_mode: string;
   access_expires_in: string;
   refresh_token: string;
+  century_state: string;
 };
 
 type SessionFlashData = {

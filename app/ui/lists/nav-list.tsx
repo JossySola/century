@@ -8,8 +8,7 @@ export default function NavList() {
                 <Divider />
                 <Divider />
             </div>
-            
-            <ul className="inline-flex gap-5">
+            <ul className="flex gap-5 justify-center items-center">
                 <li><NavLink preventScrollReset to="space" prefetch="intent" 
                 className={ ({ isActive, isPending }) => (
                     isActive ? "pb-2 border-b-4 border-b-gray-700" : 

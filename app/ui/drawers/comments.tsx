@@ -1,131 +1,104 @@
-import { addToast, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Spinner, useDisclosure } from "@heroui/react";
-import type { Listing, Thing } from "~/utils/types";
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, useDisclosure } from "@heroui/react";
+import type { T1 as CommentKind } from "~/utils/types";
 import T1 from "../cards/t1";
-import { useEffect, useRef, useState } from "react";
-import { BookOpen } from "../icons";
+import { useEffect, useState } from "react";
+import Chat from '@react-spectrum/s2/icons/Chat';
+import { useFetcher } from "react-router";
+import PostComment from "../inputs/post-comment";
+import CommentSkeleton from "../skeletons/comment-skeleton";
 
-export default function Comments({ num_comments, comments }: {
+export default function Comments({ permalink, num_comments, id }: {
+    permalink: string,
     num_comments: number,
-    comments?: Listing,
+    id: string,
 }) {
+    const fetcher = useFetcher();
+    const [comments, setComments] = useState<Array<CommentKind>>([]);
+    const [postedComments, setPostedComments] = useState<Array<CommentKind>>([]);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [feed , setFeed] = useState<Array<Thing>>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const children = comments && comments.data ? comments.data.children : [];
-    const loadingRef = useRef(null);
-    const scrollableRef = useRef<HTMLDivElement>(null);
-    const scrollPositionRef = useRef(0);
-    
-    useEffect(() => {
-        if (!isOpen) return;
-        if (comments && children) {
-            if (num_comments && children.length < num_comments) {
-                addToast({
-                    title: "Some comments may not be displayed because the user or comment has been deleted.",
-                    color: "warning",
-                    size: "lg"
-                })
-            }
-        }
-    }, [isOpen])
-    useEffect(() => {
-        if (!comments) return;
-        if (feed.length > 0) return;
-        loadComments();
-    }, [children.length]);    
-    useEffect(() => {
-        if (!isOpen) return;
-        if (!scrollableRef.current || !loadingRef.current) return;
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    loadComments();
-                }
-            }, 
-            {
-                root: scrollableRef.current,
-                threshold: 1,
-            }
-        );
-        if (loadingRef.current) {
-            observer.observe(loadingRef.current);
-        }
-        return () => observer.disconnect();
-    }, [isOpen, feed.length]);
-    useEffect(() => {
-        if (!isLoading) {
-            requestAnimationFrame(() => {
-                restoreScrollPosition();
-            })
-        }
-    }, [feed, isLoading]);
+    const isT1 = (value: unknown): value is CommentKind => {
+        return typeof value === "object" && value !== null && (value as CommentKind).kind === "t1";
+    };
 
-    const loadComments = () => {
-        setIsLoading(true);
-        saveScrollPosition();
-        setFeed(prev => {
-            const diff = children.length - prev.length;
-            if ((children.length && children.length <= 5) || diff < 5) {
-                return children;
+    useEffect(() => {
+        // If the post is supposed to have comments, fetch the comments via API endpoint
+        if (num_comments > 0) {
+            fetcher.load(`/api${permalink}`);
+        }
+    }, [permalink, num_comments]);
+    useEffect(() => {
+        if (Array.isArray(fetcher.data)) {
+            if (fetcher.data[1] && fetcher.data[1].kind === "Listing") {
+                const loaded: Array<CommentKind> = fetcher.data[1].data.children.filter(isT1);
+                setComments(loaded);
+                setPostedComments((prev) =>
+                    prev.filter(
+                        (posted) => !loaded.some((serverComment) => serverComment.data.name === posted.data.name)
+                    )
+                );
             }
-            const count = prev.length + 5;
-            return children.slice(0, count);
-        })
-        setIsLoading(false);
-    };
-    const saveScrollPosition = () => {
-        if (scrollableRef.current) {
-            scrollPositionRef.current = scrollableRef.current.scrollTop;
         }
+    }, [fetcher.data]);
+    const handleNewComment = (comment: CommentKind) => {
+        setPostedComments((prev) => {
+            const exists = prev.some((entry) => {
+                if (entry.data.name) return entry.data.name === comment.data.name;
+                return false;
+            });
+            if (exists) return prev;
+            return [comment, ...prev];
+        });
     };
-    const restoreScrollPosition = () => {
-        if (scrollableRef.current) {
-            scrollableRef.current.scrollTop = scrollPositionRef.current;
-        }
-    };
-    
+    const visibleComments = [...postedComments, ...comments];
     return (
         <>
-        <Button onPress={onOpen} isDisabled={ num_comments === 0 } size="lg" className="w-full flex flex-row p-2" color="danger"><span className="text-lg">Read comments </span><BookOpen width={20} height={20} /></Button>
-        <Drawer isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom" size="lg">
-            <DrawerContent>
-                {
-                    onClose => (
-                        <>
-                        <DrawerHeader></DrawerHeader>
-                        <DrawerBody>
-                            <div ref={scrollableRef} className="flex flex-col-reverse items-center overflow-y-auto h-full p-x-5 pb-5">
-                                {
-                                    isLoading && <Spinner size="lg" color="primary" />
-                                }
-                                <section className="w-5/6 max-w-[95%] flex flex-col-reverse justify-center items-center gap-2">
+            <Button onPress={onOpen} isDisabled={ num_comments === 0 } size="lg" className="w-full flex flex-row p-2" color="danger">
+                <span className="text-lg">Read comments </span>
+                <Chat UNSAFE_style={{"--iconPrimary": "#fff", "width": "25px"} as React.CSSProperties} />
+            </Button>
+            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom" size="lg">
+                <DrawerContent>
+                    {
+                        onClose => (
+                            <>
+                                <DrawerHeader></DrawerHeader>
+                                <DrawerBody className="w-full flex flex-col  gap-3">
                                     {
-                                        feed
-                                        ? feed.map((comment, index) => {
-                                            if (comment.kind === "t1") {
-                                                return <T1 comment={comment} key={comment.data.id} isOpen={isOpen} index={index} />
+                                        visibleComments && visibleComments.length
+                                        ?   visibleComments.map(comment => {
+                                                if (comment.kind === "t1") {
+                                                return <T1 
+                                                key={comment.data.name}
+                                                author={comment.data.author}
+                                                author_fullname={comment.data.author_fullname}
+                                                body={comment.data.body}
+                                                body_html={comment.data.body_html}
+                                                created_utc={comment.data.created_utc}
+                                                depth={comment.data.depth}
+                                                downs={comment.data.downs}
+                                                likes={comment.data.likes}
+                                                is_submitter={comment.data.is_submitter}
+                                                link_id={comment.data.link_id}
+                                                name={comment.data.name}
+                                                replies={comment.data.replies}
+                                                send_replies={comment.data.send_replies}
+                                                subreddit_id={comment.data.subreddit_id}
+                                                ups={comment.data.ups} />
                                             }
                                         })
-                                        :   <span>No comments yet</span>
+                                        : <CommentSkeleton />
                                     }
-                                </section>
-                                {
-                                    comments && comments.data && comments.data.children && comments.data.children.length !== feed.length 
-                                    && <div ref={loadingRef} className="flex flex-row justify-center items-center w-full h-fit mb-10">
-                                        <Spinner variant="wave" color="primary" size="lg" />
-                                    </div>
-                                }
-                            </div>
-                        </DrawerBody>
-                        <DrawerFooter>
-                            <Button onPress={onClose}><span>Close</span></Button>
-                        </DrawerFooter>
-                        </>
-                    )
-                }
-            </DrawerContent>
-        </Drawer>
+                                </DrawerBody>
+                                <DrawerFooter className="flex flex-col">
+                                    <PostComment id={id} handleNewComment={handleNewComment} />
+                                    <Button onPress={onClose} className="w-fit"><span>Close</span></Button>
+                                </DrawerFooter>
+                            </>
+                        )
+                    }
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }

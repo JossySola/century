@@ -16,7 +16,7 @@ export interface Listing {
         dist: number,
         geo_filter: string,
         modhash: string,
-        children: Array<Thing>
+        children: Array<Thing | More>
     };
 }
 export interface T1 {
@@ -33,7 +33,7 @@ export interface T1 {
         "total_awards_received": number,
         "subreddit": string,
         "author_flair_template_id": string | null,
-        "likes": number | null,
+        "likes": boolean | null,
         "replies": Listing,
         "user_reports": [],
         "saved": boolean,
@@ -448,3 +448,172 @@ export interface T5 {
         allow_predictions_tournament: boolean,
     };
 };
+export interface More {
+    kind: "more";
+    data: {
+        count: number,
+        depth: number,
+        id: string,
+        name: string,
+        parent_id: string,
+        children: Array<string>,
+    };
+}
+export type OnlyAppAuthResponse = {
+    "access_token": string;
+    "token_type": "bearer";
+    "expires_in": number;
+    "scope": string;
+    "error"?: string;
+}
+export type TokenResponse = {
+    error?: "access_denied" | "unsupported_response_type" | "invalid_scope" | "invalid_request";
+    code?: string; 
+}
+export type SuccessfulAuthResponse = {
+    "access_token": string;
+    "token_type": "bearer";
+    "expires_in": number;
+    "scope": string;
+    "refresh_token"?: string;
+}
+export type IdentityResponse = {
+    is_employee?: boolean,
+    seen_layout_switch?: boolean,
+    has_visited_new_profile?: boolean,
+    pref_no_profanity?: boolean,
+    has_external_account?: boolean,
+    pref_geopopular?: string,
+    seen_redesign_modal?: boolean,
+    pref_show_trending?: boolean,
+    subreddit?: {
+      default_set: boolean,
+      user_is_contributor: boolean,
+      banner_img: string,
+      restrict_posting: boolean,
+      user_is_banned: boolean,
+      free_form_reports: boolean,
+      community_icon: null,
+      show_media: boolean,
+      icon_color: string,
+      user_is_muted: null,
+      display_name: string,
+      header_img: null,
+      title: string,
+      coins: number,
+      previous_names: [],
+      over_18: boolean,
+      icon_size: [],
+      primary_color: string,
+      icon_img: string,
+      description: string,
+      allowed_media_in_comments: [],
+      submit_link_label: string,
+      header_size: null,
+      restrict_commenting: boolean,
+      subscribers: number,
+      submit_text_label: string,
+      is_default_icon: boolean,
+      link_flair_position: string,
+      display_name_prefixed: string,
+      key_color: string,
+      name: string,
+      is_default_banner: boolean,
+      url: string,
+      quarantine: boolean,
+      banner_size: null,
+      user_is_moderator: boolean,
+      accept_followers: boolean,
+      public_description: string,
+      link_flair_enabled: boolean,
+      disable_contributor_requests: boolean,
+      subreddit_type: string,
+      user_is_subscriber: boolean
+    },
+    pref_show_presence?: boolean,
+    snoovatar_img?: string,
+    snoovatar_size?: null,
+    gold_expiration?: null,
+    has_gold_subscription?: boolean,
+    is_sponsor?: boolean,
+    num_friends?: number,
+    features: {
+        modmail_harassment_filter: boolean;
+        mod_service_mute_writes: boolean;
+        promoted_trend_blanks: boolean;
+        show_amp_link: boolean;
+        top_content_email_digest_v2: object;
+        is_email_permission_required: boolean;
+        mod_awards: boolean;
+        mweb_xpromo_revamp_v3: object;
+        mweb_xpromo_revamp_v2: object;
+        awards_on_streams: boolean;
+        mweb_xpromo_modal_listing_click_daily_dismissible_ios: boolean;
+        chat_subreddit: boolean;
+        modlog_copyright_removal: boolean;
+        do_not_track: boolean;
+        images_in_comments: boolean;
+        mod_service_mute_reads: boolean;
+        chat_user_settings: boolean;
+        use_pref_account_deployment: boolean;
+        mweb_xpromo_interstitial_comments_ios: boolean;
+        mweb_xpromo_modal_listing_click_daily_dismissible_android: boolean;
+        premium_subscriptions_table: boolean;
+        mweb_xpromo_interstitial_comments_android: boolean;
+        crowd_control_for_post: boolean;
+        swap_steps_two_and_three_recalibration: object;
+        mweb_footer_upsell: object;
+        mweb_sharing_web_share_api: object;
+        chat_group_rollout: boolean;
+        resized_styles_images: boolean;
+        noreferrer_to_noopener: boolean;
+        feed_ad_load_3: object;
+        expensive_coins_package: boolean;
+    },
+    can_edit_name?: boolean,
+    verified?: boolean,
+    pref_autoplay?: boolean,
+    coins?: number,
+    has_paypal_subscription?: boolean,
+    has_subscribed_to_premium?: boolean,
+    id?: string,
+    has_stripe_subscription?: boolean,
+    oauth_client_id?: string,
+    can_create_subreddit?: boolean,
+    over_18?: boolean,
+    is_gold?: boolean,
+    is_mod?: boolean,
+    awarder_karma?: number,
+    suspension_expiration_utc?: null,
+    has_verified_email?: boolean,
+    is_suspended?: boolean,
+    pref_video_autoplay?: boolean,
+    has_android_subscription?: boolean,
+    in_redesign_beta?: boolean,
+    icon_img?: string,
+    pref_nightmode?: boolean,
+    awardee_karma?: number,
+    hide_from_robots?: boolean,
+    password_set?: boolean,
+    link_karma?: number,
+    force_password_reset?: boolean,
+    total_karma?: number,
+    seen_give_award_tooltip?: boolean,
+    inbox_count?: number,
+    seen_premium_adblock_modal?: boolean,
+    pref_top_karma_subreddits?: boolean,
+    pref_show_snoovatar?: boolean,
+    name?: string,
+    pref_clickgadget?: number,
+    created?: number,
+    gold_creddits?: number,
+    created_utc?: number,
+    has_ios_subscription?: boolean,
+    pref_show_twitter?: boolean,
+    in_beta?: boolean,
+    comment_karma?: number,
+    accept_followers?: boolean,
+    has_subscribed?: boolean,
+    linked_identities?: [],
+    seen_subreddit_chat_ftux?: boolean
+}

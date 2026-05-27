@@ -1,25 +1,16 @@
 import { Avatar, Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@heroui/react";
-import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
-import { Logout } from "../icons";
+import { Form } from "react-router";
+import SignOut from "../buttons/signout";
 
-export default function RedditSignDropdown() {
-    const fetcher = useFetcher();
-    const [name, setName] = useState<string>("");
-    const [displayName, setDisplayName] = useState<string>("");
-    const [avatar, setAvatar] = useState<string>("");
-    useEffect(() => {
-        fetcher.load("/api/me");
-        console.log("Loading user info from /api/me", fetcher.data);
-    }, []);
-    useEffect(() => {
-        if (fetcher.data) {
-            console.log("Fetcher data for user info:", fetcher.data);
-            setName(fetcher.data.user || "");
-            setDisplayName(fetcher.data.displayName || "");
-            setAvatar(fetcher.data.avatar || "");
-        }
-    }, [fetcher.data]);
+export default function RedditSignDropdown({
+    name,
+    icon_img,
+    display_name,
+    icon_color,
+    total_karma,
+    gold_creddits,
+    subscribers,
+}: { name?: string, icon_img?: string | null, display_name?: string, icon_color?: string, total_karma?: number, gold_creddits?: number, subscribers?: number }) {
     return (
         <Dropdown>
             <DropdownTrigger>
@@ -30,7 +21,7 @@ export default function RedditSignDropdown() {
                     placement="bottom-right" 
                     size="sm"
                     shape="circle">
-                        <Avatar as="button" className="w-8 h-8" src="Reddit_Icon_FullColor.webp" />
+                        <Avatar as="button" className="w-8 h-8" src="/Reddit_Icon_FullColor.webp" />
                     </Badge>
                 </div>
             </DropdownTrigger>
@@ -42,35 +33,33 @@ export default function RedditSignDropdown() {
                         <DropdownItem key="user-info" className="data-[hover=true]:bg-transparent">
                             <User
                             avatarProps={{
-                                src: avatar
+                                src: icon_img ?? "",
                             }}
-                            description={displayName ?? ""}
+                            description={display_name ?? ""}
                             name={name} />
                         </DropdownItem>
+                        <DropdownItem key="user-subscribers">
+                            <p className="text-gray-600">Subscribers: {subscribers}</p>
+                        </DropdownItem>
+                        <DropdownItem key="user-karma">
+                            <p className="text-gray-600">Karma: {total_karma}</p>
+                        </DropdownItem>
+                        <DropdownItem key="user-gold-creddits">
+                            <p className="text-gray-600">Gold Creddits: {gold_creddits}</p>
+                        </DropdownItem>
                         <DropdownItem key="sign-out" className="data-[hover=true]:bg-transparent">
-                            <Button
-                            className="w-full bg-[#FF4500] text-white hover:bg-[#e03d02] active:bg-[#B32D00] focus:ring-[#FF4500] font-medium"
-                            radius="full" 
-                            endContent={ <Logout /> }
-                            onPress={async () => {
-                                await fetch("/api/signout", { method: "POST" });
-                                window.location.reload();
-                            }}>
-                                Sign out
-                            </Button>                        
+                            <SignOut />
                         </DropdownItem>
                     </>
                     : <DropdownItem key="sign-in" className="data-[hover=true]:bg-transparent">
-                        <Button
-                        className="w-full bg-[#D93900] text-white hover:bg-[#e03d02] active:bg-[#B32D00] focus:ring-[#FF4500] font-medium"
-                        radius="full" 
-                        onPress={async () => {
-                            const endpoint = await fetch("/api/authorize", { method: "POST" });
-                            const response = await endpoint.json();
-                            window.location.href = response.endpoint;
-                        }}>
-                            Sign in with Reddit
-                        </Button>                        
+                        <Form method="post">
+                            <Button
+                            type="submit"
+                            className="w-full bg-[#D93900] text-white hover:bg-[#e03d02] active:bg-[#B32D00] focus:ring-[#FF4500] font-medium"
+                            radius="full">
+                                Sign in with Reddit
+                            </Button>
+                        </Form>
                     </DropdownItem>
                 }
             </DropdownMenu>

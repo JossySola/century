@@ -1,22 +1,59 @@
-import { isRouteErrorResponse, Links, Outlet, Scripts, ScrollRestoration, type LinksFunction } from "react-router";
+import { Links, Outlet, redirect, Scripts, ScrollRestoration, useNavigate, type LinksFunction } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import type { Route } from './+types/root';
 import appStylesHref from './app.css?url';
 import HeaderMenu from "./ui/navbar";
 import NavList from "./ui/lists/nav-list";
 import Search from "./ui/inputs/search";
-import {
-  getSession,
-  commitSession,
-} from "./sessions.server";
+import { getSession, commitSession } from "./sessions.server";
 import { data } from "react-router";
-import type { Listing } from "./utils/types";
 import Logo from "/Reddit_Logo_Wordmark_OrangeRed.svg";
-import { HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
+import { addToast, HeroUIProvider, Spinner, ToastProvider } from "@heroui/react";
+import { useEffect } from "react";
+import oAuthFlow from "./utils/authorization/oauth-flow";
+import fetchIdentity from "./utils/authorization/fetch-identity";
+import RedditSignDropdown from "./ui/dropdown/sign";
+import getUserOAuth from "./utils/authorization/get-user-oauth";
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: appStylesHref },
 ];
+export async function loader({
+  request
+}: Route.LoaderArgs) {
+  const session = await getSession(
+    request.headers.get("Cookie"),
+  );
+  const responseOAuth = await oAuthFlow(request, session);
+  const responseIdentity = await fetchIdentity(request, session);
+  return data(
+    {
+      message: responseOAuth instanceof Response ? "redirect" : responseOAuth.message,
+      error: responseOAuth instanceof Response ? "" : responseOAuth.error,
+      identity: responseIdentity,
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      }
+    }
+  )
+};
+export async function action({
+  request
+}: Route.ActionArgs) {
+  const session = await getSession(
+      request.headers.get("Cookie"),
+  );
+  const state = crypto.randomUUID();
+  session.set("century_state", state);
+  const URL = await getUserOAuth(state);
+  return redirect(URL.toString(), {
+      headers: {
+          "Set-Cookie": await commitSession(session),
+      }
+  });
+};
 export function Layout({
   children,
 }: { 
@@ -45,11 +82,11 @@ export function Layout({
       </head>
       <body className="flex flex-col items-center gap-3 p-3">
         <HeroUIProvider>
-          <ToastProvider placement="bottom-center" toastProps={{
+          <ToastProvider placement="bottom-center" maxVisibleToasts={1} toastProps={{
             classNames: {
               title: "font-['Arial']",
               description: "font-['Arial']"
-            }
+            },
           }} />
           { children }
         </HeroUIProvider>
@@ -59,11 +96,40 @@ export function Layout({
       </body>
     </html>
   )
-}
-export default function App({ actionData }: Route.ComponentProps) {
+};
+export default function App({actionData, loaderData}: Route.ComponentProps) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (loaderData) {
+      type loaderConnection = {
+        message?: string;
+        error?: string;
+      }
+      const connectionData: loaderConnection = loaderData;
+      if (connectionData.error) {
+        addToast({
+          description: connectionData.error,
+          color: "danger",
+          shouldShowTimeoutProgress: true,
+        });
+      } else if (connectionData.message === "redirect") {
+        navigate("/");
+      }
+    }
+  }, [loaderData]);
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
+      <div className="absolute top-16 right-3 md:top-7 md:right-[8vw] z-13" aria-label="Sign into Reddit">
+        <RedditSignDropdown
+        name={loaderData.identity?.name} 
+        display_name={loaderData.identity?.name_prefixed} 
+        icon_img={loaderData.identity?.icon_img}
+        icon_color={loaderData.identity?.icon_color}
+        total_karma={loaderData.identity?.total_karma}
+        gold_creddits={loaderData.identity?.gold_creddits}
+        subscribers={loaderData.identity?.subscribers} />
+      </div>
       <nav className="sm:block hidden my-5">
         <Search />
         <NavList />
@@ -78,213 +144,8 @@ export default function App({ actionData }: Route.ComponentProps) {
       </footer>
     </main>
   )
-}
-export async function loader({request}: Route.LoaderArgs) {
-  const session = await getSession(
-    request.headers.get("Cookie"),
-  );
-  const access_token = session.has("access_token");
-  const url = new URL(request.url);
-  const state = url.searchParams.get("state");
-  const code = url.searchParams.get("code");
-  // If this is the first visit, set session to userless
-  if (!access_token) {
-    const client_id = process.env.REDDIT_CLIENT_ID;
-    const client_secret = process.env.REDDIT_CLIENT_SECRET;
-    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${encode}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-          grant_type: "client_credentials",
-          scope: "*"
-        })
-    });
-    if (req.status !== 200) {
-      throw new Error("Failed at getting a token");
-    }
-    const res = await req.json();
-    session.set("access_token", res.access_token);
-    session.set("access_mode", "userless");
-    session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());
-    return data(
-      { error: session.get("error") },
-      { 
-        headers: {
-            "Set-Cookie": await commitSession(session),
-        },
-      },
-    );
-  }
-  // If the user has been redirected from Reddit authorization
-  const access_mode = session.get("access_mode");
-  if (code && access_mode !== "authorized" && state === "x") {
-    const client_id = process.env.REDDIT_CLIENT_ID;
-    const client_secret = process.env.REDDIT_CLIENT_SECRET;
-    const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-    const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${encode}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-          grant_type: "authorization_code",
-          code,
-          redirect_uri: "http://localhost:5173",
-        })
-    });
-    if (req.status !== 200) {
-      throw new Error("Failed at getting a authorized token");
-    }
-    const res = await req.json();
-    session.set("access_token", res.access_token);
-    session.set("access_mode", "authorized");
-    session.set("access_expires_in", res.expires_in);
-    session.set("refresh_token", res.refresh_token);
-    return data(
-      { error: session.get("error") },
-      { 
-        headers: {
-            "Set-Cookie": await commitSession(session),
-        },
-      },
-    );    
-  }
-  // If there is an access token and "code" is not present, it checks if the token is expired
-  const expiry = session.get("access_expires_in");
-
-  if (expiry && Date.now() >= parseInt(expiry)) {
-    // If the token has expired
-    if (access_mode === "authorized") {
-      const refresh_token = session.get("refresh_token");
-      if (refresh_token) {
-        // If the access mode is authorized, it uses the refresh token to get a new access token
-        const client_id = process.env.REDDIT_CLIENT_ID;
-        const client_secret = process.env.REDDIT_CLIENT_SECRET;
-        const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-        const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-          method: "POST",
-          headers: {
-            Authorization: `Basic ${encode}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.1.0",
-          },
-          body: new URLSearchParams({
-            grant_type: "refresh_token",
-            refresh_token,
-          })
-        });
-        if (req.status !== 200) {
-          throw new Error("Failed at getting a refresh token");
-        }
-        const res = await req.json();
-        session.set("access_token", res.access_token);
-        session.set("access_mode", "authorized");
-        session.set("access_expires_in", res.expires_in);
-        session.set("refresh_token", res.refresh_token);        
-        return data(
-          { error: session.get("error") },
-          {
-            headers: {
-              "Set-Cookie": await commitSession(session),
-            },
-          },
-        );
-      }
-    } else {
-      // If the access mode is userless, it gets a new userless token
-      const token = session.get("access_token");
-      const client_id = process.env.REDDIT_CLIENT_ID;
-      const client_secret = process.env.REDDIT_CLIENT_SECRET;
-      const encode = Buffer.from(client_id + ':' + client_secret).toString('base64');
-      const req = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-            Authorization: `Basic ${encode}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': "centurytimes/2.1.0",
-        },
-        body: new URLSearchParams({
-            grant_type: `refresh_token&refresh_token=${token}`,
-            scope: "*"
-        })
-      });
-      if (req.status !== 200) {
-        throw new Error("Failed at getting a token");
-      }
-      const res = await req.json();
-      session.set("access_token", res.access_token);
-      session.set("access_mode", "userless");
-      session.set("access_expires_in", (Date.now() + res.expires_in * 1000).toString());      
-      return data(
-        { error: session.get("error") },
-        {
-          headers: {
-            "Set-Cookie": await commitSession(session),
-          },
-        },
-      );
-    }
-  }
-}
-export async function action({request}: Route.ActionArgs) {
-  const formData = await request.formData();
-  const query = formData.get("query");
-  const session = await getSession(
-    request.headers.get("Cookie"),
-  );
-  const access_token = session.get("access_token");
-  if (!query) {
-    throw new Error("No query provided");
-  }
-  if (!access_token) {
-    throw new Error("No token");
-  }
-  const endpoint = new URL("https://oauth.reddit.com/subreddits/search");
-  const params = new URLSearchParams(endpoint.search);
-  params.append("limit", '15');
-  params.append("show", 'all');
-  params.append("show_users", 'true');
-  params.append("sort", 'relevance');
-  params.append("typeahead_active", 'None');
-  params.append("q", `${query.toString()}`);
-  endpoint.search = params.toString();
-  const req = await fetch(endpoint, {
-    method: "GET",
-    headers: {
-    "Authorization": `Bearer ${access_token}`,
-    "User-Agent": "centurytimes/2.1.0",
-    "Content-Type": "application/json"
-    }
-  })
-  if (req.status !== 200) {
-    console.error(req.statusText);
-    console.error(req.status);
-    throw new Error("Error while searching query");
-  }
-  const response: Listing = await req.json();
-  return response;
-}
+};
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = 'Oops!'
-  let details = 'An unexpected error occurred.'
-  let stack: string | undefined
-
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error'
-    details =
-      error.status === 404 ? 'The requested page could not be found.' : error.statusText || details
-  } else if (error && error instanceof Error) {
-    details = error.message
-    stack = error.stack
-  }
-
   return (
     <main className="flex flex-col items-center gap-3 pb-10">
       <HeaderMenu />
@@ -292,11 +153,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <Search />
         <NavList />
       </nav>
-      <section className="font-['Arial'] w-full h-[50vh] flex flex-col justify-center items-center text-2xl text-center gap-3">
-        <h1 className="font-['Arial']">{message}</h1>
-        <p>An error has occurred 😓</p>  
-        <p>Sometimes Reddit gets tired of sending data 😒</p>  
-        <p>Please give it some minutes and try again 🙏</p>
+      <section className="font-['Arial'] w-110 h-[50vh] flex flex-col justify-center items-center text-2xl text-center gap-3">
+        <h3>An error has occurred 😓</h3>  
+        <p>Something happened while connecting with Reddit. Please try again after some minutes.</p>
       </section>
       <div className="w-full mt-5 flex flex-row justify-center items-center gap-3 fixed bottom-10">
           <span className="text-xl text-gray-600">Powered with </span>
@@ -307,7 +166,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       </footer>
     </main>
   )
-}
+};
 export function HydrateFallback() {
     return <Spinner size="lg" color="primary" label="Loading..." />
-}
+};

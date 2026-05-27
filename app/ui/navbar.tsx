@@ -8,14 +8,18 @@ import Search from "./inputs/search";
 export default function HeaderMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen}>
-            <NavbarContent>
-                <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
-            </NavbarContent>
-            <NavbarContent justify="center">
+        <Navbar onMenuOpenChange={setIsMenuOpen} className="w-full z-12">
+            <NavbarContent justify="end">
+                <NavbarMenuToggle 
+                aria-label={
+                    isMenuOpen 
+                    ? "Close menu" 
+                    : "Open menu"
+                } 
+                className="sm:hidden" />                
                 <NavbarBrand>
-                    <Link to="/">
-                        <h1 className="title text-[8vw] sm:text-[2.25rem]">The 21st Century Times</h1>
+                    <Link to="/" className="w-full text-center">
+                        <h1 className="title text-[6.5vw] sm:text-[2.25rem]">The 21st Century Times</h1>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
